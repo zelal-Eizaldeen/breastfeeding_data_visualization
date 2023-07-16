@@ -1,11 +1,11 @@
-Outcomes,Lower_Risk,Breastfeeding_Period,Outcomes_Mum,Lower_Risk_Mum,Breastfeeding_Period_Mum
-Ulcerative Colitis,79,12 months,Gestational diabetes,78,12 months
-SIDS,64,6 months,Type 2 diabetes ,32,12 months
-Type 1 Diabetes,57,6 months,Ovarian Cancer,30,Ever
-Neonatal Mortality ,51,Ever,Breast cancer,22,Any
-Otitis Media,43,6 months,Premenopausal Breast Cancer,14,Any
-Type 2 Diabetes,33,Ever,Hypertension,13,12 months
-Crohn’s Disease,29,Ever,Endometrial Cancer,11,Ever
-Eczema ,26,4 months,Thyroid Cancer,9,Ever
-Asthma ,22,6 months,,,
-Leukemia,19,6 months,,,
+Outcomes,Lower_Risk,Breastfeeding_Period,Outcomes_Mum,Lower_Risk_Mum,Breastfeeding_Period_Mum,Ingredients,Percentage,Abbreviations
+Ulcerative colitis,79,12 months,Gestational diabetes,78,12 months,Linoleic acid,6.62,
+SIDS,64,6 months,Type 2 diabetes ,32,12 months,Diglycerides,1.95,
+Type 1 diabetes,57,6 months,Ovarian Cancer,30,Ever,Monoglycerides,0.63,
+Neonatal mortality ,51,Ever,Breast cancer,22,Any,DHA,0.32,Docosahexaenoic acid
+Otitis media,43,6 months,Premenopausal Breast Cancer,14,Any,Omega 3,2.48,
+Type 2 diabetes1,33,Ever,Hypertension,13,12 months,MUFA & PUFA	,80.96,Monounsaturated fatty acid and polyunsaturated fatty acid
+Crohn’s disease,29,Ever,Endometrial Cancer,11,Ever,,,
+Eczema ,26,4 months,Thyroid Cancer,9,Ever,,,
+Asthma ,22,6 months,,,,,,
+Leukemia,19,6 months,,,,,,
