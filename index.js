@@ -8,11 +8,15 @@ const svg_Mum = canvas.append("svg")
                     .attr("width", 600)
                     .attr("height", 700);
 
+// const margin = {top:50, right:50, bottom:50, left:50};
 const margin = 50;
+// const graphWidth = 600 - margin.left - margin.right;
 const graphWidth = 500;
+
 const graphHeight = 500;
 const type = d3.annotationLabel;
 
+// const graphHeight = 600 - margin.top - margin.bottom;
 
 
 
@@ -25,6 +29,8 @@ const type = d3.annotationLabel;
 //Y Text Axis
 const textYAxisGroup = svg.append("g")
                             .attr("transform", `translate(${margin - 10}, 30)`)
+
+
 
                             //Define the Tooltip
 var div = d3.select("body").append("div")
@@ -72,7 +78,7 @@ async function init() {
     .style("text-anchor", "start");
     var yAxis=svg_Mum.append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(y_Mum).tickValues([10, 20,30,40,50,60,70]).ticks(20, "~s"));
 
-    // Features of the annotation for babies chart
+    // Features of the annotation for babies
 const annotations = [
     {
       note: {
@@ -97,11 +103,11 @@ const annotations = [
     }
   ]
   
-   // Features of the annotation of mummies chart
-const mum_annotations = [
+    // Features of the annotation for mumies
+const annotations_mums = [
     {
       note: {
-        label: "Sudden Infant Death Syndrome reduced to 64%",
+        label: "Gestational Diabetes Mellitus reduced to 78%",
         title: "SIDS",
         align: "left",
         wrap: 100,
@@ -115,15 +121,19 @@ const mum_annotations = [
       },
       color: ["#000000"],
       
-      x: graphWidth/2/2,
+      x: graphWidth/2/2/1.7,
       y: graphHeight/2,
       dy: 100,
       dx: 40
     }
   ]
-  // Add annotation to the  babies chart
+  
+  // Add annotation to the baby chart
   const makeAnnotations = d3.annotation()
     .annotations(annotations);
+// Add annotation to the baby chart
+const makeAnnotations_mums = d3.annotation()
+.annotations(annotations_mums);
     svg.append("text")
         .text("Benefits For Babies")
         .attr("x", margin)
@@ -134,6 +144,9 @@ const mum_annotations = [
         .enter()
         .append("g").attr("transform", "translate("+margin+","+margin+")")
         .append('rect')
+        .attr("class","rect")
+        .on("click", function() { window.open("https://publications.aap.org/view-large/10993082"); }) // when clicked, opens window 
+
         .on("mouseover", function(d,i,n){
             d3.select(n[i])
               .transition()
@@ -144,6 +157,7 @@ const mum_annotations = [
                  .style("opacity", 0.9);
             //Tooltip
             //"d.lower.split(",")[1]
+            //div.html("<p> <b>Breastfeeding Duration: </b>"+ d.Breastfeeding_Period+"</p>")
             div.html(
                 `<p> 
                 <b>Disease: </b>
@@ -186,6 +200,7 @@ const mum_annotations = [
            .attr("class", "annotation-group").call(makeAnnotations);
 
         
+
         svg_Mum.append("text")
         .text("Benefits For Mothers")
         .attr("x", margin)
@@ -196,6 +211,7 @@ const mum_annotations = [
         .enter()
         .append("g").attr("transform", "translate("+(margin)+","+margin+")")
         .append('rect')
+        
         
         .on("mouseover", function(d,i,n){
             d3.select(n[i])
@@ -228,6 +244,9 @@ const mum_annotations = [
         .attr("height", (d,i)=> graphHeight - y_Mum(d.Lower_Risk_Mum))
         .attr("fill",(d,i,n)=>d3.select(n[0]).style("fill", "#31a354"))
         .attr("fill", "#e5f5e0")
+
+        svg_Mum.append("g")
+        .attr("class", "annotation-group").call(makeAnnotations_mums);
        
 
     } 
