@@ -1,13 +1,15 @@
 const canvas = d3.select(".canva");
+const canvas_Mum = d3.select(".canva_Mum");
+
 
 // add an svg element
 const svg = canvas.append("svg")
             .attr("width", 600)
             .attr("height", 700);
-const svg_Mum = canvas.append("svg")
+const svg_Mum = canvas_Mum.append("svg")
                     .attr("width", 600)
                     .attr("height", 700)
-                    .attr("class", "hide");
+                    // .attr("class", "hide");
 
 
 const margin = 50;
@@ -17,32 +19,36 @@ const type = d3.annotationLabel;
 const babyCheckbox = document.querySelector("#baby");
 const motherCheckbox = document.querySelector("#mother");
 
-
-
-  babyCheckbox.addEventListener("click", () => {
+// function update() {
+//     console.log("Hiii") 
+      
+// }
+// update(motherCheckbox);
+  babyCheckbox.addEventListener("change", () => {
     if (babyCheckbox.checked) {
         svg.attr("class", "visible")
-        
-       
-
-     
+        location.reload();
     } else {
         babyCheckbox.checked=false;
         svg.attr("class", "hide");
     }
   });
-  motherCheckbox.addEventListener("click", () => {
+  motherCheckbox.addEventListener("change", () => {
     if (motherCheckbox.checked) {
-        // motherCheckbox.checked=true;
         svg_Mum.attr("class", "visible")
-        init()
-     
+       
+
+        .selectAll(".canva_Mum").transition()
+        .duration(3000)
+        
+        // .attr("y", (d,i)=> y(d.Lower_Risk))
+        .delay((d,i) => i * 100 )
+        .ease(d3.easeBounceIn)  
+        
     } else {
-        // babyCheckbox.checked=false;
         motherCheckbox.checked=false;
         svg_Mum.attr("class", "hide");
-        // svg.attr("class", "hide")
-
+       
     }
   });
 //Y Text Axis
@@ -96,6 +102,7 @@ async function init() {
     .style("text-anchor", "start");
     var yAxis=svg_Mum.append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(y_Mum).tickValues([10, 20,30,40,50,60,70]).ticks(20, "~s"));
     
+   
     // Features of the annotation for babies
 const annotations = [
     {

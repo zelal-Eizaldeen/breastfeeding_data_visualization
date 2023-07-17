@@ -29,8 +29,9 @@
         <a href="exclusive.html">Exclusive</a>
         <a href="formula.html">Formula</a>
       </div>
+     
 
-      <div class="canva" >
+      <!-- <div class="canva" > -->
         <h2>Breastfeeding is the best 
             source of nutrition for 
             most infants. </br>
@@ -39,7 +40,6 @@
         <p>Infants who are breastfed have reduced risks of for example Asthma, Obisity, Sudden infant death syndrome (SIDS).
         </br>Breastfeeding can help lower a mother’s risk of for example Breast cancer, Type 2 diabetes, and Hypertension.
         </p>
-       
         <fieldset>
             <legend>Benefits for?</legend>
         
@@ -49,15 +49,22 @@
             </div>
         
             <div>
-              <input type="checkbox" id="mother" name="mother">
+              <input onclick="update();" type="checkbox" id="mother" name="mother" checked>
               <label for="mother">Mothers</label>
             </div>
-        </fieldset>
         
-
+        </fieldset>
+        <div class="canva" >
+        </div>
+        <div class="canva_Mum" ></div>
+        <div class="download_pdf">
+            <a href="https://www.cdc.gov/breastfeeding/pdf/breastfeeding-cdcs-work-508.pdf">
+               <img class="pdf_icon" src="pdf.png">Download PDF 
+            </a>
+        </div>
 
       </div>
-    </div>
+    
     <!-- Create a div where the bubble graph will take place -->
  <div id="bubble_dataviz"></div>
 

@@ -21,6 +21,8 @@ body {
 
 div {
     display:block;
+    padding: 5px;
+
 }
 p{
     font-size: 18px;
@@ -33,12 +35,36 @@ img {
     width: 400px;
     display: inline;
   }
+  .download_pdf{
+    background-color: #333;
+    overflow:hidden;
+  }
+  .pdf_icon{
+    width:40px;
+    height:40px;
+    text-align: center;
+  }
+  .download_pdf a {
+        float:left;
+        color: #f2f2f2;
+        padding: 30px 16px;
+        text-decoration: none;
+        font-size: 18px;
+       
+        text-align: center;
+  }
   input {
     margin: 0.4rem;
 }
 fieldset{
     font-size: 18px;
 
+}
+.canva{
+    display: inline-block;
+}
+.canva_Mum{
+    display: inline-block;
 }
 .hide{
     visibility: hidden;
