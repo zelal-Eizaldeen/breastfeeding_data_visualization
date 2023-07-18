@@ -4,6 +4,24 @@ html{
     font-size: 62.5%;
     
 }
+h1 {
+    display: block;
+    font-size: 2em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
 
 body {
  margin: 50px;
@@ -25,7 +43,7 @@ div {
 
 }
 p{
-    font-size: 18px;
+    font-size: 20px;
     
 }
 img {
@@ -100,17 +118,53 @@ fieldset{
     background-color: #31a354;
     color: white;
   }
+  .reasons_nav a{
+    float:left;
+    color: #f2f2f2;
+    /* padding: 30px 16px; */
+    text-decoration: none;
+    font-size: 20px;
+    cursor:auto;
+   
+  }
+  .link{
+    color: #ffffff;
+  }
+  
+  .pushable {
+    background: #31a354;
+    border-radius: 12px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    margin-left: 50px;
+  }
+  .front {
+    display: block;
+    padding: 12px 42px;
+    border-radius: 12px;
+    font-size: 18px;
+    background: #31a354;
+    color: white;
+    transform: translateY(-6px);
+  }
+  /*  */
+
+  .pushable:active .front {
+    transform: translateY(-2px);
+  }
 div.tooltip {
     position: absolute;
     text-align: left;
     width: 300px;
-    height: 100px;
+    /* height: 150px; */
     /* padding: 2px; */
     font: 12px Helvetica, sans-serif;
     /* background: #e5f5e0; */
     border:0px;
     border-radius: 4px;
-    /* pointer-events: none; */
+    pointer-events: none; 
     background-color: rgb(52, 50, 50);
     color: #fff;
    
@@ -144,24 +198,24 @@ g .tick line {
 
 }
 .everLine {
-    stroke: #31a354;
+    stroke: #798BBC;
 }
 .sixLine{
     stroke: #a1d99b;
 
 }
 .twelveLine{
-    stroke: #e0f1de;
+    stroke: #F97850;
 }
 .exclusiveLine{
-    stroke: #f03b20;
+    stroke: #57B795;
 }
 .exclusiveThreeLine{
     stroke: #31a354;
 
 }
 .formulaLine{
-    stroke: #2c7fb8;
+    stroke: #E072B6;
 }
 .formulaTwoLine{
     stroke: #75c0f3;
@@ -172,25 +226,25 @@ g .tick line {
 
 }
 .formulaCircle{
-    fill: #2c7fb8;
+    fill: #E072B6;
 }
 .formulaTwoCircle{
-    fill: #75c0f3;
+    fill: #E072B6;
 }
 .formulaThreeCircle{
     fill: #5894bb;
 }
 .everCircle{
-    fill: #31a354;
+    fill: #798BBC;
 }
 .sixCircle{
     fill:#a1d99b;
 }
 .twelveCircle{
-    fill:#b4dfb0;
+    fill:#F97850;
 }
 .exclusiveCircle{
-    fill:#f03b20;
+    fill:#57B795;
 }
 .exclusiveThreeCircle{
     fill: #31a354;

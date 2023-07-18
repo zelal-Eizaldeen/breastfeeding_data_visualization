@@ -3,7 +3,7 @@ const canvas = d3.select(".canva");
 // add an svg element
 const svg = canvas.append("svg")
             .attr("width", 1000)
-            .attr("height", 1000);
+            .attr("height", 750);
 
             var padding = 1.5,
                clusterPadding = 16,
@@ -13,9 +13,12 @@ const margin = {top:20, right:20, bottom:70, left:70};
 const graphWidth = 600 - margin.left - margin.right;
 const graphHeight = 600 - margin.top - margin.bottom;
 
+//Define Tooltip
 var div = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
+
+
 
 //Color
 const mColors = d3.scaleOrdinal(d3['schemeSet2'])
@@ -25,11 +28,38 @@ const mainCanvas = svg.append("g")
                       .attr("width", graphWidth / 2)
                       .attr("height", graphHeight / 2)
                       .attr("transform", `translate(${margin.left}, ${margin.right  + 160})`);
-
-
+//Annotations
+const annotations = [
+    {
+        note: {
+          label: "The most common reasons cited were concerns about milk supply (57.8%).",
+          title: "Nutritional Factors",
+          align: "left",
+          wrap: 100,
+          
+        },
+        connector: {
+          end: "dot",        // Can be none, or arrow or dot
+          type: "line",      // ?? don't know what it does
+          lineType : "vertical",    // ?? don't know what it does
+          endScale: 10     // dot size
+        },
+        color: ["#000000"],
+        
+        x: graphWidth/2/2,
+        y: graphHeight/8,
+        dy: 60,
+        dx: 40
+      }
+    ]
+    // Add annotation to the baby chart
+ const makeAnnotations = d3.annotation()
+ .annotations(annotations);
 //Load csv file
 async function init() {
     const data = await d3.csv('reasons.csv');
+
+    
 
     var numberOfBaseTypeScale = d3.scaleOrdinal().domain(data.map(
         d=>d.category_code
@@ -47,14 +77,31 @@ async function init() {
                         .domain(d3.extent(data, function(d){
                             return +d.percentages;
                         }))
-                        .range([10, maxRadius + 80]);
-    
+                        .range([10, maxRadius + 20]);
+     // Add x axis
+     var x = d3.scaleLinear()
+    .domain([0, maxRadius])
+    .range([ 0, graphWidth ]);
+    mainCanvas.append("g")
+    .attr("transform", "translate(0," + graphHeight + ")")
+    .call(d3.axisBottom(x));
+
+    // Add Y axis
+  var y = d3.scaleLinear()
+          .domain([35, 100])
+          .range([ graphHeight, 0]);
+   mainCanvas.append("g")
+              .call(d3.axisLeft(y));
+
+
+
+//Annotations
+mainCanvas.append("g")
+           .attr("class", "annotation-group").call(makeAnnotations);
     var nodes = d3.range(data.length)
                 .map(function (d) {
                     let i = + data[d].category_code,
                     r=radiusScale(data[d].percentages);
-
-
                     d = {
                         cluster: i,
                         radius: r,
@@ -82,12 +129,10 @@ async function init() {
                 .force("collide", d3.forceCollide(d => d.radius + padding )
                     .strength(0.9))
                     .velocityDecay(0.4)
-
                 .on("tick", layoutTick)
-                    .nodes(nodes);
-                
-               
-              
+                    .nodes(nodes);       
+       
+ 
         var node = mainCanvas.selectAll("circle")
                                 .data(nodes)
                                 .enter()
@@ -95,65 +140,117 @@ async function init() {
                                 .style("fill", function(d){
                                       return mColors(d.cluster / distinctTypesScale)
                                 })
-        
-            //Little animation
-            // node.transition()
-            //             .duration(700)
-            //             .delay(function(d, i) {
-            //                 return i * 5
-            //             })
-            //             .attrTween("r", function(d){
-            //                  var i = d3.interpolate(0, d.radius);
+                              
+                                .on("mouseover", function(d,i,n){
+                                    d3.select(n[i])
+                                      .transition()
+                                      .duration(100)
+                                      
+                                      .style("opacity", 0.7);
+                                    div.transition()
+                                         .duration(200)
+                                         .style("opacity", 0.9)
 
-            //                  return function(t) { return d.radius = i(t)}
-            //             });
+                                    div.html(
+                                        `<p> 
+                                        <b>Factor: </b>
+                                        ${d.base_type}
+                                        </br>
+                                        <b>Reason</b>
+                                        ${d.problem}
+                                        </br>
+                                        <b>Percentages: </b>
+                                        ${d.percentages}%
+                                        </br>
+                                        <b>More info?</b>
+                                        <a class="link" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861949/">NCBI</a>
+                                        
+                                        </p>
+                                        
+                                        `)
+                                    
+                                        .style("left", (d3.event.pageX) + "px")
+                                        .style("top", (d3.event.pageY)  +"px")
+                                })
+                                .on("mouseout", function(d,i,n){
+                                     d3.select(n[i])
+                                       .transition()
+                                       .duration(200)
+                                       .style("opacity", 1);
+                                    div.transition()
+                                    .duration(500)
+                                    .style("opacity", 0)
+                                    })
+                                    .attr("class", function(d) 
+                                    { return "bubbles " + d.base_type })
+     // ---------------------------//
+  //       HIGHLIGHT GROUP      //
+  // ---------------------------//
 
+  // What to do when one group is hovered
+//   var highlight = function(d){
+//     // reduce opacity of all groups
+//     d3.selectAll(".bubbles").style("opacity", .05)
+//     // expect the one that is hovered
+//     d3.selectAll("."+d).style("opacity", 1)
+//   }
 
-
+//   // And when it is not hovered anymore
+//   var noHighlight = function(d){
+//     d3.selectAll(".bubbles").style("opacity", 1)
+//   }     
         //Function tick
 function layoutTick(e) {
     node
-        // .each(cluster(10 * e.alpha * e.alpha))
-        // .each(collide(.5))
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; })
         .attr("r", function(d) { return d.radius})
-        .on("mouseover", function(d){console.log(d.problem)})
   }
-// // Move d to be adjacent to the cluster node.
-// function cluster() {
-//     var nodes, strength = 0.1;
+      //Little animation
+      node.transition()
+      .duration(700)
+      .delay(function(d, i) {
+          return i * 5;
+      })
+      .attrTween("r", function(d){
+           var i = d3.interpolate(9, d.radius);
 
-//     function force(alpha){
-//         //Scale curve alpha value
-//         alpha *= strength * alpha;
-//         nodes.forEach(function(d){
-//             var cluster = clusters[d.cluster];
-//             if (cluster === d) return;
+           return function(t) { return d.radius = i(t)}
+      });
+//Add Color Legends
+//Legends
+const legendGroup = svg.append("g")
+            //.attr("transform", `translate(${graphWidth + 100}, 30)`);
+legendGroup.append("circle")
+           .attr("cx",graphHeight+margin.left+100)
+           .attr("cy",130).attr("r", 6)
+           .style("fill", "#798BBC")
+legendGroup.append("circle")
+        .attr("cx",graphHeight+margin.left+100)
+        .attr("cy",160).attr("r", 6)
+        .style("fill", "#57B795")
+legendGroup.append("circle").attr("cx",graphHeight+margin.left+100).attr("cy",190).attr("r", 6).style("fill", "#F97850")
+legendGroup.append("circle").attr("cx",graphHeight+margin.left+100).attr("cy",220).attr("r", 6).style("fill", "#97D443")
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin.left+100)
+.attr("cy",250).attr("r", 6).style("fill", "#E072B6")
 
-//             var x = d.x - cluster.x,
-//             y = d.y - cluster.y,
-//             l = Math.sqrt(x * x + y * y),
-//             r = d.radius + cluster.radius;
-//             if (l != r) {
-//                 l = (l - r) / l * alpha;
-//                 d.x -= x *= l;
-//                 d.y -= y *= l;
-//                 cluster.x += x;
-//                 cluster.y += y;
-//             }
-//         });
-//     }
-//     force.initialize = function(_) {
-//         nodes = _
-//     }
-//     force.strength = _ => {
-//         strength = _ == null ? strength
-//         return force;
-//     };
-//     return force;
 
-  //}
+legendGroup.append("text")
+            .attr("x", graphHeight+margin.left+120)
+            .attr("y", 130)
+            .text("Nutritional Factors")
+            .style("font-size", "18px")
+            .attr("alignment-baseline","middle")
+            
+legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 160).text("Lactational Factors").style("font-size", "18px").attr("alignment-baseline","middle")
+  
+legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 190).text("Psychosocial Factors").style("font-size", "18px").attr("alignment-baseline","middle")
+   
+legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 220).text("Medical Factors").style("font-size", "18px").attr("alignment-baseline","middle")     
+legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 250).text("Lifestyle Factors").style("font-size", "18px").attr("alignment-baseline","middle")     
+
+
 
   // Move d to be adjacent to the cluster node.
   function cluster() {
@@ -198,15 +295,7 @@ function layoutTick(e) {
     return force;
 
     }
-    // //LayoutTick
-    // function layoutTick(e){
-    //     node.attr("cx", (d=>d.x))
-    //         .attr("cy", (d=>d.y))
-    //         .attr("r", (d=>d.r))
-
-    // }
-
-
+    
 }
 
 init()

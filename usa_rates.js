@@ -12,6 +12,8 @@ const graphHeight = 600 - margin.top - margin.bottom;
 var div = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
+//Color
+const mColors = d3.scaleOrdinal(d3['schemeSet2'])
 
 //Main Canvas
 const mainCanvas = svg.append("g")
@@ -23,6 +25,11 @@ const mainCanvas = svg.append("g")
 //Load csv file
 async function init() {
     const data = await d3.csv('types_breastfeeding.csv');
+    
+    //Array of colors
+    var legendColorsArray = ["#66c2a5", "#fc8d62", "#8da0cb","#e78ac3","#a6d854"]
+    mColors.domain(data.map(d=>d.type))
+            .range(legendColorsArray)
     //Parse data
     const years = Object.keys(data[0]);
     // const years=["2012","2013","2014","2015","2016","2017","2018","2019"]
@@ -69,6 +76,8 @@ async function init() {
                
     mainCanvas.append("g")
                 .call(yAxis);
+
+
 //Add Percentages into Arrays
     var ever_arr = nodes[0].percentages;
     var six_months_arr = nodes[1].percentages;
@@ -78,35 +87,32 @@ async function init() {
 
 //Add the Formula Line path
 var formulaLine = d3.line()
+            .x(function(d,i){return x(parseYears(years[i]))})
+            .y(function(d,i){ return y(d)})
 
-.x(function(d,i){return x(parseYears(years[i]))})
-
-.y(function(d,i){ return y(d)})
-
-mainCanvas.append("path")
+path_formula=mainCanvas.append("path")
 .data([formula_arr])
 .attr("class", "line formulaLine")
 .on("click", function() { window.open("formula.html"); }) // when clicked, opens window.
-
 .attr("d", formulaLine)  
     
 
 
 //Add the Exclusive Line path
 var exclusiveLine = d3.line()
-.x(function(d,i){return x(parseYears(years[i]))})
-.y(function(d,i){ return y(d)})
-mainCanvas.append("path")
+        .x(function(d,i){return x(parseYears(years[i]))})
+        .y(function(d,i){ return y(d)})
+var path_exclusive=mainCanvas.append("path")
 .data([exclusive_arr])
 .attr("class", "line exclusiveLine")
 .attr("d", exclusiveLine)  
 .on("click", function() { window.open("exclusive.html"); }); // when clicked, opens window.
-exclusiveLine.transition()
+
 //Add the Ever Line path
     var everLine = d3.line()
                 .x(function(d,i){return x(parseYears(years[i]))})
                 .y(function(d,i){ return y(d)})
-    mainCanvas.append("path")
+    var path_ever = mainCanvas.append("path")
          .data([ever_arr])
          .attr("class", "line everLine")
          .attr("d", everLine) 
@@ -116,7 +122,7 @@ exclusiveLine.transition()
  var sixLine = d3.line()
          .x(function(d,i){return x(parseYears(years[i]))})
          .y(function(d,i){ return y(d)})
-mainCanvas.append("path")
+var path_six=mainCanvas.append("path")
   .data([six_months_arr])
   .attr("class", "line sixLine")
   .attr("d", sixLine)  
@@ -126,11 +132,15 @@ mainCanvas.append("path")
 var twelveLine = d3.line()
 .x(function(d,i){return x(parseYears(years[i]))})
 .y(function(d,i){ return y(d)})
-mainCanvas.append("path")
+var path_twelve=mainCanvas.append("path")
 .data([twelve_months_arr])
 .attr("class", "line twelveLine")
 .attr("d", twelveLine) 
 .on("click", function() { window.open("https://publications.aap.org/view-large/10993082?autologincheck=redirected"); }); // when clicked, opens window with google.com.
+
+
+
+
 
 
 //Add Title of the Ever Graph
@@ -138,20 +148,80 @@ mainCanvas.append("text")
 .attr("x", margin.right).attr("y", margin.top -50)
 .text("Babies Feeding Types From 2012 to 2019")
 .style("font-size", "20px").attr("alignment-baseline","right")
+var length = path_exclusive.node().getTotalLength();
 
-         
+  // This function will animate the path over and over again
+function repeat(path) {
+   var path=path;
+ 
+    // Animate the path by setting the initial offset and dasharray and then transition the offset to 0
+    path.attr("stroke-dasharray", length + " " + length)
+        .attr("stroke-dashoffset", length)
+          .transition()
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0)
+          .duration(3000)
+          .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
+}
+repeat(path_exclusive);
+repeat(path_formula);
+repeat(path_ever);   
+repeat(path_six);
+repeat(path_twelve); 
 //Add Color Legends
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",130).attr("r", 6).style("fill", "#31a354")
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",160).attr("r", 6).style("fill", "#a1d99b")
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",190).attr("r", 6).style("fill", "#e0f1de")
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",220).attr("r", 6).style("fill", "#f03b20")
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",250).attr("r", 6).style("fill", "#2c7fb8")
+const legendGroup = mainCanvas.append("g");
 
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 130).text("Ever Breastfeeding").style("font-size", "15px").attr("alignment-baseline","middle")
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 160).text("For 6 months").style("font-size", "15px").attr("alignment-baseline","middle")     
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 190).text("For 12 months").style("font-size", "15px").attr("alignment-baseline","middle")   
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 220).text("Exclusive Breastfeeding").style("font-size", "15px").attr("alignment-baseline","middle")     
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 250).text("Formula").style("font-size", "15px").attr("alignment-baseline","middle")     
+
+            //.attr("transform", `translate(${graphWidth + 100}, 30)`);
+legendGroup.append("circle")
+           .attr("cx",graphHeight+margin.left+100)
+           .attr("cy",130).attr("r", 6)
+           .style("fill", "#798BBC")
+legendGroup.append("circle")
+        .attr("cx",graphHeight+margin.left+100)
+        .attr("cy",160).attr("r", 6)
+        .style("fill", "#57B795")
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin.left+100)
+.attr("cy",190).attr("r", 6).style("fill", "#F97850")
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin.left+100).attr("cy",220).attr("r", 6).style("fill", "#97D443")
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin.left+100)
+.attr("cy",250).attr("r", 6).style("fill", "#E072B6")
+
+
+legendGroup.append("text")
+            .attr("x", graphHeight+margin.left+120)
+            .attr("y", 130)
+            .text("Ever Breastfeeding")
+            .style("font-size", "18px")
+            .attr("alignment-baseline","middle")
+            
+legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 160).text("For 6 months").style("font-size", "18px").attr("alignment-baseline","middle")
+  
+legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 190).text("For 12 months").style("font-size", "18px").attr("alignment-baseline","middle")
+   
+legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 220).text("Exclusive Breastfeeding").style("font-size", "18px").attr("alignment-baseline","middle")     
+legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 250).text("Formula").style("font-size", "18px").attr("alignment-baseline","middle")     
+
+
+
+
+// mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",130)
+// .attr("r", 6)
+
+// mainCanvas.append("circle").attr("cx",graphHeight+margin.left)
+// .attr("cy",160).attr("r", 6).style("fill", "#a1d99b")
+// mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",190).attr("r", 6).style("fill", "#e0f1de")
+// mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",220).attr("r", 6).style("fill", "#f03b20")
+// mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",250).attr("r", 6).style("fill", "#2c7fb8")
+
+// mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 130).text("Ever Breastfeeding").style("font-size", "15px").attr("alignment-baseline","middle")
+// mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 160).text("For 6 months").style("font-size", "15px").attr("alignment-baseline","middle")     
+// mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 190).text("For 12 months").style("font-size", "15px").attr("alignment-baseline","middle")   
+// mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 220).text("Exclusive Breastfeeding").style("font-size", "15px").attr("alignment-baseline","middle")     
+// mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 250).text("Formula").style("font-size", "15px").attr("alignment-baseline","middle")     
 
  //Add Circles on the formula line 
 mainCanvas.selectAll("circles")
@@ -165,7 +235,7 @@ mainCanvas.selectAll("circles")
 .attr("r", 5)
 
 
-//Add Circles on the exclusive line 
+//Add Circles on the exclusive dots 
 mainCanvas.selectAll("circles")
         .data(exclusive_arr)
         .enter()

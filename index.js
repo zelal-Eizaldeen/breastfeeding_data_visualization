@@ -1,14 +1,15 @@
 const canvas = d3.select(".canva");
-const canvas_Mum = d3.select(".canva_Mum");
-
+// const canvas_Mum = d3.select(".canva_Mum");
 
 // add an svg element
 const svg = canvas.append("svg")
             .attr("width", 600)
-            .attr("height", 700);
-const svg_Mum = canvas_Mum.append("svg")
+            .attr("height", 700)
+           
+const svg_Mum = canvas.append("svg")
                     .attr("width", 600)
                     .attr("height", 700)
+                   
                     // .attr("class", "hide");
 
 
@@ -51,9 +52,6 @@ const motherCheckbox = document.querySelector("#mother");
        
     }
   });
-//Y Text Axis
-// const textYAxisGroup = svg.append("g")
-//                             .attr("transform", `translate(${margin - 10}, 30)`)
 
 
                             //Define the Tooltip
@@ -350,62 +348,7 @@ const makeAnnotations_mums = d3.annotation()
 
 
 //    // ---------------------------//
-//   //      TOOLTIP               //
-//   // ---------------------------//
 
-//   // -1- Create a tooltip div that is hidden by default:
-//   var bubble_tooltip = d3.select("#bubble_dataviz")
-//     .append("div")
-//       .style("opacity", 0)
-//       .attr("class", "tooltip")
-//       .style("background-color", "black")
-//       .style("border-radius", "5px")
-//       .style("padding", "10px")
-//       .style("color", "white")
-//  // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
-//  var showTooltip = function(d) {
-//     bubble_tooltip
-//       .transition()
-//       .duration(200)
-//       bubble_tooltip
-//       .style("opacity", 1)
-//       .html("nutrient: " + d.Ingredients)
-//       .style("left", (d3.mouse(this)[0]+30) + "px")
-//       .style("top", (d3.mouse(this)[1]+30) + "px")
-//   }
-//   var moveTooltip = function(d) {
-//     bubble_tooltip
-//       .style("left", (d3.mouse(this)[0]+30) + "px")
-//       .style("top", (d3.mouse(this)[1]+30) + "px")
-//   }
-
-//   var hideTooltip = function(d) {
-//     bubble_tooltip
-//       .transition()
-//       .duration(200)
-//       .style("opacity", 0)
-//   }
-
-//   // ---------------------------//
-//   //       CIRCLES              //
-//   // ---------------------------//
-
-// //   // Add dots
-// //   bubble_svg.append('g')
-// //     .selectAll("dot")
-// //     .data(data)
-// //     .enter()
-// //     .append("circle")
-// //       .attr("class", function(d) { return "bubbles " + d.Ingredients })
-// //       .attr("cx", function (d) { return x(+(d.Ingredients)); } )
-// //       .attr("cy", function (d) { return y(+(d.Percentage)); } )
-// //       .attr("r", function (d) { return z(d.Percentage); } )
-// //       .style("fill", function (d) { return myColor(d.Ingredients); } )
-// //     // -3- Trigger the functions for hover
-
-// //     .on("mouseover", showTooltip )
-// //     .on("mousemove", moveTooltip )
-// //     .on("mouseleave", hideTooltip )
-
+//  
         } 
     init(); 
