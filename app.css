@@ -225,7 +225,7 @@ g .tick line {
     stroke: #69addaee;
 
 }
-.formulaCircle{
+.Formula{
     fill: #E072B6;
 }
 .formulaTwoCircle{
@@ -234,16 +234,16 @@ g .tick line {
 .formulaThreeCircle{
     fill: #5894bb;
 }
-.everCircle{
+.Ever{
     fill: #798BBC;
 }
-.sixCircle{
+.Six_Months{
     fill:#a1d99b;
 }
-.twelveCircle{
+.Twelve_Months{
     fill:#F97850;
 }
-.exclusiveCircle{
+.Exclusive{
     fill:#57B795;
 }
 .exclusiveThreeCircle{

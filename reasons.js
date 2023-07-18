@@ -14,11 +14,55 @@ const graphWidth = 600 - margin.left - margin.right;
 const graphHeight = 600 - margin.top - margin.bottom;
 
 //Define Tooltip
-var div = d3.select("body").append("div")
+// var div = d3.select("body").append("div")
+//             .attr("class", "tooltip")
+//             .style("opacity", 0);
+
+//Define Tooltip
+ var tooltip = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
 
+var mouseover = function(d,i,n){
+    d3.select(n[i])
+      .transition()
+      .duration(100)
+      .style("opacity", 0.7);
+    tooltip.transition()
+         .duration(200)
+         .style("opacity", 0.9)
 
+    tooltip.html(
+        `<p> 
+        <b>Factor: </b>
+        ${d.base_type}
+        </br>
+        <b>Reason</b>
+        ${d.problem}
+        </br>
+        <b>Percentages: </b>
+        ${d.percentages}%
+        </br>
+        <b>More info?</b>
+        <a class="link" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861949/">NCBI</a>
+        
+        </p>
+        
+        `)
+    
+        .style("left", (d3.event.pageX) + "px")
+        .style("top", (d3.event.pageY)  +"px")
+}
+var mouseout = function(d,i,n) {
+    tooltip
+    d3.select(n[i])
+    .transition()
+    .duration(200)
+    .style("opacity", 1);
+    tooltip.transition()
+    .duration(500)
+    .style("opacity", 0)
+    }
 
 //Color
 const mColors = d3.scaleOrdinal(d3['schemeSet2'])
@@ -93,7 +137,8 @@ async function init() {
    mainCanvas.append("g")
               .call(d3.axisLeft(y));
 
-
+           
+                
 
 //Annotations
 mainCanvas.append("g")
@@ -140,49 +185,25 @@ mainCanvas.append("g")
                                 .style("fill", function(d){
                                       return mColors(d.cluster / distinctTypesScale)
                                 })
-                              
-                                .on("mouseover", function(d,i,n){
-                                    d3.select(n[i])
-                                      .transition()
-                                      .duration(100)
-                                      
-                                      .style("opacity", 0.7);
-                                    div.transition()
-                                         .duration(200)
-                                         .style("opacity", 0.9)
-
-                                    div.html(
-                                        `<p> 
-                                        <b>Factor: </b>
-                                        ${d.base_type}
-                                        </br>
-                                        <b>Reason</b>
-                                        ${d.problem}
-                                        </br>
-                                        <b>Percentages: </b>
-                                        ${d.percentages}%
-                                        </br>
-                                        <b>More info?</b>
-                                        <a class="link" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861949/">NCBI</a>
-                                        
-                                        </p>
-                                        
-                                        `)
+                                .on("mouseover", mouseover)
+                                
+                                .on("mouseout", mouseout)
+                                // function(d,i,n){
+                                    //  d3.select(n[i])
+                                    //    .transition()
+                                    //    .duration(200)
+                                    //    .style("opacity", 1);
+                                    // div.transition()
+                                    // .duration(500)
+                                    // .style("opacity", 0)
+                                   // }
                                     
-                                        .style("left", (d3.event.pageX) + "px")
-                                        .style("top", (d3.event.pageY)  +"px")
-                                })
-                                .on("mouseout", function(d,i,n){
-                                     d3.select(n[i])
-                                       .transition()
-                                       .duration(200)
-                                       .style("opacity", 1);
-                                    div.transition()
-                                    .duration(500)
-                                    .style("opacity", 0)
-                                    })
                                     .attr("class", function(d) 
                                     { return "bubbles " + d.base_type })
+     
+
+     
+     
      // ---------------------------//
   //       HIGHLIGHT GROUP      //
   // ---------------------------//

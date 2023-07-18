@@ -9,9 +9,47 @@ const margin = {top:20, right:20, bottom:70, left:70};
 const graphWidth = 600 - margin.left - margin.right;
 const graphHeight = 600 - margin.top - margin.bottom;
 
-var div = d3.select("body").append("div")
+var tooltip = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
+var mouseover = function(d,i,n){
+    d3.select(n[i])
+    .transition()
+    .duration(100)
+    .style("opacity", 0.7);
+  tooltip.transition()
+       .duration(200)
+       .style("opacity", 0.9)
+}
+
+var mousemove = function(d,i,n){
+    var type_fed=(d3.select(n[i]).attr("class"))
+
+  tooltip.html(
+    `<p> 
+    <b>Type: </b>
+    ${type_fed}
+    </br>
+    </br>
+    <b>Percentages: </b>
+    ${d}%
+    </p>
+    
+    `)
+    .style("left", (d3.event.pageX) + "px")
+    .style("top", (d3.event.pageY)  +"px")
+}
+var mouseout = function(d,i,n) {
+    tooltip
+    d3.select(n[i])
+    .transition()
+    .duration(200)
+    .style("opacity", 1);
+    tooltip.transition()
+    .duration(500)
+    .style("opacity", 0)
+    }
+
 //Color
 const mColors = d3.scaleOrdinal(d3['schemeSet2']);
 //Annotations
@@ -51,7 +89,13 @@ const mainCanvas = svg.append("g")
 //Annotations
 mainCanvas.append("g")
            .attr("class", "annotation-group").call(makeAnnotations);
-//Load csv file
+
+
+//Define Tooltip
+var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+           //Load csv file
 async function init() {
     const data = await d3.csv('types_breastfeeding.csv');
     
@@ -118,6 +162,7 @@ async function init() {
 var formulaLine = d3.line()
             .x(function(d,i){return x(parseYears(years[i]))})
             .y(function(d,i){ return y(d)})
+            
 
 path_formula=mainCanvas.append("path")
 .data([formula_arr])
@@ -155,8 +200,8 @@ var path_six=mainCanvas.append("path")
   .data([six_months_arr])
   .attr("class", "line sixLine")
   .attr("d", sixLine)  
-  .on("click", function() { window.open("https://publications.aap.org/view-large/10993082?autologincheck=redirected"); }); // when clicked, opens window with google.com.
-
+  .on("click", function() { window.open("https://publications.aap.org/view-large/10993082?autologincheck=redirected"); }) // when clicked, opens window with google.com.
+ 
 //Add the Twelve Months Line path
 var twelveLine = d3.line()
 .x(function(d,i){return x(parseYears(years[i]))})
@@ -166,11 +211,6 @@ var path_twelve=mainCanvas.append("path")
 .attr("class", "line twelveLine")
 .attr("d", twelveLine) 
 .on("click", function() { window.open("https://publications.aap.org/view-large/10993082?autologincheck=redirected"); }); // when clicked, opens window with google.com.
-
-
-
-
-
 
 //Add Title of the Ever Graph
 mainCanvas.append("text")
@@ -190,7 +230,7 @@ function repeat(path) {
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0)
           .duration(3000)
-          .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
+        //   .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
 }
 repeat(path_exclusive);
 repeat(path_formula);
@@ -257,11 +297,14 @@ mainCanvas.selectAll("circles")
 .data(formula_arr)
 .enter()
 .append("circle")
-.attr("class", "formulaCircle")
+.attr("class", "Formula")
 .attr("cx", (d,i)=>x(parseYears(years[i])))
 
 .attr("cy", (d)=>y(d))
 .attr("r", 5)
+.on("mouseover", mouseover)
+.on("mousemove", mousemove)
+.on("mouseout", mouseout)
 
 
 //Add Circles on the exclusive dots 
@@ -269,38 +312,51 @@ mainCanvas.selectAll("circles")
         .data(exclusive_arr)
         .enter()
         .append("circle")
-        .attr("class", "exclusiveCircle")
+        .attr("class", "Exclusive")
         .attr("cx", (d,i)=>x(parseYears(years[i])))
         .attr("cy", (d)=>y(d))
         .attr("r", 5)
+        .on("mouseover", mouseover)
+.on("mousemove", mousemove)
+.on("mouseout", mouseout)
+
         
 //Add Circles on the ever line
 mainCanvas.selectAll("circles")
         .data(ever_arr)
         .enter()
         .append("circle")
-        .attr("class", "everCircle")
+        .attr("class", "Ever")
         .attr("cx", (d,i)=>x(parseYears(years[i])))
         .attr("cy", (d)=>y(d))
         .attr("r", 5)
+        .on("mouseover", mouseover)
+.on("mousemove", mousemove)
+.on("mouseout", mouseout)
 
 //Add Circles on the six months line 
 mainCanvas.selectAll("circles")
         .data(six_months_arr)
         .enter()
         .append("circle")
-        .attr("class", "sixCircle")
+        .attr("class", "Six_Months")
         .attr("cx", (d,i)=>x(parseYears(years[i])))
         .attr("cy", (d)=>y(d))
         .attr("r", 5)
+        .on("mouseover", mouseover)
+.on("mousemove", mousemove)
+.on("mouseout", mouseout)
 //Add Circles on the six months line 
 mainCanvas.selectAll("circles")
         .data(twelve_months_arr)
         .enter()
         .append("circle")
-        .attr("class", "twelveCircle")
+        .attr("class", "Twelve_Months")
         .attr("cx", (d,i)=>x(parseYears(years[i])))
         .attr("cy", (d)=>y(d))
         .attr("r", 5)
+        .on("mouseover", mouseover)
+.on("mousemove", mousemove)
+.on("mouseout", mouseout)
         }
 init();
