@@ -230,7 +230,7 @@ function repeat(path) {
           .ease(d3.easeLinear)
           .attr("stroke-dashoffset", 0)
           .duration(3000)
-        //   .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
+         .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
 }
 repeat(path_exclusive);
 repeat(path_formula);
