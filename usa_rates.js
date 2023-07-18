@@ -13,7 +13,34 @@ var div = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
 //Color
-const mColors = d3.scaleOrdinal(d3['schemeSet2'])
+const mColors = d3.scaleOrdinal(d3['schemeSet2']);
+//Annotations
+const annotations = [
+    {
+        note: {
+          label: "About 50% were exclusive breastfed throughout the period.",
+          title: "Exclusive Breastfeeding",
+          align: "left",
+          wrap: 100,
+          
+        },
+        connector: {
+          end: "dot",        // Can be none, or arrow or dot
+          type: "line",      // ?? don't know what it does
+          lineType : "vertical",    // ?? don't know what it does
+          endScale: 10     // dot size
+        },
+        color: ["#000000"],
+        
+        x: graphWidth,
+        y: graphHeight/2.25,
+        dy: 60,
+        dx: graphWidth/5
+      }
+    ]
+    // Add annotation to the baby chart
+ const makeAnnotations = d3.annotation()
+ .annotations(annotations);
 
 //Main Canvas
 const mainCanvas = svg.append("g")
@@ -21,7 +48,9 @@ const mainCanvas = svg.append("g")
                       .attr("height", graphHeight / 2)
                       .attr("transform", `translate(${margin.left}, ${margin.right  + 160})`);
 
-
+//Annotations
+mainCanvas.append("g")
+           .attr("class", "annotation-group").call(makeAnnotations);
 //Load csv file
 async function init() {
     const data = await d3.csv('types_breastfeeding.csv');
