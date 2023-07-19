@@ -186,6 +186,7 @@ mainCanvas.append("g")
                                 .on("mouseover", mouseover)
                                 
                                 .on("mouseout", mouseout)
+                                .on("scroll", scroll)
                                 // function(d,i,n){
                                     //  d3.select(n[i])
                                     //    .transition()
@@ -225,6 +226,7 @@ function layoutTick(e) {
         .attr("cy", function(d) { return d.y; })
         .attr("r", function(d) { return d.radius})
   }
+
       //Little animation
       node.transition()
       .duration(700)

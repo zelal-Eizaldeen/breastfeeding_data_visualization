@@ -46,7 +46,7 @@ async function init() {
  .range([ 0, graphWidth ]);  
 
 var y = d3.scaleLinear()
- .domain([0,100])
+ .domain([0,70])
  .range([graphHeight,0])
 
  // //Add Axes
@@ -69,7 +69,7 @@ var exclusiveThreeLine = d3.line()
 .y(function(d,i){ return y(d)})
 mainCanvas.append("path")
 .data([exclusive_three_arr])
-.attr("class", "line exclusiveThreeLine")
+.attr("class", "line exclusiveLine")
 .attr("d", exclusiveThreeLine)  
 .on("click", function() { window.open("https://www.cdc.gov/breastfeeding/data/nis_data/results.html"); }); // when clicked, opens window 
 
@@ -80,7 +80,7 @@ var exclusiveSixLine = d3.line()
 .y(function(d,i){ return y(d)})
 mainCanvas.append("path")
 .data([exclusive_six_arr])
-.attr("class", "line exclusiveLine")
+.attr("class", "line sixLine")
 .attr("d", exclusiveSixLine)  
 .on("click", function() { window.open("https://www.cdc.gov/breastfeeding/data/nis_data/results.html"); }); // when clicked, opens window 
 
@@ -91,11 +91,16 @@ mainCanvas.append("text")
 .style("font-size", "20px").attr("alignment-baseline","middle")
 
 //Add Color Legends
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",130).attr("r", 6).style("fill", "#31a354")
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",160).attr("r", 6).style("fill", "#f03b20")
+mainCanvas.append("circle")
+.attr("cx",graphHeight+margin.left)
+.attr("cy",130).attr("r", 6).style("fill", "#57B795")
+mainCanvas.append("circle")
+.attr("cx",graphHeight+margin.left)
+.attr("cy",160).attr("r", 6)
+.style("fill", "#a1d99b")
 
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 130).text("For 3months").style("font-size", "15px").attr("alignment-baseline","middle")
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 160).text("For 6months").style("font-size", "15px").attr("alignment-baseline","middle")     
+mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 130).text("For 3 months").style("font-size", "15px").attr("alignment-baseline","middle")
+mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 160).text("For 6 months").style("font-size", "15px").attr("alignment-baseline","middle")     
 
 
 
@@ -104,7 +109,7 @@ mainCanvas.selectAll("circles")
 .data(exclusive_three_arr)
 .enter()
 .append("circle")
-.attr("class", "exclusiveThreeCircle")
+.attr("class", "Exclusive")
 .attr("cx", (d,i)=>x(parseYears(years[i])))
 .attr("cy", (d)=>y(d))
 .attr("r", 5)
@@ -114,7 +119,7 @@ mainCanvas.selectAll("circles")
 .data(exclusive_six_arr)
 .enter()
 .append("circle")
-.attr("class", "exclusiveCircle")
+.attr("class", "Six_Months")
 .attr("cx", (d,i)=>x(parseYears(years[i])))
 .attr("cy", (d)=>y(d))
 .attr("r", 5)

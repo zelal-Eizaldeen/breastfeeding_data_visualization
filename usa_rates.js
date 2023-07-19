@@ -171,7 +171,18 @@ path_formula=mainCanvas.append("path")
 .attr("d", formulaLine)  
     
 
-
+//Add Circles on the six months line 
+mainCanvas.selectAll("circle")
+.data(twelve_months_arr)
+.enter()
+.append("circle")
+.attr("class", "Twelve_Months")
+.attr("cx", (d,i)=>x(parseYears(years[i])))
+.attr("cy", (d)=>y(d))
+.attr("r", 5)
+.on("mouseover", mouseover)
+.on("mousemove", mousemove)
+.on("mouseout", mouseout)
 //Add the Exclusive Line path
 var exclusiveLine = d3.line()
         .x(function(d,i){return x(parseYears(years[i]))})
@@ -217,6 +228,9 @@ mainCanvas.append("text")
 .attr("x", margin.right).attr("y", margin.top -50)
 .text("Babies Feeding Types From 2012 to 2019")
 .style("font-size", "20px").attr("alignment-baseline","right")
+
+
+
 var length = path_exclusive.node().getTotalLength();
 
   // This function will animate the path over and over again
@@ -232,6 +246,21 @@ function repeat(path) {
           .duration(3000)
          .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
 }
+
+//Add Circles on the six months line 
+mainCanvas.selectAll("circle")
+.data(six_months_arr)
+.enter()
+.append("circle")
+.attr("class", "Six_Months")
+.attr("cx", (d,i)=>x(parseYears(years[i])))
+.attr("cy", (d)=>y(d))
+.attr("r", 5)
+.on("mouseover", mouseover)
+.on("mousemove", mousemove)
+.on("mouseout", mouseout) 
+
+
 repeat(path_exclusive);
 repeat(path_formula);
 repeat(path_ever);   
@@ -267,7 +296,8 @@ legendGroup.append("text")
             .style("font-size", "18px")
             .attr("alignment-baseline","middle")
             
-legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 160).text("For 6 months").style("font-size", "18px").attr("alignment-baseline","middle")
+legendGroup.append("text").attr("x", graphHeight+margin.left+120)
+.attr("y", 160).text("For 6 months").style("font-size", "18px").attr("alignment-baseline","middle")
   
 legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 190).text("For 12 months").style("font-size", "18px").attr("alignment-baseline","middle")
    
@@ -275,7 +305,7 @@ legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 220)
 legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 250).text("Formula").style("font-size", "18px").attr("alignment-baseline","middle")     
 
 
-
+     
 
 // mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",130)
 // .attr("r", 6)
@@ -320,7 +350,7 @@ mainCanvas.selectAll("circles")
 .on("mousemove", mousemove)
 .on("mouseout", mouseout)
 
-        
+  
 //Add Circles on the ever line
 mainCanvas.selectAll("circles")
         .data(ever_arr)
@@ -334,29 +364,7 @@ mainCanvas.selectAll("circles")
 .on("mousemove", mousemove)
 .on("mouseout", mouseout)
 
-//Add Circles on the six months line 
-mainCanvas.selectAll("circle")
-        .data(six_months_arr)
-        .enter()
-        .append("circle")
-        .attr("class", "Six_Months")
-        .attr("cx", (d,i)=>x(parseYears(years[i])))
-        .attr("cy", (d)=>y(d))
-        .attr("r", 5)
-        .on("mouseover", mouseover)
-.on("mousemove", mousemove)
-.on("mouseout", mouseout)
-//Add Circles on the six months line 
-mainCanvas.selectAll("circle")
-        .data(twelve_months_arr)
-        .enter()
-        .append("circle")
-        .attr("class", "Twelve_Months")
-        .attr("cx", (d,i)=>x(parseYears(years[i])))
-        .attr("cy", (d)=>y(d))
-        .attr("r", 5)
-        .on("mouseover", mouseover)
-.on("mousemove", mousemove)
-.on("mouseout", mouseout)
+
+
         }
 init();
