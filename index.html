@@ -15,6 +15,11 @@
 
 </head>
 <body>
+  <div class="topnav">
+    <a class="active" href="index.html">WHY It Matters</a>
+    <a href="reasons.html">WHY Mothers Stop</a>
+    <a href="usa_rates.html">What CDC Is Doing</a>
+  </div>
    
     <img src="breastfed_happy.png">
     <h1>Breast Milk Is Best</h1>
@@ -24,11 +29,7 @@
         breastfeeding for approximately 6 months after birth.</p>
     <P> The Centers for Disease Control and Prevention (CDC) and The Joint Commission monitor breastfeeding practices in US hospitals. Pediatricians play a critical role in hospitals, their practices, and communities as advocates of breastfeeding and, thus, need to be trained about the benefits of breastfeeding for mothers and children and in managing breastfeeding.</P>
 
-    <div class="topnav">
-        <a class="active" href="index.html">WHY It Matters</a>
-        <a href="reasons.html">WHY Mothers Stop</a>
-        <a href="usa_rates.html">What CDC Is Doing</a>
-      </div>
+  
      
 
       <!-- <div class="canva" > -->
@@ -44,17 +45,17 @@
             <legend>Benefits for?</legend>
         
             <div>
-              <input type="checkbox" id="baby" name="baby" checked >
+              <input class="region_cb"  type="checkbox" id="baby" name="baby" value="baby">
               <label for="baby">Babies</label>
             </div>
         
             <div>
-              <input onclick="update();" type="checkbox" id="mother" name="mother" checked>
+              <input class="region_cb"  type="checkbox" id="mother" name="mother" value="mother">
               <label for="mother">Mothers</label>
             </div>
         
         </fieldset>
-        <div class="canva" >
+        <div class="canva" id="canva">
         </div>
         <!-- <div class="canva_Mum" ></div> -->
         <div class="download_pdf">

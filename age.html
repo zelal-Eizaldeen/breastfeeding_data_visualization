@@ -1,67 +1,55 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Formula Feeding Visualization </title>
+    <script src='https://d3js.org/d3.v5.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
+    <link rel="stylesheet" href="app.css">
 
-<!-- Load d3.js -->
-<script src="https://d3js.org/d3.v4.js"></script>
-
-<!-- Create a div where the graph will take place -->
-<div id="my_dataviz"></div>
 
 
-<script>
+</head>
+<body>
+    <div class="canva" >
+        <div><h1>Why Do Mothers Stop Breastfeeding Early?</h1>
+        </div>
+        <div>
+            <h2>Sixty percent of mothers do not breastfeed for as long as they intend to. 
+                How long a mother breastfeeds
+                her baby (duration) is influenced by many factors including:
+            </br>
+            Nutritional, Psychosocial, Lactational, Medical, and Lifestyle Factors.
+        </h2>
+            <p>
+            This study highlights factors associated with the reasons why women stop breastfeeding completely before six months and how these reasons varied with weaning age. The results will help inform future research aimed at identifying interventions to reduce early breastfeeding cessation.
+            </p>
+              
 
-    // set the dimensions and margins of the graph
-    var margin = {top: 10, right: 30, bottom: 30, left: 60},
-        width = 460 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+        </div>
+
+        <div class="topnav">
+            <a  href="index.html">WHY It Matters?</a>
+            <a class="active" href="reasons.html">WHY Mothers Stop?</a>
+            <a  href="usa_rates.html">What CDC Is Doing</a>
+
+          </div>
+
+          
+    </div>
+        <button class="pushable">
+        <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861949/" class="front">More Info</a>
+   
+        
+
+ 
     
-    // append the svg object to the body of the page
-    var svg = d3.select("#my_dataviz")
-      .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform",
-              "translate(" + margin.left + "," + margin.top + ")");
     
-    //Read the data
-    d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/3_TwoNumOrdered_comma.csv",
     
-      // When reading the csv, I must format variables:
-      function(d){
-        return { date : d3.timeParse("%Y-%m-%d")(d.date), value : d.value }
-      },
     
-      // Now I can use this dataset:
-      function(data) {
-    
-        // Add X axis --> it is a date format
-        var x = d3.scaleTime()
-          .domain(d3.extent(data, function(d) { return d.date; }))
-          .range([ 0, width ]);
-        svg.append("g")
-          .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x));
-    
-        // Add Y axis
-        var y = d3.scaleLinear()
-          .domain([0, d3.max(data, function(d) { return +d.value; })])
-          .range([ height, 0 ]);
-        svg.append("g")
-          .call(d3.axisLeft(y));
-    
-        // Add the line
-        svg.append("path")
-          .datum(data)
-          .attr("fill", "none")
-          .attr("stroke", "steelblue")
-          .attr("stroke-width", 1.5)
-          .attr("d", d3.line()
-            .x(function(d) { return x(d.date) })
-            .y(function(d) { return y(d.value) })
-            )
-    
-    })
-    
-    </script>
-    </html>
+
+<script type="text/javascript" src="age.js"></script>
+
+</html>

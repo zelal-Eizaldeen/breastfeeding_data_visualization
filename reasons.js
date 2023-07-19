@@ -103,8 +103,6 @@ const annotations = [
 async function init() {
     const data = await d3.csv('reasons.csv');
 
-    
-
     var numberOfBaseTypeScale = d3.scaleOrdinal().domain(data.map(
         d=>d.category_code
     ))

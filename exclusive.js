@@ -39,7 +39,6 @@ async function init() {
 
                     return d;
           });//end nodes
-          console.log(nodes)     
 
  //Set the ranges and domains
  var x = d3.scaleTime()

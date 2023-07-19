@@ -335,7 +335,7 @@ mainCanvas.selectAll("circles")
 .on("mouseout", mouseout)
 
 //Add Circles on the six months line 
-mainCanvas.selectAll("circles")
+mainCanvas.selectAll("circle")
         .data(six_months_arr)
         .enter()
         .append("circle")
@@ -347,7 +347,7 @@ mainCanvas.selectAll("circles")
 .on("mousemove", mousemove)
 .on("mouseout", mouseout)
 //Add Circles on the six months line 
-mainCanvas.selectAll("circles")
+mainCanvas.selectAll("circle")
         .data(twelve_months_arr)
         .enter()
         .append("circle")
