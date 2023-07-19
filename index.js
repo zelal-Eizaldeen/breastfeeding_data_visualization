@@ -94,8 +94,8 @@ var div = d3.select("body").append("div")
 
 async function init_mum() {
  const svg = canvas.append("svg")
-            .attr("width", 600)
-            .attr("height", 700)
+            .attr("width", 1000)
+            .attr("height", 750)
   // Features of the annotation for mumies
  const annotations_mums = [
   {
@@ -125,6 +125,27 @@ const makeAnnotations_mums = d3.annotation()
 .annotations(annotations_mums);
         const data = await d3.csv(
                     'Breastfeeding_Outcomes.csv');
+                    var numberOfBaseTypeScale = d3.scaleOrdinal().domain(data.map(
+                      d=>d.category_code_baby
+                  ))
+                
+                  var distinctTypesScale = numberOfBaseTypeScale.domain().length;
+                
+                 var nodes = d3.range(data.length)
+                                .map(function (d) {
+                                    let i = + data[d].category_code_baby;
+                                    d={
+                                      cluster: i,
+                                      Outcomes_Mum: data[d].Outcomes_Mum,
+                                      Lower_Risk_Mum: data[d].Lower_Risk_Mum,
+                                      Breastfeeding_Period_Mum:data[d].Breastfeeding_Period_Mum,
+                                    }
+                               return d;
+                                });
+                 //Array of colors
+                 var legendColorsArray = ["#66c2a5", "#fc8d62", "#8da0cb","#e78ac3","#a6d854"]
+                 mColors.domain(data.map(d=>d.Breastfeeding_Period))
+                         .range(legendColorsArray)
                     var x_Mum = d3.scaleBand() 
                     .domain(data.map(item =>item.Outcomes_Mum))
                     .range([0,graphWidth])
@@ -154,7 +175,7 @@ const makeAnnotations_mums = d3.annotation()
         .attr("y", margin - 4 )
         .attr("font-size", 20)
         svg.selectAll('rect')
-        .data(data)
+        .data(nodes)
         .enter()
         .append("g").attr("transform", "translate("+(margin)+","+margin+")")
         .append('rect')
@@ -199,12 +220,45 @@ const makeAnnotations_mums = d3.annotation()
         .attr("y", (d,i)=>y_Mum(d.Lower_Risk_Mum))
         .attr("width", x_Mum.bandwidth)
         .attr("height", (d,i)=> graphHeight - y_Mum(d.Lower_Risk_Mum))
-        .attr("fill",(d,i,n)=>d3.select(n[0]).style("fill", "#31a354"))
-        .attr("fill", "#e5f5e0")
-
+        // .attr("fill",(d,i,n)=>d3.select(n[0]).style("fill", "#31a354"))
+        // .attr("fill", "#e5f5e0")
+        .style("fill", function(d){
+          return mColors(d.cluster / distinctTypesScale)
+    })
         svg.append("g")
         .attr("class", "annotation-group").call(makeAnnotations_mums);
-    // 
+    //Add Color Legends
+//Legends
+const legendGroup = svg.append("g")
+//.attr("transform", `translate(${graphWidth + 100}, 30)`);
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin+100)
+.attr("cy",130).attr("r", 6)
+.style("fill", "#E072B6")
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin+100)
+.attr("cy",160).attr("r", 6)
+.style("fill", "#a6d854")
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin+100)
+.attr("cy",190).attr("r", 6)
+.style("fill", "#66c2a5")
+
+legendGroup.append("text")
+            .attr("x", graphHeight+margin+120)
+            .attr("y", 130)
+            .text("Exclusive")
+            .style("font-size", "18px")
+            .attr("alignment-baseline","middle")
+            
+legendGroup.append("text")
+.attr("x", graphHeight+margin+120).attr("y", 160)
+.text("For 6 months").style("font-size", "18px")
+.attr("alignment-baseline","middle")
+  
+legendGroup.append("text").attr("x", graphHeight+margin+120)
+.attr("y", 190).text("Ever")
+.style("font-size", "18px").attr("alignment-baseline","middle")
         }
     
 
@@ -212,8 +266,8 @@ const makeAnnotations_mums = d3.annotation()
 async function init() {
 
   const svg = canvas.append("svg")
-  .attr("width", 600)
-  .attr("height", 700)
+  .attr("width", 1000)
+  .attr("height", 750)
 
   /////Annotations ////////////
  // Features of the annotation for babies
@@ -351,9 +405,40 @@ async function init() {
        
         svg.append("g")
            .attr("class", "annotation-group").call(makeAnnotations);
-      
-      
-          
-      
+
+ //Add Color Legends
+//Legends
+const legendGroup = svg.append("g")
+//.attr("transform", `translate(${graphWidth + 100}, 30)`);
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin+100)
+.attr("cy",130).attr("r", 6)
+.style("fill", "#E072B6")
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin+100)
+.attr("cy",160).attr("r", 6)
+.style("fill", "#a6d854")
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin+100)
+.attr("cy",190).attr("r", 6)
+.style("fill", "#66c2a5")
+
+legendGroup.append("text")
+            .attr("x", graphHeight+margin+120)
+            .attr("y", 130)
+            .text("Exclusive")
+            .style("font-size", "18px")
+            .attr("alignment-baseline","middle")
+            
+legendGroup.append("text")
+.attr("x", graphHeight+margin+120).attr("y", 160)
+.text("For 6 months").style("font-size", "18px")
+.attr("alignment-baseline","middle")
+  
+legendGroup.append("text").attr("x", graphHeight+margin+120)
+.attr("y", 190).text("Ever")
+.style("font-size", "18px").attr("alignment-baseline","middle")
+
+
           } 
     // init(); 

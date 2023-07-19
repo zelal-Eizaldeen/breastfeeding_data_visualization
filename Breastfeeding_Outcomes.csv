@@ -1,11 +1,11 @@
-Outcomes,Lower_Risk,Breastfeeding_Period,Outcomes_Mum,Lower_Risk_Mum,Breastfeeding_Period_Mum,Ingredients,Percentage,Abbreviations,category_code_baby
-Ulcerative colitis,79,Exclusive,Gestational diabetes,78,Exclusive,Linoleic acid,6.62,,3
-SIDS,64,6 months,Type 2 diabetes ,32,Exclusive,Diglycerides,1.95,,1
-Type 1 diabetes,57,6 months,Ovarian Cancer,30,Ever,Monoglycerides,0.63,,1
-Neonatal mortality ,51,Ever,Breast cancer,22,Ever,DHA,0.32,Docosahexaenoic acid,2
-Otitis media,43,6 months,Premenopausal Breast Cancer,14,Ever,Omega 3,2.48,,1
-Type 2 diabetes1,33,Ever,Hypertension,13,Exclusive,MUFA & PUFA	,80.96,Monounsaturated fatty acid and polyunsaturated fatty acid,2
-Crohn’s disease,29,Ever,Endometrial Cancer,11,6 months,,,,2
-Eczema ,26,6 months,Thyroid Cancer,9,6 months,,,,1
-Asthma ,22,6 months,,,,,,,1
-Leukemia,19,6 months,,,,,,,1
+Outcomes,Lower_Risk,Breastfeeding_Period,Outcomes_Mum,Lower_Risk_Mum,Breastfeeding_Period_Mum,Ingredients,Percentage,Abbreviations,category_code_baby,category_code_Mum
+Ulcerative colitis,79,Exclusive,Gestational diabetes,78,Exclusive,Linoleic acid,6.62,,3,3
+SIDS,64,6 months,Type 2 diabetes ,32,6 months,Diglycerides,1.95,,1,1
+Type 1 diabetes,57,6 months,Ovarian Cancer,30,6 months,Monoglycerides,0.63,,1,1
+Neonatal mortality ,51,Ever,Breast cancer,22,Ever,DHA,0.32,Docosahexaenoic acid,2,2
+Otitis media,43,6 months,Premenopausal Breast Cancer,14,6 months,Omega 3,2.48,,1,1
+Type 2 diabetes1,33,Ever,Hypertension,13,Ever,MUFA & PUFA	,80.96,Monounsaturated fatty acid and polyunsaturated fatty acid,2,2
+Crohn’s disease,29,Ever,Endometrial Cancer,11,Ever,,,,2,2
+Eczema ,26,6 months,Thyroid Cancer,9,6 months,,,,1,1
+Asthma ,22,6 months,,,,,,,1,1
+Leukemia,19,6 months,,,,,,,1,1
