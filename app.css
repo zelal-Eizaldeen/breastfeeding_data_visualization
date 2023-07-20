@@ -94,6 +94,7 @@ fieldset{
 .topnav {
     background-color: #333;
     overflow:hidden;
+    margin-bottom: 20px;
   }
   
   /* Style the links inside the navigation bar */
@@ -103,7 +104,7 @@ fieldset{
     /* padding: 30px 16px; */
     text-decoration: none;
     font-size: 28px;
-    padding: 40px;;
+    padding: 40px;
     
   }
   
@@ -250,6 +251,7 @@ g .tick line {
 }
 .annotation-group{
     font-size: 18px;
+    opacity:0;
 }
 .bubbles {
     stroke-width: 1px;

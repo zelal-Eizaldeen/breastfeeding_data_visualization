@@ -93,14 +93,17 @@ mainCanvas.append("text")
 //Add Color Legends
 mainCanvas.append("circle")
 .attr("cx",graphHeight+margin.left)
-.attr("cy",130).attr("r", 6).style("fill", "#57B795")
+.attr("cy",130)
+.attr("r", 6).style("fill", "#57B795")
 mainCanvas.append("circle")
 .attr("cx",graphHeight+margin.left)
 .attr("cy",160).attr("r", 6)
 .style("fill", "#a1d99b")
 
 mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 130).text("For 3 months").style("font-size", "15px").attr("alignment-baseline","middle")
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 160).text("For 6 months").style("font-size", "15px").attr("alignment-baseline","middle")     
+mainCanvas.append("text")
+.attr("x", graphHeight+margin.left+20)
+.attr("y", 160).text("For 6 months").style("font-size", "15px").attr("alignment-baseline","middle")     
 
 
 

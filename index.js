@@ -48,46 +48,7 @@ d3.selectAll(".region_cb").on("change", function ()
    }
  });
 
-
-  //  if (d3.select("#mother").property("checked")){
-  //   !(d3.select("#mother").property("checked"))
-  //   console.log("MUMMMMM")
-  //   d3.select("#baby").html=""
-  //   init_mum()
-  //   // newData = data;			
-  // }	
-
-  // babyCheckbox.addEventListener("change", () => {
-  //   if (babyCheckbox.checked) {
-  //     init()
-  //     // add an svg element
-   
-  //       svg.attr("class", "visible")
-  //       // location.reload();
-  //   } else {
-  //       babyCheckbox.checked=false;
-  //       svg.attr("class", "hide");
-  //   }
-  // });
-  // motherCheckbox.addEventListener("change", () => {
-  //   init()
-  //   if (motherCheckbox.checked) {
-  //     canvas.html  =""
-  //       svg_Mum.attr("class", "visible")
-  //       // .selectAll(".canva_Mum").transition()
-  //       // .duration(3000)
-  //       // .delay((d,i) => i * 100 )
-  //       // .ease(d3.easeBounceIn)  
-        
-  //   } else {
-  //       motherCheckbox.checked=false;
-  //       svg_Mum.attr("class", "hide");
-       
-  //   }
-  // });
-
-
-                            //Define the Tooltip
+ //Define the Tooltip
 var div = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
