@@ -1,5 +1,66 @@
 const canvas = d3.select(".canva");
+//Color
+const mColors = d3.scaleOrdinal(d3['schemeSet2']);
+//Array of colors
+var legendColorsArray = ["#66c2a5", "#fc8d62", "#8da0cb","#e78ac3","#a6d854"]
+//Tooltip
+var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+const margin = {top:20, right:20, bottom:70, left:70};
+const graphWidth = 600 - margin.left - margin.right;
+const graphHeight = 600 - margin.top - margin.bottom;
 
+////Click Functions /////
+var click_exclusive = function(d,i,n){
+  console.log(d)
+//   d3.select(n[i])
+//   .transition()
+//   .duration(100)
+//   .style("opacity", 0.7);
+// tooltip.transition()
+//       .duration(200)
+//       .style("opacity", 0.9)
+}
+
+var mouseover = function(d,i,n){
+  d3.select(n[i])
+  .transition()
+  .duration(100)
+  .style("opacity", 0.7);
+tooltip.transition()
+      .duration(200)
+      .style("opacity", 0.9)
+}
+          
+var mousemove = function(d,i,n){
+  var type_fed=(d3.select(n[i]).attr("class"))
+
+  tooltip.html(
+    `<p> 
+    <b>Type: </b>
+    ${type_fed}
+    </br>
+    </br>
+    <b>Percentages: </b>
+    ${d}%
+    </p>
+    
+    `)
+    .style("left", (d3.event.pageX) + "px")
+    .style("top", (d3.event.pageY)  +"px")
+}
+var mouseout = function(d,i,n) {
+    tooltip
+    d3.select(n[i])
+    .transition()
+    .duration(200)
+    .style("opacity", 1);
+    tooltip.transition()
+    .duration(500)
+    .style("opacity", 0)
+    }
+///////Check Box////////
 const ageCheckbox = document.querySelector("#age");
 const typesCheckbox = document.querySelector("#types");
 d3.selectAll(".region_cb").on("change", function ()
@@ -8,7 +69,6 @@ d3.selectAll(".region_cb").on("change", function ()
   if (this.checked && type=="age") { // adding data points
     typesCheckbox.checked=false;
     d3.select("svg").remove();
-    console.log("hiiiiii")
     init_age()
   }
   if (!this.checked && type=="age"){
@@ -28,64 +88,20 @@ d3.selectAll(".region_cb").on("change", function ()
    }
  });
 
-var tooltip = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0);
-
-
+////////Age Chart /////////////
 async function init_age() {
   const data = await d3.csv('age_breastfeeding.csv');
-    const svg = canvas.append("svg")
+  const svg = canvas.append("svg")
               .attr("width", 1000)
               .attr("height", 750)
-    const margin = {top:20, right:20, bottom:70, left:70};
-    const graphWidth = 600 - margin.left - margin.right;
-    const graphHeight = 600 - margin.top - margin.bottom;
-
+   
   //Main Canvas
   const mainCanvas = svg.append("g")
   .attr("width", graphWidth / 2)
   .attr("height", graphHeight / 2)
   .attr("transform", `translate(${margin.left}, ${margin.right  + 160})`);
 
-  var mouseover = function(d,i,n){
-    d3.select(n[i])
-    .transition()
-    .duration(100)
-    .style("opacity", 0.7);
-  tooltip.transition()
-        .duration(200)
-        .style("opacity", 0.9)
-}
-            
-  var mousemove = function(d,i,n){
-    tooltip.html(
-      `<p> 
-      <b>Type: </b>
-    
-      </br>
-      </br>
-      <b>Percentages: </b>
-      ${d}%
-      </p>
-      
-      `)
-      .style("left", (d3.event.pageX) + "px")
-      .style("top", (d3.event.pageY)  +"px")
-  }
-  var mouseout = function(d,i,n) {
-      tooltip
-      d3.select(n[i])
-      .transition()
-      .duration(200)
-      .style("opacity", 1);
-      tooltip.transition()
-      .duration(500)
-      .style("opacity", 0)
-      }
-  
-  //Color
-  const mColors = d3.scaleOrdinal(d3['schemeSet2']);
+
   //Annotations
   const annotations = [
       {note: {
@@ -112,7 +128,6 @@ async function init_age() {
     // Add annotation to the baby chart
   const makeAnnotations = d3.annotation()
   .annotations(annotations);
-  
 
   // Add x axis
   var x = d3.scaleLinear()
@@ -121,19 +136,28 @@ async function init_age() {
 mainCanvas.append("g")
 .attr("transform", "translate(0," + graphHeight + ")")
 .call(d3.axisBottom(x));
-
+// Add X axis label:
+mainCanvas.append("text")
+.attr("text-anchor", "end")
+.attr("x", graphWidth)
+.attr("y", graphHeight+50 )
+.text("Age Of Child (months)");
   // Add Y axis
   var y = d3.scaleLinear()
         .domain([0, 100])
         .range([ graphHeight, 0]);
   mainCanvas.append("g")
             .call(d3.axisLeft(y));
-  //Load data
-        
-            
+   // Add Y axis label:
+   mainCanvas.append("text")
+   .attr("text-anchor", "end")
+   .attr("x", 0)
+   .attr("y", -20 )
+   .text("Percentage%")
+   .attr("text-anchor", "start")
+  //Load data  
     var parseAge=d3.scaleLinear()
               .domain([0,400]).range([0,12])
-
             var nodes = d3.range(data.length)
             .map(function (d) {
   
@@ -161,8 +185,8 @@ mainCanvas.append("g")
   //Add title 
   var title_g = mainCanvas.append("g");
   title_g.append("text")
-          .attr("x", margin.right )
-          .attr("y", margin.top - 100 )
+          .attr("x", 0 )
+          .attr("y", -margin.bottom -20)
           .text("Rates of Ever and Exclusive Breastfeeding by Age Among Children Born in 2019")
           .style("font-size", "20px").attr("alignment-baseline","right")
   
@@ -176,49 +200,48 @@ mainCanvas.append("g")
             .attr("d", breastfedLine)
             
             
-            //Add exclusive breastfeeding Line path
-            var exclusiveLine = d3.line()
-            .x(function(d,i){ return x(parseAge(ages[i]))})
-            .y(function(d,i){ return y(d)})
-            path_exclusive_breast= mainCanvas.append("path")
-            .data([exclusive])
-            .attr("class", "line exclusiveLine")
-            .attr("d", exclusiveLine)
-            var length = path_exclusive_breast.node().getTotalLength();
+  //Add exclusive breastfeeding Line path
+  var exclusiveLine = d3.line()
+  .x(function(d,i){ return x(parseAge(ages[i]))})
+  .y(function(d,i){ return y(d)})
+  path_exclusive_breast= mainCanvas.append("path")
+  .data([exclusive])
+  .attr("class", "line exclusiveLine")
+  .attr("d", exclusiveLine)
+  var length = path_exclusive_breast.node().getTotalLength();
             //This function will animate the path over and over again
-            function repeat(path) {
-                // Animate the path by setting the initial offset and dasharray and then transition the offset to 0
-                path.attr("stroke-dasharray", length + " " + length)
-                    .attr("stroke-dashoffset", length)
-                      .transition()
-                      .ease(d3.easeLinear)
-                      .attr("stroke-dashoffset", 0)
-                      .duration(3000)   
-                     // .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
-            
-            }
-            
-            repeat(path_any_breast)
-            repeat(path_exclusive_breast)
-            // //Add Circles on the ever circles 
-            var ever_g = mainCanvas.append("g");
-            ever_g.selectAll("circle")
-            .data(breastfed)
-            .enter()
-            
-            .append("circle")
-            .attr("class", "Ever")
-            .attr("cx", 0)
-            .attr("cy", (d)=>y(d))
-            .attr("r", 5)
-            .on("mouseover", mouseover)
-            .on("mousemove", mousemove)
-            .on("mouseout", mouseout)
+  function repeat(path) {
+      // Animate the path by setting the initial offset and dasharray and then transition the offset to 0
+      path.attr("stroke-dasharray", length + " " + length)
+          .attr("stroke-dashoffset", length)
             .transition()
-            .duration(3000)  
-            .delay(300) 
-            .attr("cx", (d,i)=> x(parseAge(ages[i])))
-            .attr("cy", (d)=>y(d))
+            .ease(d3.easeLinear)
+            .attr("stroke-dashoffset", 0)
+            .duration(3000)   
+            // .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
+  
+  }
+
+repeat(path_any_breast)
+repeat(path_exclusive_breast)
+// //Add Circles on the ever circles 
+var ever_g = mainCanvas.append("g");
+ever_g.selectAll("circle")
+        .data(breastfed)
+        .enter()
+        .append("circle")
+        .attr("class", "Ever")
+        .attr("cx", 0)
+        .attr("cy", (d)=>y(d))
+        .attr("r", 5)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseout", mouseout)
+        .transition()
+        .duration(3000)  
+        .delay(300) 
+        .attr("cx", (d,i)=> x(parseAge(ages[i])))
+        .attr("cy", (d)=>y(d))
             
             var exclusive_g = mainCanvas.append("g");
             //Add Circles on the exclusive dots 
@@ -234,7 +257,7 @@ mainCanvas.append("g")
                     .on("mousemove", mousemove)
                     .on("mouseout", mouseout)
                     .on("click", function() { window.open("exclusive.html"); }) // when clicked, opens window with google.com.
-            
+
                     .transition()
                     .duration(3000)  
                     .delay(100) 
@@ -265,16 +288,15 @@ mainCanvas.append("g")
                        .style("opacity", 1);
 }
 
+//////////************ *////////////
+////////Types Chart/////////////
 async function init_types() {
-  const data = await d3.csv('types_breastfeeding.csv');
+
+const data = await d3.csv('types_breastfeeding.csv');
   // add an svg element
 const svg = canvas.append("svg")
 .attr("width", 1000)
 .attr("height", 1000);
-
-const margin = {top:20, right:20, bottom:70, left:70};
-const graphWidth = 600 - margin.left - margin.right;
-const graphHeight = 600 - margin.top - margin.bottom;
 
 //Main Canvas
 const mainCanvas = svg.append("g")
@@ -282,90 +304,37 @@ const mainCanvas = svg.append("g")
                       .attr("height", graphHeight / 2)
                       .attr("transform", `translate(${margin.left}, ${margin.right  + 160})`);
 
-                      var tooltip = d3.select("body").append("div")
-                      .attr("class", "tooltip")
-                      .style("opacity", 0);
-          var mouseover = function(d,i,n){
-              d3.select(n[i])
-              .transition()
-              .duration(100)
-              .style("opacity", 0.7);
-            tooltip.transition()
-                 .duration(200)
-                 .style("opacity", 0.9)
-          }
+  //Annotations
+  const annotations = [
+      {
+          note: {
+            label: "The lowest numbers throughout the period.",
+            title: "Exclusive Breastfeeding",
+            align: "left",
+            wrap: 100,
+
+            
+          },
+          connector: {
+            end: "dot",        // Can be none, or arrow or dot
+            type: "line",      // ?? don't know what it does
+            lineType : "vertical",    // ?? don't know what it does
+            endScale: 10     // dot size
+          },
+          color: ["#000000"],
+
           
-          var mousemove = function(d,i,n){
-              var type_fed=(d3.select(n[i]).attr("class"))
-          
-            tooltip.html(
-              `<p> 
-              <b>Type: </b>
-              ${type_fed}
-              </br>
-              </br>
-              <b>Percentages: </b>
-              ${d}%
-              </p>
-              
-              `)
-              .style("left", (d3.event.pageX) + "px")
-              .style("top", (d3.event.pageY)  +"px")
-          }
-          var mouseout = function(d,i,n) {
-              tooltip
-              d3.select(n[i])
-              .transition()
-              .duration(200)
-              .style("opacity", 1);
-              tooltip.transition()
-              .duration(500)
-              .style("opacity", 0)
-              }
-          
-          //Color
-          const mColors = d3.scaleOrdinal(d3['schemeSet2']);
-          //Annotations
-          const annotations = [
-              {
-                  note: {
-                    label: "About 50% were breastfed for 6 months throughout the period.",
-                    title: "6 months Breastfeeding",
-                    align: "left",
-                    wrap: 100,
-                    
-                  },
-                  connector: {
-                    end: "dot",        // Can be none, or arrow or dot
-                    type: "line",      // ?? don't know what it does
-                    lineType : "vertical",    // ?? don't know what it does
-                    endScale: 10     // dot size
-                  },
-                  color: ["#000000"],
-                  
-                  x: graphWidth,
-                  y: graphHeight/2.25,
-                  dy: 60,
-                  dx: graphWidth/5
-                }
-              ]
-              // Add annotation to the baby chart
-           const makeAnnotations = d3.annotation()
-           .annotations(annotations);
+          x: graphWidth/2,
+          y: graphHeight/1.24,
+          dy: -graphHeight/3,
+          dx: graphWidth/5
+        }
+      ]
+      // Add annotation to the baby chart
+    const makeAnnotations = d3.annotation()
+    .annotations(annotations);
 
-    //Annotations
-mainCanvas.append("g")
-.attr("class", "annotation-group").call(makeAnnotations);
-
-
-//Define Tooltip
-var div = d3.select("body").append("div")
- .attr("class", "tooltip")
- .style("opacity", 0);
-
-
- //Array of colors
- var legendColorsArray = ["#66c2a5", "#fc8d62", "#8da0cb","#e78ac3","#a6d854"]
+  
  mColors.domain(data.map(d=>d.type))
          .range(legendColorsArray)
  //Parse data
@@ -411,9 +380,23 @@ var div = d3.select("body").append("div")
   mainCanvas.append("g")
             .attr("transform", `translate(0, ${graphHeight})`)
             .call(xAxis)
-            
+  // Add X axis label:
+  mainCanvas.append("text")
+      .attr("text-anchor", "end")
+      .attr("x", graphWidth)
+      .attr("y", graphHeight+50 )
+      .text("Year Of Birth");
+
  mainCanvas.append("g")
              .call(yAxis);
+
+// Add Y axis label:
+mainCanvas.append("text")
+.attr("text-anchor", "end")
+.attr("x", 0)
+.attr("y", -20 )
+.text("Percentages%")
+.attr("text-anchor", "start")
 
 
 //Add Percentages into Arrays
@@ -432,29 +415,38 @@ twelve_g.selectAll("circle")
 .enter()
 .append("circle")
 .attr("class", "Twelve_Months")
-.attr("cx", (d,i)=>x(parseYears(years[i])))
+.attr("cx", 0)
 .attr("cy", (d)=>y(d))
-.attr("r", 5)
 .on("mouseover", mouseover)
 .on("mousemove", mousemove)
 .on("mouseout", mouseout)
+            .transition()
+            .duration(3000)  
+            .delay(300) 
+.attr("cx", (d,i)=>x(parseYears(years[i])))
+.attr("cy", (d)=>y(d))
+.attr("r", 5)
 
 
 //Add Circles on the exclusive dots 
-
-mainCanvas.selectAll("circles")
+var exc_g = mainCanvas.append("g");
+exc_g.selectAll("circle")
 .data(exclusive_arr)
 .enter()
 .append("circle")
 .attr("class", "Exclusive")
-.attr("cx", (d,i)=>x(parseYears(years[i])))
+.attr("cx", 0)
 .attr("cy", (d)=>y(d))
-.attr("r", 5)
 .on("mouseover", mouseover)
 .on("mousemove", mousemove)
 .on("mouseout", mouseout)
+            .transition()
+            .duration(3000)  
+            .delay(300) 
 
-
+.attr("cx", (d,i)=>x(parseYears(years[i])))
+.attr("cy", (d)=>y(d))
+.attr("r", 5)
 
 //Add the Formula Line path
 var formulaLine = d3.line()
@@ -467,9 +459,8 @@ path_formula=mainCanvas.append("path")
 .attr("class", "line formulaLine")
 .on("click", function() { window.open("formula.html"); }) // when clicked, opens window.
 .attr("d", formulaLine)  
+
  
-
-
 //Add the Exclusive Line path
 var exclusiveLine = d3.line()
      .x(function(d,i){return x(parseYears(years[i]))})
@@ -477,6 +468,7 @@ var exclusiveLine = d3.line()
 var path_exclusive=mainCanvas.append("path")
 .data([exclusive_arr])
 .attr("class", "line exclusiveLine")
+
 .attr("d", exclusiveLine)  
 .on("click", function() { window.open("exclusive.html"); }); // when clicked, opens window.
 
@@ -513,9 +505,11 @@ var path_twelve=mainCanvas.append("path")
 
 //Add Title of the Ever Graph
 mainCanvas.append("text")
-.attr("x", margin.right).attr("y", margin.top -50)
+.attr("x", 0)
+.attr("y", -margin.bottom -20)
 .text("Babies Feeding Types From 2012 to 2019")
-.style("font-size", "20px").attr("alignment-baseline","right")
+.style("font-size", "20px")
+.attr("alignment-baseline","right")
 
 
 
@@ -524,7 +518,6 @@ var length = path_exclusive.node().getTotalLength();
 // This function will animate the path over and over again
 function repeat(path) {
 var path=path;
-
  // Animate the path by setting the initial offset and dasharray and then transition the offset to 0
  path.attr("stroke-dasharray", length + " " + length)
      .attr("stroke-dashoffset", length)
@@ -532,21 +525,38 @@ var path=path;
        .ease(d3.easeLinear)
        .attr("stroke-dashoffset", 0)
        .duration(3000)
-     .on("end", () => setTimeout(repeat(path), 3000)); // this will repeat the animation after waiting 1 second
+     .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
 }
-
-
-
 repeat(path_exclusive);
 repeat(path_formula);
 repeat(path_ever);   
 repeat(path_six);
 repeat(path_twelve); 
-//Add Color Legends
+
+//Types 
+types_arr = []
+data.map(item=>types_arr.push(item.type))
+console.log(types_arr,"huuuuu")
+// ---------------------------//
+  //       HIGHLIGHT GROUP      //
+  // ---------------------------//
+
+  // What to do when one group is hovered
+  var highlight = function(d){
+    // reduce opacity of all groups
+    d3.selectAll(".bubbles").style("opacity", .05)
+    // expect the one that is hovered
+    d3.selectAll("."+d).style("opacity", 1)
+  }
+
+  // And when it is not hovered anymore
+  var noHighlight = function(d){
+    d3.selectAll(".bubbles").style("opacity", 1)
+
+
+  }
+     //Add Color Legends
 const legendGroup = mainCanvas.append("g");
-
-
-         //.attr("transform", `translate(${graphWidth + 100}, 30)`);
 legendGroup.append("circle")
         .attr("cx",graphHeight+margin.left+100)
         .attr("cy",130).attr("r", 6)
@@ -558,12 +568,18 @@ legendGroup.append("circle")
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin.left+100)
 .attr("cy",190).attr("r", 6).style("fill", "#F97850")
-legendGroup.append("circle")
+legendGroup.
+append("circle")
 .attr("cx",graphHeight+margin.left+100)
-.attr("cy",220).attr("r", 6).style("fill", "#57B795")
+.attr("cy",220).attr("r", 6).style("fill", "#57B795").style("cursor","pointer")
+.on("click", function() { window.open("exclusive.html"); }); // when clicked, opens window.
+
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin.left+100)
 .attr("cy",250).attr("r", 6).style("fill", "#E072B6")
+.on("click", function() { window.open("formula.html"); }); // when clicked, opens window.
+
+
 
 
 legendGroup.append("text")
@@ -588,24 +604,32 @@ legendGroup.append("text").attr("x", graphHeight+margin.left+120)
 .attr("y", 220).text("Exclusive Breastfeeding")
 .style("font-size", "18px")
 .attr("alignment-baseline","middle")     
-legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 250).text("Formula").style("font-size", "18px").attr("alignment-baseline","middle")     
+legendGroup.append("text")
+.attr("x", graphHeight+margin.left+120).attr("y", 250)
+.text("Formula").style("font-size", "18px").attr("alignment-baseline","middle")     
 
 
   
- //Add Circles on the formula line 
- mainCanvas.selectAll("circles")
+ //Add Circles on the formula circles 
+ const formula_g = mainCanvas.append("g");
+ formula_g.selectAll("circle")
  .data(formula_arr)
  .enter()
  .append("circle")
  .attr("class", "Formula")
+ .attr("cx", 0)
+.attr("cy", (d)=>y(d))
+
+.on("mouseover", mouseover)
+.on("mousemove", mousemove)
+.on("mouseout", mouseout)
+            .transition()
+            .duration(3000)  
+            .delay(300) 
  .attr("cx", (d,i)=>x(parseYears(years[i])))
- 
  .attr("cy", (d)=>y(d))
  .attr("r", 5)
- .on("mouseover", mouseover)
- .on("mousemove", mousemove)
- .on("mouseout", mouseout)
- 
+
  
  //Add Circles on the six months circles 
  var six_g = mainCanvas.append("g");
@@ -614,30 +638,47 @@ legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 250)
  .enter()
  .append("circle")
  .attr("class", "Six_Months")
+ .attr("cx", 0)
+.attr("cy", (d)=>y(d))
+
+.on("mouseover", mouseover)
+.on("mousemove", mousemove)
+.on("mouseout", mouseout)
+            .transition()
+            .duration(3000)  
+            .delay(300) 
  .attr("cx", (d,i)=>x(parseYears(years[i])))
  .attr("cy", (d)=>y(d))
  .attr("r", 5)
+
  
- .on("mouseover", mouseover)
- .on("mousemove", mousemove)
- .on("mouseout", mouseout) 
- 
-   
  //Add Circles on the ever circles
  var ever_g = mainCanvas.append("g");
- 
  ever_g.selectAll("circles")
          .data(ever_arr)
          .enter()
          .append("circle")
          .attr("class", "Ever")
-         .attr("cx", (d,i)=>x(parseYears(years[i])))
+         .attr("cx", 0)
          .attr("cy", (d)=>y(d))
-         .attr("r", 5)
+         
          .on("mouseover", mouseover)
- .on("mousemove", mousemove)
- .on("mouseout", mouseout)
- 
+         .on("mousemove", mousemove)
+         .on("mouseout", mouseout)
+                     .transition()
+                     .duration(3000)  
+                     .delay(300) 
+          .attr("cx", (d,i)=>x(parseYears(years[i])))
+          .attr("cy", (d)=>y(d))
+          .attr("r", 5)
+
+
+ //Annotations
+ mainCanvas.append("g")
+ .attr("class", "annotation-group")
+ .call(makeAnnotations)
+ .transition().duration(6000).delay(1000)
+                       .style("opacity", 1);
 }
 
 

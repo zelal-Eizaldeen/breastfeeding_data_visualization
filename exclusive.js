@@ -40,6 +40,32 @@ async function init() {
                     return d;
           });//end nodes
 
+          //Annotations
+  const annotations = [
+    {note: {
+        label: "who was Exclusive breastfeeding for 6 months.",
+        title: "Roughly 22%",
+        align: "left",
+        wrap: 100,
+        
+      },
+      connector: {
+        end: "dot",        // Can be none, or arrow or dot
+        type: "line",      // ?? don't know what it does
+        lineType : "vertical",    // ?? don't know what it does
+        endScale: 10     // dot size
+      },
+      color: ["#000000"],
+      
+      x: graphWidth/2,
+      y: graphHeight/1.6,
+      dy: -30,
+      dx: graphWidth/4
+    }
+  ]
+  // Add annotation to the baby chart
+const makeAnnotations = d3.annotation()
+.annotations(annotations);
  //Set the ranges and domains
  var x = d3.scaleTime()
  .domain(d3.extent(years, (d,i) => parseYears(d)))
@@ -84,9 +110,12 @@ mainCanvas.append("path")
 .attr("d", exclusiveSixLine)  
 .on("click", function() { window.open("https://www.cdc.gov/breastfeeding/data/nis_data/results.html"); }); // when clicked, opens window 
 
-//Add Title of the Ever Graph
+//Add Title of the Exclusive Graph
 mainCanvas.append("text")
-.attr("x", margin.right).attr("y", margin.top -50)
+// .attr("x", margin.right)
+// .attr("y", margin.top -50)
+.attr("x", 0 )
+ .attr("y", -margin.bottom -20)
 .text("Babies Exclusive Breastfed From 2012 to 2019")
 .style("font-size", "20px").attr("alignment-baseline","middle")
 
@@ -126,6 +155,14 @@ mainCanvas.selectAll("circles")
 .attr("cx", (d,i)=>x(parseYears(years[i])))
 .attr("cy", (d)=>y(d))
 .attr("r", 5)
+
+
+ //Annotations
+ mainCanvas.append("g")
+ .attr("class", "annotation-group")
+ .call(makeAnnotations)
+ .transition().duration(1000).delay(1000)
+ .style("opacity", 1);
 }
  init();
         

@@ -1,22 +1,12 @@
 // const canvas = d3.select(".canva");
 const canvas = d3.select("#canva");
-
-// add an svg element
-// const svg = canvas.append("svg")
-//             .attr("width", 600)
-//             .attr("height", 700)
-           
-// const svg_Mum = canvas.append("svg")
-//                     .attr("width", 600)
-//                     .attr("height", 700)
-                   
-                    // .attr("class", "hide");
-
-
 const margin = 50;
 const graphWidth = 500;
 const graphHeight = 500;
 const type = d3.annotationLabel;
+const pdf = document.querySelector("#download_pdf");
+pdf.style.visibility = 'hidden'; 
+
 //Color
 const mColors = d3.scaleOrdinal(d3['schemeSet2']);
 
@@ -27,31 +17,191 @@ d3.selectAll(".region_cb").on("change", function ()
   var type = this.value;
   if (this.checked && type=="baby") { // adding data points
     motherCheckbox.checked=false;
+    pdf.style.visibility = 'visible';     // Show
     d3.select("svg").remove();
+
     init()
   }
   if (!this.checked && type=="baby"){
     
     d3.select("svg").remove();
-    console.log("NOOOOOOO!!!")
 
   }
   if (!this.checked && type=="mother"){
     d3.select("svg").remove();
-    console.log("NOOOOOOO MUMMMM!!!")
 
   }
   if (this.checked && type=="mother") { // adding data points
     d3.select("svg").remove();
     babyCheckbox.checked=false;
+    pdf.style.visibility = 'visible';     // Show
+
     init_mum()
    }
  });
+ var click_links = function(d,i,n){
+ 
+  if (motherCheckbox.checked && motherCheckbox.value=="mother") { 
+    if(i == 0)
 
+    {
+      window.open("https://www.cdc.gov/diabetes/basics/gestational.html#:~:text=Gestational%20diabetes%20is%20a%20type,pregnancy%20and%20a%20healthy%20baby.")
+      
+    }
+    if(i === 1)
+    {
+     
+ window.open("https://www.cdc.gov/reproductivehealth/maternalinfanthealth/diabetes-during-pregnancy.htm#:~:text=Diabetes%20during%20pregnancy%E2%80%94including%20type,%2C%20stillbirth%2C%20and%20preterm%20birth.")
+      
+
+    }
+    if(i === 2)
+    {
+     window.open("https://www.nhs.uk/conditions/ovarian-cancer/")
+
+    }
+    if(i === 3)
+    {
+       
+      window.open("https://www.mayoclinic.org/diseases-conditions/breast-cancer/symptoms-causes/syc-20352470")
+
+    }
+    if(i === 4)
+    {
+    
+      window.open("https://www.icr.ac.uk/blogs/science-talk/page-details/premenopausal-breast-cancer-how-the-icr-is-helping-get-to-grips-with-the-data")
+
+
+    }
+    if(i === 5)
+    {
+      window.open("https://www.who.int/news-room/fact-sheets/detail/hypertension#:~:text=Hypertension%20(high%20blood%20pressure)%20is,get%20your%20blood%20pressure%20checked.")
+
+    }
+    if(i===6){
+      window.open("https://www.cancer.gov/types/uterine/patient/endometrial-treatment-pdq#:~:text=and%20treatment%20options.-,Endometrial%20cancer%20is%20a%20disease%20in%20which%20malignant%20(cancer)%20cells,is%20about%203%20inches%20long.")
+    }
+    if(i===7){
+      window.open("https://www.cancer.gov/types/thyroid/patient/thyroid-treatment-pdq#:~:text=and%20treatment%20options.-,Thyroid%20cancer%20is%20a%20disease%20in%20which%20malignant%20(cancer)%20cells,tissue%2C%20connects%20the%20two%20lobes.")
+    }
+  }
+
+  ///////babies disease/////
+  if (babyCheckbox.checked && babyCheckbox.value=="baby") { 
+    if(i == 0)
+
+    {
+      window.open("https://www.chop.edu/conditions-diseases/ulcerative-colitis")
+    }
+    if(i === 1)
+    {
+     
+ window.open("https://www.childrenshospital.org/conditions/sudden-infant-death-syndrome-sids#:~:text=What%20is%20SIDS%3F,review%20of%20the%20clinical%20history.")
+      
+
+    }
+    if(i === 2)
+    {
+     window.open("https://www.mayoclinic.org/diseases-conditions/type-1-diabetes-in-children/symptoms-causes/syc-20355306")
+
+    }
+    if(i === 3)
+    {
+       
+      window.open("https://www.who.int/news-room/fact-sheets/detail/levels-and-trends-in-child-mortality-report-2021")
+
+    }
+    if(i === 4)
+    {
+    
+      window.open("https://www.icr.ac.uk/blogs/science-talk/page-details/premenopausal-breast-cancer-how-the-icr-is-helping-get-to-grips-with-the-data")
+
+
+    }
+    if(i === 5)
+    {
+      window.open("https://www.mayoclinic.org/diseases-conditions/type-2-diabetes-in-children/symptoms-causes/syc-20355318#:~:text=Type%202%20diabetes%20in%20children%20is%20a%20chronic%20disease%20that,occurs%20more%20commonly%20in%20adults.")
+
+    }
+    if(i===6){
+      window.open("https://www.cedars-sinai.org/health-library/diseases-and-conditions---pediatrics/c/crohns-disease-in-children.html")
+    }
+    if(i===7){
+      window.open("https://nationaleczema.org/eczema/children/")
+    }
+    if(i===8){
+      window.open("https://aafa.org/asthma/living-with-asthma/asthma-in-infants/")
+    }
+    if(i===9){
+      window.open("https://www.cedars-sinai.org/health-library/diseases-and-conditions---pediatrics/l/leukemia-in-children.html")
+    }
+
+  }
+  }
  //Define the Tooltip
 var div = d3.select("body").append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 0);
+.attr("class", "tooltip")
+.style("opacity", 0);
+
+  // var mouseover = function(d,i,n){
+  //   d3.select(n[i])
+  //   .transition()
+  //   .duration(100)
+  //   .style("opacity", 0.7);
+  // div.transition()
+  //       .duration(200)
+  //       .style("opacity", 0.9)
+  // }
+            
+  var mouseover = function(d,i,n){
+    d3.select(n[i])
+    .transition()
+    .duration(100)
+    .style("opacity", 0.7);
+  div.transition()
+        .duration(200)
+        .style("opacity", 0.9)
+ if(motherCheckbox.checked && motherCheckbox.value=="mother") {
+      div.html(`
+            <p> 
+            <b>Disease: </b>
+            ${d.Outcomes_Mum}
+            </br>
+            <b>Lower of: </b>
+            ${d.Lower_Risk_Mum}%
+            </br>
+            <b>Breastfeeding Duration: </b>
+            ${d.Breastfeeding_Period_Mum}</p>`)
+                .style("left", (d3.event.pageX+40) + "px")
+                .style("top", (d3.event.pageY-140) + "px")
+ }
+ if(babyCheckbox.checked && babyCheckbox.value=="baby") {
+
+ div.html(
+  `<p> 
+  <b>Disease: </b>
+  ${d.Outcomes}
+  </br>
+  <b>Lower of: </b>
+  ${d.Lower_Risk}%
+  </br>
+  <b>Breastfeeding Duration: </b>
+  ${d.Breastfeeding_Period}</p>`)
+
+.style("left", (d3.event.pageX+40) + "px")
+  .style("top", (d3.event.pageY-140) + "px")
+
+ }
+  }
+  var mouseout = function(d,i,n) {
+      d3.select(n[i])
+      .transition()
+      .duration(100)
+      .style("opacity", 1);
+   div.transition()
+   .duration(500)
+   .style("opacity", 0)
+      }
 
 async function init_mum() {
  const svg = canvas.append("svg")
@@ -118,7 +268,7 @@ const makeAnnotations_mums = d3.annotation()
                     var xAxis=svg.append("g")
                     .attr("transform", "translate("+(margin)+","+(graphHeight+margin)+")")
                     .call(d3.axisBottom(x_Mum))
-                    .attr("class", "xAxes")
+                    
                     .selectAll("text")
                     .attr("y", 0)
                     .attr("x", 9)
@@ -130,62 +280,76 @@ const makeAnnotations_mums = d3.annotation()
           
                        
                     ///Mummies Bar Chart
-        svg.append("text")
+        var title_mum =svg.append("g")
+
+        title_mum.append("text")
         .text("Benefits For Mothers")
         .attr("x", margin)
         .attr("y", margin - 4 )
         .attr("font-size", 20)
+
         svg.selectAll('rect')
         .data(nodes)
         .enter()
-        .append("g").attr("transform", "translate("+(margin)+","+margin+")")
+        .append("g")
+        .attr("transform", "translate("+(margin)+","+margin+")")
         .append('rect')
         .attr("class","rect")
-        .on("click", function() { window.open("https://publications.aap.org/view-large/10993089"); }) // when clicked, opens window 
-        .on("mouseover", function(d,i,n){
-            d3.select(n[i])
-              .transition()
-              .duration(100)
-              .style("opacity", 0.7);
-            div.transition()
-                 .duration(200)
-                 .style("opacity", 0.9);
+        
+        .on("click", click_links)
+        .on("mouseover",mouseover)
+        .on("mouseout", mouseout)
+        
+        
+           
+        
+        .transition()
+        
+        .attr("y", (d,i)=> y_Mum(d.Lower_Risk_Mum))
+        .delay((d,i) => i * 100 )
+        .ease(d3.easeBounceIn) 
+        // function(d,i,n){
+        //     d3.select(n[i])
+        //       .transition()
+        //       .duration(100)
+        //       .style("opacity", 0.7);
+        //     div.transition()
+        //          .duration(100)
+        //          .style("opacity", 0.9);
             //Tooltip
             //"d.lower.split(",")[1]
-            // div.html("<p> <b>Breastfeeding Duration: </b>"+ d.Breastfeeding_Period_Mum+"</p>")
-            div.html(`
-            <p> 
-            <b>Disease: </b>
-            ${d.Outcomes_Mum}
-            </br>
-            <b>Lower of: </b>
-            ${d.Lower_Risk_Mum}%
-            </br>
-            <b>Breastfeeding Duration: </b>
-            ${d.Breastfeeding_Period_Mum}</p>`)
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY) + "px")
-        })
-        .on("mouseout", (d,i,n)=>
-             d3.select(n[i])
-               .transition()
-               .duration(100)
-               .style("opacity", 1))
+        //     div.html(`
+        //     <p> 
+        //     <b>Disease: </b>
+        //     ${d.Outcomes_Mum}
+        //     </br>
+        //     <b>Lower of: </b>
+        //     ${d.Lower_Risk_Mum}%
+        //     </br>
+        //     <b>Breastfeeding Duration: </b>
+        //     ${d.Breastfeeding_Period_Mum}</p>`)
+        //         .style("left", (d3.event.pageX+40) + "px")
+        //         .style("top", (d3.event.pageY) + "px")
+        // })
+        // .on("mouseout", (d,i,n)=>
+        //      d3.select(n[i])
+        //        .transition()
+        //        .duration(100)
+        //        .style("opacity", 1))
 
-        .transition()
-           .attr("y", (d,i)=> y_Mum(d.Lower_Risk_Mum))
-           .delay((d,i) => i * 100 )
-           .ease(d3.easeBounceIn)  
+         
 
         .attr("x", (d,i)=> x_Mum(d.Outcomes_Mum))
         .attr("y", (d,i)=>y_Mum(d.Lower_Risk_Mum))
         .attr("width", x_Mum.bandwidth)
         .attr("height", (d,i)=> graphHeight - y_Mum(d.Lower_Risk_Mum))
+
         // .attr("fill",(d,i,n)=>d3.select(n[0]).style("fill", "#31a354"))
         // .attr("fill", "#e5f5e0")
         .style("fill", function(d){
           return mColors(d.cluster / distinctTypesScale)
     })
+   
         svg.append("g")
         .attr("class", "annotation-group").call(makeAnnotations_mums);
     //Add Color Legends
@@ -279,7 +443,7 @@ async function init() {
                     }
                return d;
                 });
-                console.log(nodes)
+              
  //Array of colors
  var legendColorsArray = ["#66c2a5", "#fc8d62", "#8da0cb","#e78ac3","#a6d854"]
  mColors.domain(data.map(d=>d.Breastfeeding_Period))
@@ -315,40 +479,43 @@ async function init() {
         .append('rect')
         .attr("class","rect")
        
-        .on("click", function() { window.open("https://publications.aap.org/view-large/10993082"); }) // when clicked, opens window 
-        .on("mouseover", function(d,i,n){
-            d3.select(n[i])
-              .transition()
-              .duration(100)
-              .style("opacity", 0.7);
-            div.transition()
-                 .duration(200)
-                 .style("opacity", 0.9);
+        .on("click", click_links) // when clicked, opens window 
+        // .on("mouseover", function(d,i,n){
+        //     d3.select(n[i])
+        //       .transition()
+        //       .duration(100)
+        //       .style("opacity", 0.7);
+        //     div.transition()
+        //          .duration(200)
+        //          .style("opacity", 0.9);
             //Tooltip
-            //"d.lower.split(",")[1]
-            div.html(
-                `<p> 
-                <b>Disease: </b>
-                ${d.Outcomes}
-                </br>
-                <b>Lower of: </b>
-                ${d.Lower_Risk}%
-                </br>
-                <b>Breastfeeding Duration: </b>
-                ${d.Breastfeeding_Period}</p>`)
+           
+        //     div.html(
+        //         `<p> 
+        //         <b>Disease: </b>
+        //         ${d.Outcomes}
+        //         </br>
+        //         <b>Lower of: </b>
+        //         ${d.Lower_Risk}%
+        //         </br>
+        //         <b>Breastfeeding Duration: </b>
+        //         ${d.Breastfeeding_Period}</p>`)
 
-            .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY) + "px")
-        })
-        .on("mouseout", function(d,i,n){
-             d3.select(n[i])
-               .transition()
-               .duration(100)
-               .style("opacity", 1);
-            div.transition()
-            .duration(500)
-            .style("opacity", 0)
-            })
+        //     .style("left", (d3.event.pageX) + "px")
+        //         .style("top", (d3.event.pageY) + "px")
+        // })
+        .on("mouseover", mouseover)
+        // .on("mousemove", mousemove)
+        .on("mouseout", mouseout)
+        // function(d,i,n){
+        //      d3.select(n[i])
+        //        .transition()
+        //        .duration(100)
+        //        .style("opacity", 1);
+        //     div.transition()
+        //     .duration(500)
+        //     .style("opacity", 0)
+        //     })
 
         .transition()
            .attr("y", (d,i)=> y(d.Lower_Risk))
