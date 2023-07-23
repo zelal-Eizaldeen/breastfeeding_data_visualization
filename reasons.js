@@ -83,9 +83,14 @@ const annotations = [
         color: ["#000000"],
         
         x: graphWidth/2,
-        y: graphHeight/2.5,
-        dy: 80,
-        dx: graphHeight-150
+        y: graphHeight/2.6,
+        dy: 70,
+        dx: graphHeight-270
+
+        // x: graphWidth/2/2/2/2,
+        // y: graphHeight/2.25,
+        // dy: -30,
+        // dx: graphWidth/4
       }
     ]
     // Add annotation to the baby chart
