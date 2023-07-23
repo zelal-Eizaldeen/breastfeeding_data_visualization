@@ -71,7 +71,7 @@ const annotations = [
           label: "The most common reasons cited were coming from Cultural norms and lack of family support..",
           title: "Lifestyle Factors",
           align: "left",
-          wrap: 100,
+          wrap: 300,
           
         },
         connector: {
@@ -83,9 +83,9 @@ const annotations = [
         color: ["#000000"],
         
         x: graphWidth/2,
-        y: graphHeight/2.6,
-        dy: 70,
-        dx: graphHeight-270
+        y: graphHeight/2.5,
+        dy: graphHeight/3,
+        dx: graphWidth/5
 
         // x: graphWidth/2/2/2/2,
         // y: graphHeight/2.25,
@@ -126,7 +126,7 @@ title_g.append("text")
         .style("font-size", "20px").attr("alignment-baseline","right")
      // Add x axis
      var x = d3.scaleLinear()
-    .domain([0, maxRadius])
+    .domain([0, 100])
     .range([ 0, graphWidth ]);
     mainCanvas.append("g")
     .attr("transform", "translate(0," + graphHeight + ")")
@@ -140,7 +140,7 @@ mainCanvas.append("text")
 .text("% of Mothers stopped");
     // Add Y axis
   var y = d3.scaleLinear()
-          .domain([35, 100])
+          .domain([0, 100])
           .range([ graphHeight, 0]);
 
  // Add Y axis label:
@@ -186,7 +186,8 @@ mainCanvas.append("text")
                     .strength(0.9))
                     .velocityDecay(0.4)
                 .on("tick", layoutTick)
-                    .nodes(nodes);       
+                .nodes(nodes)
+                   
        
  
         var node = mainCanvas.selectAll("circle")

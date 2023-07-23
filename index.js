@@ -1,6 +1,6 @@
 // const canvas = d3.select(".canva");
 const canvas = d3.select("#canva");
-const margin = 50;
+const margin = 150;
 const graphWidth = 500;
 const graphHeight = 500;
 const type = d3.annotationLabel;
@@ -199,7 +199,7 @@ async function init_mum() {
             .attr("width", 1000)
             .attr("height", 750)
   // Features of the annotation for mumies
- const annotations_mums = [
+ const annotations = [
   {
     note: {
       label: "Gestational Diabetes Mellitus reduced to 78%",
@@ -216,16 +216,17 @@ async function init_mum() {
     },
     color: ["#000000"],
     
-    x: graphWidth/2/2/1.7,
-    y: graphHeight/2,
-    dy: 100,
-    dx: 40
+    x: graphWidth/3,
+    y: graphHeight/2.7,
+    dy: 60,
+    dx: 140
   }
 ]
-//Add annotation to the Mummy chart
-const makeAnnotations_mums = d3.annotation()
-.annotations(annotations_mums);
-        const data = await d3.csv(
+   // Add annotation to the baby chart
+   const makeAnnotations = d3.annotation()
+   .annotations(annotations);
+
+  const data = await d3.csv(
                     'Breastfeeding_Outcomes.csv');
     var numberOfBaseTypeScale = d3.scaleOrdinal()
     .domain(data.map(
@@ -246,38 +247,49 @@ const makeAnnotations_mums = d3.annotation()
                                     }
                                return d;
                                 });
-  //                //Array of colors
+ //Array of colors
   mColors.domain(data.map(d=>d.Breastfeeding_Period))
                          .range(legendColorsArray)
                 var x_Mum = d3.scaleBand() 
                .domain(data.map(item =>item.Outcomes_Mum))
                     .range([0,graphWidth])
                     .paddingInner(0.3)
-                
-                    var y_Mum = d3.scaleLinear()
-                    .domain([0,d3.max(data, d=>d.Lower_Risk)])
-                    .range([graphHeight,0]);
-                    var xAxis=svg.append("g")
-                    .attr("transform", "translate("+(margin)+","+(graphHeight+margin)+")")
-                    .call(d3.axisBottom(x_Mum))
-                    
-                    .selectAll("text")
-                    .attr("y", 0)
-                    .attr("x", 9)
-                    .attr("dy", ".35em")
-                    .attr("transform", "rotate(90)")
-                    .style("text-anchor", "start");
-                    var yAxis=svg.append("g").attr("transform","translate("+margin+","+margin+")")
-                    .call(d3.axisLeft(y_Mum).tickValues([10, 20,30,40,50,60,70]).ticks(20, "~s"));
-          
-                       
-                    ///Mummies Bar Chart
+  // Add X axis label:
+svg.append("text")
+.attr("text-anchor", "end")
+.attr("x", graphWidth+250)
+.attr("y", graphHeight+200 )
+.text("Disease Name");
+  var y_Mum = d3.scaleLinear()
+  .domain([0,d3.max(data, d=>d.Lower_Risk)])
+  .range([graphHeight,0]);
+  var xAxis=svg.append("g")
+  .attr("transform", "translate("+(margin)+","+(graphHeight+margin)+")")
+  .call(d3.axisBottom(x_Mum))
+  
+  .selectAll("text")
+  .attr("y", 0)
+  .attr("x", 9)
+  .attr("dy", ".35em")
+  .attr("transform", "rotate(90)")
+  .style("text-anchor", "start");
+  var yAxis=svg.append("g").attr("transform","translate("+margin+","+margin+")")
+  .call(d3.axisLeft(y_Mum).tickValues([10, 20,30,40,50,60,70]).ticks(20, "~s"));
+
+      // Add Y axis label:
+   svg.append("text")
+   .attr("text-anchor", "end")
+   .attr("x", 0)
+   .attr("y", 140 )
+   .text("Percentages% of Lower Risk")
+   .attr("text-anchor", "start")                 
+  ///Mummies Bar Chart
     var title_mum =svg.append("g")
 
         title_mum.append("text")
-        .text("Benefits For Mothers")
+        .text("Eight common diseases with their lower risk percentages in case of breastfeeding")
         .attr("x", margin)
-        .attr("y", margin - 4 )
+        .attr("y", 50 )
         .attr("font-size", 20)
 
         svg.selectAll('rect')
@@ -341,12 +353,16 @@ const makeAnnotations_mums = d3.annotation()
         .style("fill", function(d){
           return mColors(d.cluster / distinctTypesScale)
     })
-   
 
-    
-        svg.append("g")
-        .attr("class", "annotation-group").call(makeAnnotations_mums);
-    //Add Color Legends
+    //Annotations
+ svg.append("g")
+ .attr("class", "annotation-group")
+ .call(makeAnnotations)
+ .transition().duration(2000).delay(500)
+                       .style("opacity", 1);
+
+
+    // //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")
 //.attr("transform", `translate(${graphWidth + 100}, 30)`);
@@ -402,7 +418,7 @@ async function init() {
       label: "Sudden Infant Death Syndrome reduced to 64%",
       title: "SIDS:",
       align: "left",
-      wrap: 100,
+      wrap: 300,
       
     },
     connector: {
@@ -413,9 +429,9 @@ async function init() {
     },
     color: ["#000000"],
     
-    x: graphWidth/2/2,
-    y: graphHeight/2,
-    dy: 100,
+    x: graphWidth/2.2,
+    y: graphHeight/1.8,
+    dy: -10,
     dx: 40
   }
 ]
@@ -466,12 +482,27 @@ async function init() {
     .attr("dy", ".35em")
     .attr("transform", "rotate(90)")
     .style("text-anchor", "start");
+
+     // Add X axis label:
+svg.append("text")
+.attr("text-anchor", "end")
+.attr("x", graphWidth+250)
+.attr("y", graphHeight+200 )
+.text("Disease Name");
    svg.append("g").attr("transform", "translate("+margin+","+margin+")").call(d3.axisLeft(y));
       
+    // Add Y axis label:
     svg.append("text")
-        .text("Benefits For Babies")
+    .attr("text-anchor", "end")
+    .attr("x", 0)
+    .attr("y", 140 )
+    .text("Percentages% of Lower Risk")
+    .attr("text-anchor", "start") 
+    ///////Title for baby chart   
+    svg.append("text")
+        .text("Ten common diseases in babies with their reduced risks")
         .attr("x", margin)
-        .attr("y", margin - 4 )
+        .attr("y", margin -80 )
         .attr("font-size", 20)
     svg.selectAll('rect')
         .data(nodes)
@@ -523,9 +554,12 @@ async function init() {
           return mColors(d.cluster / distinctTypesScale)
     })
        
-        svg.append("g")
-           .attr("class", "annotation-group").call(makeAnnotations);
-
+//Annotations
+svg.append("g")
+.attr("class", "annotation-group")
+.call(makeAnnotations)
+.transition().duration(2000).delay(500)
+                      .style("opacity", 1);
  //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")

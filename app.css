@@ -56,11 +56,13 @@ img {
   .download_pdf{
     background-color: #333;
     overflow:hidden;
+    margin:50px;
     
   }
   /* .underline{
     text-decoration: underline;
   } */
+  
   .underline:hover{
     text-decoration: underline;
     cursor: pointer;
@@ -78,7 +80,12 @@ img {
         text-decoration: none;
         font-size: 18px;
        
+       
         text-align: center;
+  }
+  .download_pdf a:hover {
+    text-decoration: underline;
+    color: #31a354;
   }
   input {
     margin: 0.4rem;

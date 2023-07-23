@@ -153,7 +153,7 @@ mainCanvas.append("text")
    .attr("text-anchor", "end")
    .attr("x", 0)
    .attr("y", -20 )
-   .text("Percentage%")
+   .text("Percentages% of babies")
    .attr("text-anchor", "start")
   //Load data  
     var parseAge=d3.scaleLinear()
@@ -410,7 +410,7 @@ mainCanvas.append("text")
 .attr("text-anchor", "end")
 .attr("x", 0)
 .attr("y", -20 )
-.text("Percentages%")
+.text("Percentages% of babies")
 .attr("text-anchor", "start")
 
 
