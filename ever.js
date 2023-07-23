@@ -39,12 +39,11 @@ async function init() {
 
                     return d;
           });//end nodes
-
           //Annotations
   const annotations = [
     {note: {
-        label: "who was Exclusive breastfeeding for 6 months.",
-        title: "Roughly 22%",
+        label: "who was Ever(Any) breastfeeding for 3 months.",
+        title: "Roughly 30%",
         align: "left",
         wrap: 100,
         
@@ -58,7 +57,7 @@ async function init() {
       color: ["#000000"],
       
       x: graphWidth/2,
-      y: graphHeight/1.6,
+      y: graphHeight/2.1,
       dy: -30,
       dx: graphWidth/4
     }
@@ -98,37 +97,30 @@ mainCanvas.append("text")
 .attr("y", -20 )
 .text("Percentage%")
 .attr("text-anchor", "start")
-// Add Y axis label:
-mainCanvas.append("text")
-.attr("text-anchor", "end")
-.attr("x", 0)
-.attr("y", -20 )
-.text("Percentage%")
-.attr("text-anchor", "start")
 
 //Add Percentages into Arrays
-var exclusive_three_arr= nodes[3].percentages;
-var exclusive_six_arr= nodes[4].percentages;
+var ever_arr= nodes[0].percentages;
+var ever_six_arr= nodes[1].percentages;
+var ever_three_arr= nodes[2].percentages;
+
 //Add the Exclusive 3months Line path
-var exclusiveThreeLine = d3.line()
+var everThreeLine = d3.line()
 .x(function(d,i){return x(parseYears(years[i]))})
 .y(function(d,i){ return y(d)})
 mainCanvas.append("path")
-.data([exclusive_three_arr])
-.attr("class", "line exclusiveLine")
-.attr("d", exclusiveThreeLine)  
-.on("click", function() { window.open("https://www.cdc.gov/breastfeeding/data/nis_data/results.html"); }); // when clicked, opens window 
+.data([ever_three_arr])
+.attr("class", "line everLine")
+.attr("d", everThreeLine)  
 
 
 //Add the Exclusive 6months Line path
-var exclusiveSixLine = d3.line()
+var everSixLine = d3.line()
 .x(function(d,i){return x(parseYears(years[i]))})
 .y(function(d,i){ return y(d)})
 mainCanvas.append("path")
-.data([exclusive_six_arr])
+.data([ever_six_arr])
 .attr("class", "line sixLine")
-.attr("d", exclusiveSixLine)  
-.on("click", function() { window.open("https://www.cdc.gov/breastfeeding/data/nis_data/results.html"); }); // when clicked, opens window 
+.attr("d", everSixLine)  
 
 //Add Title of the Exclusive Graph
 mainCanvas.append("text")
@@ -136,20 +128,22 @@ mainCanvas.append("text")
 // .attr("y", margin.top -50)
 .attr("x", 0 )
  .attr("y", -margin.bottom -20)
-.text("Babies Exclusive Breastfed From 2012 to 2019")
+.text("Babies Ever Breastfed From 2012 to 2019")
 .style("font-size", "20px").attr("alignment-baseline","middle")
 
 //Add Color Legends
 mainCanvas.append("circle")
 .attr("cx",graphHeight+margin.left)
 .attr("cy",130)
-.attr("r", 6).style("fill", "#57B795")
+.attr("r", 6).style("fill", "#798BBC")
 mainCanvas.append("circle")
 .attr("cx",graphHeight+margin.left)
 .attr("cy",160).attr("r", 6)
 .style("fill", "#a1d99b")
 
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 130).text("For 3 months").style("font-size", "15px").attr("alignment-baseline","middle")
+mainCanvas.append("text")
+.attr("x", graphHeight+margin.left+20)
+.attr("y", 130).text("For 3 months").style("font-size", "15px").attr("alignment-baseline","middle")
 mainCanvas.append("text")
 .attr("x", graphHeight+margin.left+20)
 .attr("y", 160).text("For 6 months").style("font-size", "15px").attr("alignment-baseline","middle")     
@@ -158,17 +152,17 @@ mainCanvas.append("text")
 
 //Add Circles on the formula line at 2 days 
 mainCanvas.selectAll("circles")
-.data(exclusive_three_arr)
+.data(ever_three_arr)
 .enter()
 .append("circle")
-.attr("class", "Exclusive")
+.attr("class", "Ever")
 .attr("cx", (d,i)=>x(parseYears(years[i])))
 .attr("cy", (d)=>y(d))
 .attr("r", 5)
-//Add Circles on the formula line at 3months
-
-mainCanvas.selectAll("circles")
-.data(exclusive_six_arr)
+//Add Circles on the 6 months
+const six_circles = mainCanvas.append("g");
+six_circles.selectAll("circles")
+.data(ever_six_arr)
 .enter()
 .append("circle")
 .attr("class", "Six_Months")

@@ -44,7 +44,36 @@ async function init() {
                     return d;
                    
           });//end nodes
-    //Set the ranges and domains
+ //Annotations
+ const annotations = [
+  {
+      note: {
+        label: "About 35% who were supported with formula at age less 6 months",
+        title: "Formula Supplementation",
+        align: "left",
+        wrap: 100,
+
+        
+      },
+      connector: {
+        end: "dot",        // Can be none, or arrow or dot
+        type: "line",      // ?? don't know what it does
+        lineType : "vertical",    // ?? don't know what it does
+        endScale: 10     // dot size
+      },
+      color: ["#000000"],
+
+      
+      x: graphWidth/5,
+      y: graphHeight/3.4,
+      dy: graphHeight/3,
+      dx: graphWidth/5
+    }
+  ]
+  // Add annotation to the baby chart
+const makeAnnotations = d3.annotation()
+.annotations(annotations);
+
  //Set the ranges and domains
  var x = d3.scaleTime()
  .domain(d3.extent(years, (d,i) => parseYears(d)))
@@ -65,6 +94,19 @@ mainCanvas.append("g")
 mainCanvas.append("g")
 .call(yAxis);
 
+// Add X axis label:
+mainCanvas.append("text")
+.attr("text-anchor", "end")
+.attr("x", graphWidth)
+.attr("y", graphHeight+50 )
+.text("Year Of Birth");
+// Add Y axis label:
+mainCanvas.append("text")
+.attr("text-anchor", "end")
+.attr("x", 0)
+.attr("y", -20 )
+.text("Percentage%")
+.attr("text-anchor", "start")
 //Add Percentages into Arrays
 var formula_six_arr= nodes[5].percentages;
 var formula_2d_arr= nodes[6].percentages;
@@ -93,7 +135,7 @@ function repeat(path) {
           .duration(3000)
         //   .on("end", () => setTimeout(repeat, 1000)); // this will repeat the animation after waiting 1 second
 }
-repeat(path_formula_six)
+// repeat(path_formula_six)
 //Add the Formula Two Line path
 var formulaTwoLine = d3.line()
 .x(function(d,i){return x(parseYears(years[i]))})
@@ -106,7 +148,7 @@ var path_formula_two=mainCanvas.append("path")
 // Get the length of the path, which we will use for the intial offset to "hide"
   // the graph
   length = path_formula_two.node().getTotalLength();
-  repeat(path_formula_two);
+  // repeat(path_formula_two);
 //Add the Formula Two Line path
 var formulaThreeLine = d3.line()
 .x(function(d,i){return x(parseYears(years[i]))})
@@ -119,22 +161,37 @@ var path_formula_three=mainCanvas.append("path")
 // Get the length of the path, which we will use for the intial offset to "hide"
   // the graph
   length = path_formula_three.node().getTotalLength();
-  repeat(path_formula_three);
+  // repeat(path_formula_three);
 
 //Add Title of the Ever Graph
 mainCanvas.append("text")
-.attr("x", margin.right).attr("y", margin.top -50)
+.attr("x", 0 )
+ .attr("y", -margin.bottom -20)
 .text("Babies Supported With Formula From 2012 to 2019")
 .style("font-size", "20px").attr("alignment-baseline","middle")
 
 //Add Color Legends
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",130).attr("r", 6).style("fill", "#75c0f3")
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",160).attr("r", 6).style("fill", "#5894bb")
-mainCanvas.append("circle").attr("cx",graphHeight+margin.left).attr("cy",190).attr("r", 6).style("fill", "#2c7fb8")
+mainCanvas.append("circle")
+.attr("cx",graphHeight+margin.left)
+.attr("cy",130).attr("r", 6).style("fill", "#a1d99b")
+mainCanvas.append("circle")
+.attr("cx",graphHeight+margin.left)
+.attr("cy",160).attr("r", 6).style("fill", "#798BBC")
+mainCanvas.append("circle")
+.attr("cx",graphHeight+margin.left)
+.attr("cy",190).attr("r", 6).style("fill", "#E072B6")
 
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 130).text("At 2 Days").style("font-size", "15px").attr("alignment-baseline","middle")
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 160).text("At 3 months").style("font-size", "15px").attr("alignment-baseline","middle")     
-mainCanvas.append("text").attr("x", graphHeight+margin.left+20).attr("y", 190).text("At 6 months").style("font-size", "15px").attr("alignment-baseline","middle")   
+mainCanvas.append("text")
+.attr("x", graphHeight+margin.left+20)
+.attr("y", 130).text("Formula Supplementation < 2 days")
+.style("font-size", "15px")
+.attr("alignment-baseline","middle")
+mainCanvas.append("text")
+.attr("x", graphHeight+margin.left+20)
+.attr("y", 160).text("Formula Supplementation < 3 months").style("font-size", "15px").attr("alignment-baseline","middle")     
+mainCanvas.append("text")
+.attr("x", graphHeight+margin.left+20)
+.attr("y", 190).text("Formula Supplementation < 6 months").style("font-size", "15px").attr("alignment-baseline","middle")   
 
 //Add Circles on the formula line 
 mainCanvas.selectAll("circles")
@@ -144,9 +201,9 @@ mainCanvas.selectAll("circles")
 .attr("class", "formulaCircle")
 .attr("cx", (d,i)=>x(parseYears(years[i])))
 .attr("cy", (d)=>y(d))
-.transition()
-.delay(2000)
-.attr("r", 5)
+// .transition()
+// .delay(2000)
+ .attr("r", 5)
 
 //Add Circles on the formula line at 2 days 
 mainCanvas.selectAll("circles")
@@ -156,9 +213,9 @@ mainCanvas.selectAll("circles")
 .attr("class", "formulaTwoCircle")
 .attr("cx", (d,i)=>x(parseYears(years[i])))
 .attr("cy", (d)=>y(d))
-.transition()
-.delay(2000)
-.attr("r", 5)
+// .transition()
+// .delay(2000)
+ .attr("r", 5)
 //Add Circles on the formula line at 3months
 
 mainCanvas.selectAll("circles")
@@ -167,12 +224,19 @@ mainCanvas.selectAll("circles")
 .append("circle")
 .attr("class", "formulaThreeCircle")
 .attr("cx", (d,i)=>x(parseYears(years[i])))
-.transition()
-.delay(2000)
-.attr("cy", (d)=>y(d))
-.attr("r", 5)
+// .transition()
+// .delay(2000)
+ .attr("cy", (d)=>y(d))
+ .attr("r", 5)
 
-
+//Annotations
+mainCanvas.append("g")
+.attr("class", "annotation-group")
+.call(makeAnnotations)
+.transition().duration(2000).delay(500)
+                      .style("opacity", 1);
 }
- init();
+init()
+
+ 
         

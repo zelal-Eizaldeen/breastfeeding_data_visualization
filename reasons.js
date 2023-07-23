@@ -13,10 +13,6 @@ const margin = {top:20, right:20, bottom:70, left:70};
 const graphWidth = 600 - margin.left - margin.right;
 const graphHeight = 600 - margin.top - margin.bottom;
 
-//Define Tooltip
-// var div = d3.select("body").append("div")
-//             .attr("class", "tooltip")
-//             .style("opacity", 0);
 
 //Define Tooltip
  var tooltip = d3.select("body").append("div")
@@ -42,10 +38,6 @@ var mouseover = function(d,i,n){
         </br>
         <b>Percentages: </b>
         ${d.percentages}%
-        </br>
-        <b>More info?</b>
-        <a class="link" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4861949/">NCBI</a>
-        
         </p>
         
         `)
@@ -76,8 +68,8 @@ const mainCanvas = svg.append("g")
 const annotations = [
     {
         note: {
-          label: "The most common reasons cited were concerns about milk supply (57.8%).",
-          title: "Nutritional Factors",
+          label: "The most common reasons cited were coming from Cultural norms and lack of family support..",
+          title: "Lifestyle Factors",
           align: "left",
           wrap: 100,
           
@@ -90,10 +82,10 @@ const annotations = [
         },
         color: ["#000000"],
         
-        x: graphWidth/2/2,
-        y: graphHeight/8,
-        dy: 60,
-        dx: 40
+        x: graphWidth/2,
+        y: graphHeight/2.5,
+        dy: 80,
+        dx: graphHeight-150
       }
     ]
     // Add annotation to the baby chart
@@ -120,6 +112,13 @@ async function init() {
                             return +d.percentages;
                         }))
                         .range([10, maxRadius + 20]);
+//Add title 
+var title_g = mainCanvas.append("g");
+title_g.append("text")
+        .attr("x", 0 )
+        .attr("y", -margin.bottom -20)
+        .text("Percentage of Mothers Citing Reasons for Stopping Breastfeeding")
+        .style("font-size", "20px").attr("alignment-baseline","right")
      // Add x axis
      var x = d3.scaleLinear()
     .domain([0, maxRadius])
@@ -128,19 +127,28 @@ async function init() {
     .attr("transform", "translate(0," + graphHeight + ")")
     .call(d3.axisBottom(x));
 
+    // Add X axis label:
+mainCanvas.append("text")
+.attr("text-anchor", "end")
+.attr("x", graphWidth)
+.attr("y", graphHeight+50 )
+.text("% of Mothers stopped");
     // Add Y axis
   var y = d3.scaleLinear()
           .domain([35, 100])
           .range([ graphHeight, 0]);
+
+ // Add Y axis label:
+ mainCanvas.append("text")
+ .attr("text-anchor", "end")
+ .attr("x", 0)
+ .attr("y", -20 )
+ .text("Factors")
+ .attr("text-anchor", "start")
    mainCanvas.append("g")
               .call(d3.axisLeft(y));
 
-           
-                
 
-//Annotations
-mainCanvas.append("g")
-           .attr("class", "annotation-group").call(makeAnnotations);
     var nodes = d3.range(data.length)
                 .map(function (d) {
                     let i = + data[d].category_code,
@@ -187,16 +195,7 @@ mainCanvas.append("g")
                                 
                                 .on("mouseout", mouseout)
                                 .on("scroll", scroll)
-                                // function(d,i,n){
-                                    //  d3.select(n[i])
-                                    //    .transition()
-                                    //    .duration(200)
-                                    //    .style("opacity", 1);
-                                    // div.transition()
-                                    // .duration(500)
-                                    // .style("opacity", 0)
-                                   // }
-                                    
+                               
                                     .attr("class", function(d) 
                                     { return "bubbles " + d.base_type })
      
@@ -238,38 +237,70 @@ function layoutTick(e) {
 
            return function(t) { return d.radius = i(t)}
       });
+
+      //Annotations
+ mainCanvas.append("g")
+ .attr("class", "annotation-group")
+ .call(makeAnnotations)
+ .transition().duration(2000).delay(500)
+                       .style("opacity", 1);
 //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")
-            //.attr("transform", `translate(${graphWidth + 100}, 30)`);
-legendGroup.append("circle")
-           .attr("cx",graphHeight+margin.left+100)
-           .attr("cy",130).attr("r", 6)
-           .style("fill", "#798BBC")
-legendGroup.append("circle")
-        .attr("cx",graphHeight+margin.left+100)
-        .attr("cy",160).attr("r", 6)
-        .style("fill", "#57B795")
-legendGroup.append("circle").attr("cx",graphHeight+margin.left+100).attr("cy",190).attr("r", 6).style("fill", "#F97850")
-legendGroup.append("circle").attr("cx",graphHeight+margin.left+100).attr("cy",220).attr("r", 6).style("fill", "#97D443")
+
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin.left+100)
-.attr("cy",250).attr("r", 6).style("fill", "#E072B6")
+.attr("cy",130).attr("r", 6).style("fill", "#F97850")
+
 
 
 legendGroup.append("text")
-            .attr("x", graphHeight+margin.left+120)
-            .attr("y", 130)
-            .text("Nutritional Factors")
-            .style("font-size", "18px")
-            .attr("alignment-baseline","middle")
+.attr("x", graphHeight+margin.left+120)
+.attr("y", 130).text("Lifestyle Factors").style("font-size", "18px").attr("alignment-baseline","middle")
+
+
+legendGroup.append("text")
+.attr("x", graphHeight+margin.left+120)
+.attr("y", 160).text("Psychosocial Factors")
+.style("font-size", "18px")
+.attr("alignment-baseline","middle")
+
+
+legendGroup.append("circle")
+        .attr("cx",graphHeight+margin.left+100)
+        .attr("cy",160).attr("r", 6)
+        .style("fill", "#798BBC")
+
+        legendGroup.append("circle")
+        .attr("cx",graphHeight+margin.left+100)
+        .attr("cy",190).attr("r", 6).style("fill", "#E072B6")
+        
+legendGroup.append("text")
+.attr("x", graphHeight+margin.left+120)
+.attr("y", 190).text("Nutritional Factors").style("font-size", "18px").attr("alignment-baseline","middle")     
+legendGroup.
+append("circle")
+.attr("cx",graphHeight+margin.left+100)
+.attr("cy",220).attr("r", 6)
+.style("fill", "#57B795")
+
+
+legendGroup.append("circle")
+.attr("cx",graphHeight+margin.left+100)
+.attr("cy",250).attr("r", 6).style("fill", "#97D443")
+
+
             
-legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 160).text("Lactational Factors").style("font-size", "18px").attr("alignment-baseline","middle")
-  
-legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 190).text("Psychosocial Factors").style("font-size", "18px").attr("alignment-baseline","middle")
+legendGroup.append("text")
+.attr("x", graphHeight+margin.left+120)
+.attr("y", 220).text("Lactational Factors")
+.style("font-size", "18px").attr("alignment-baseline","middle")     
+
    
-legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 220).text("Medical Factors").style("font-size", "18px").attr("alignment-baseline","middle")     
-legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 250).text("Lifestyle Factors").style("font-size", "18px").attr("alignment-baseline","middle")     
+legendGroup.append("text")
+.attr("x", graphHeight+margin.left+120)
+.attr("y", 250).text("Medical Factors")
+.style("font-size", "18px").attr("alignment-baseline","middle")     
 
 
 

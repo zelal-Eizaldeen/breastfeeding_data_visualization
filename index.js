@@ -6,10 +6,10 @@ const graphHeight = 500;
 const type = d3.annotationLabel;
 const pdf = document.querySelector("#download_pdf");
 pdf.style.visibility = 'hidden'; 
-
+//Array of colors
+var legendColorsArray = ["#8da0cb", "#66c2a5"]
 //Color
 const mColors = d3.scaleOrdinal(d3['schemeSet2']);
-
 const babyCheckbox = document.querySelector("#baby");
 const motherCheckbox = document.querySelector("#mother");
 d3.selectAll(".region_cb").on("change", function ()
@@ -142,16 +142,6 @@ d3.selectAll(".region_cb").on("change", function ()
 var div = d3.select("body").append("div")
 .attr("class", "tooltip")
 .style("opacity", 0);
-
-  // var mouseover = function(d,i,n){
-  //   d3.select(n[i])
-  //   .transition()
-  //   .duration(100)
-  //   .style("opacity", 0.7);
-  // div.transition()
-  //       .duration(200)
-  //       .style("opacity", 0.9)
-  // }
             
   var mouseover = function(d,i,n){
     d3.select(n[i])
@@ -204,6 +194,7 @@ var div = d3.select("body").append("div")
       }
 
 async function init_mum() {
+
  const svg = canvas.append("svg")
             .attr("width", 1000)
             .attr("height", 750)
@@ -236,15 +227,17 @@ const makeAnnotations_mums = d3.annotation()
 .annotations(annotations_mums);
         const data = await d3.csv(
                     'Breastfeeding_Outcomes.csv');
-                    var numberOfBaseTypeScale = d3.scaleOrdinal().domain(data.map(
-                      d=>d.category_code_baby
-                  ))
-                
-                  var distinctTypesScale = numberOfBaseTypeScale.domain().length;
-                
-                 var nodes = d3.range(data.length)
-                                .map(function (d) {
-                                    let i = + data[d].category_code_baby;
+    var numberOfBaseTypeScale = d3.scaleOrdinal()
+    .domain(data.map(
+        d=>d.category_code_Mum
+    ))
+  
+    var distinctTypesScale = numberOfBaseTypeScale
+            .domain().length;
+  
+    var nodes = d3.range(data.length)
+                  .map(function (d) {
+                                    let i = + data[d].category_code_Mum;
                                     d={
                                       cluster: i,
                                       Outcomes_Mum: data[d].Outcomes_Mum,
@@ -253,12 +246,11 @@ const makeAnnotations_mums = d3.annotation()
                                     }
                                return d;
                                 });
-                 //Array of colors
-                 var legendColorsArray = ["#66c2a5", "#fc8d62", "#8da0cb","#e78ac3","#a6d854"]
-                 mColors.domain(data.map(d=>d.Breastfeeding_Period))
+  //                //Array of colors
+  mColors.domain(data.map(d=>d.Breastfeeding_Period))
                          .range(legendColorsArray)
-                    var x_Mum = d3.scaleBand() 
-                    .domain(data.map(item =>item.Outcomes_Mum))
+                var x_Mum = d3.scaleBand() 
+               .domain(data.map(item =>item.Outcomes_Mum))
                     .range([0,graphWidth])
                     .paddingInner(0.3)
                 
@@ -280,7 +272,7 @@ const makeAnnotations_mums = d3.annotation()
           
                        
                     ///Mummies Bar Chart
-        var title_mum =svg.append("g")
+    var title_mum =svg.append("g")
 
         title_mum.append("text")
         .text("Benefits For Mothers")
@@ -350,40 +342,48 @@ const makeAnnotations_mums = d3.annotation()
           return mColors(d.cluster / distinctTypesScale)
     })
    
+
+    
         svg.append("g")
         .attr("class", "annotation-group").call(makeAnnotations_mums);
     //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")
 //.attr("transform", `translate(${graphWidth + 100}, 30)`);
+
+
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin+100)
 .attr("cy",130).attr("r", 6)
-.style("fill", "#E072B6")
+.style("fill", "#798BBC").style("cursor","pointer")
+.on("click", function() { window.open("ever.html"); })
+
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin+100)
-.attr("cy",160).attr("r", 6)
-.style("fill", "#a6d854")
-legendGroup.append("circle")
-.attr("cx",graphHeight+margin+100)
-.attr("cy",190).attr("r", 6)
+.attr("cy",160).attr("r", 6).style("cursor","pointer")
 .style("fill", "#66c2a5")
+.on("click", function() { window.open("exclusive.html"); })
 
 legendGroup.append("text")
             .attr("x", graphHeight+margin+120)
             .attr("y", 130)
-            .text("Exclusive")
+            .text("Ever Breastfeeding")
             .style("font-size", "18px")
             .attr("alignment-baseline","middle")
+            .attr("class", "underline")
+            .on("click", function() { window.open("ever.html"); }) 
             
-legendGroup.append("text")
-.attr("x", graphHeight+margin+120).attr("y", 160)
-.text("For 6 months").style("font-size", "18px")
-.attr("alignment-baseline","middle")
+// legendGroup.append("text")
+// .attr("x", graphHeight+margin+120).attr("y", 160)
+// .text("For 6 months").style("font-size", "18px")
+// .attr("alignment-baseline","middle")
   
 legendGroup.append("text").attr("x", graphHeight+margin+120)
-.attr("y", 190).text("Ever")
-.style("font-size", "18px").attr("alignment-baseline","middle")
+.attr("y", 160).text("Exclusive Breastfeeding")
+.style("font-size", "18px")
+.attr("alignment-baseline","middle")
+.attr("class", "underline")
+            .on("click", function() { window.open("ever.html"); }) 
         }
     
 
@@ -426,11 +426,13 @@ async function init() {
   const data = await d3.csv(
         'Breastfeeding_Outcomes.csv'
     );
-    var numberOfBaseTypeScale = d3.scaleOrdinal().domain(data.map(
+    var numberOfBaseTypeScale = d3.scaleOrdinal()
+    .domain(data.map(
       d=>d.category_code_baby
   ))
 
-  var distinctTypesScale = numberOfBaseTypeScale.domain().length;
+  var distinctTypesScale = numberOfBaseTypeScale
+        .domain().length;
 
  var nodes = d3.range(data.length)
                 .map(function (d) {
@@ -444,8 +446,7 @@ async function init() {
                return d;
                 });
               
- //Array of colors
- var legendColorsArray = ["#66c2a5", "#fc8d62", "#8da0cb","#e78ac3","#a6d854"]
+ 
  mColors.domain(data.map(d=>d.Breastfeeding_Period))
          .range(legendColorsArray)
    var x = d3.scaleBand() 
@@ -507,16 +508,7 @@ async function init() {
         .on("mouseover", mouseover)
         // .on("mousemove", mousemove)
         .on("mouseout", mouseout)
-        // function(d,i,n){
-        //      d3.select(n[i])
-        //        .transition()
-        //        .duration(100)
-        //        .style("opacity", 1);
-        //     div.transition()
-        //     .duration(500)
-        //     .style("opacity", 0)
-        //     })
-
+       
         .transition()
            .attr("y", (d,i)=> y(d.Lower_Risk))
            .delay((d,i) => i * 100 )
@@ -537,36 +529,39 @@ async function init() {
  //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")
-//.attr("transform", `translate(${graphWidth + 100}, 30)`);
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin+100)
 .attr("cy",130).attr("r", 6)
-.style("fill", "#E072B6")
+.style("fill", "#798BBC").style("cursor","pointer")
+.on("click", function() { window.open("ever.html"); }) // when clicked, opens window with google.com.
+
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin+100)
 .attr("cy",160).attr("r", 6)
-.style("fill", "#a6d854")
-legendGroup.append("circle")
-.attr("cx",graphHeight+margin+100)
-.attr("cy",190).attr("r", 6)
-.style("fill", "#66c2a5")
+.style("fill", "#66c2a5").style("cursor","pointer")
+.on("click", function() { window.open("exclusive.html"); }) // when clicked, opens window with google.com.
+
 
 legendGroup.append("text")
             .attr("x", graphHeight+margin+120)
             .attr("y", 130)
-            .text("Exclusive")
+            .text("Ever Breastfeeding")
             .style("font-size", "18px")
             .attr("alignment-baseline","middle")
+            .attr("class", "underline")
+            .on("click", function() { window.open("ever.html"); }) 
             
-legendGroup.append("text")
-.attr("x", graphHeight+margin+120).attr("y", 160)
-.text("For 6 months").style("font-size", "18px")
-.attr("alignment-baseline","middle")
+// legendGroup.append("text")
+// .attr("x", graphHeight+margin+120).attr("y", 160)
+// .text("For 6 months").style("font-size", "18px")
+// .attr("alignment-baseline","middle")
   
 legendGroup.append("text").attr("x", graphHeight+margin+120)
-.attr("y", 190).text("Ever")
-.style("font-size", "18px").attr("alignment-baseline","middle")
+.attr("y", 160).text("Exclusive Breastfeeding")
+.style("font-size", "18px")
+.attr("alignment-baseline","middle")
+.attr("class", "underline")
+.on("click", function() { window.open("ever.html"); }) 
 
 
           } 
-    // init(); 

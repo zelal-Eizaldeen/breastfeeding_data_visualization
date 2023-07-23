@@ -58,6 +58,14 @@ img {
     overflow:hidden;
     
   }
+  /* .underline{
+    text-decoration: underline;
+  } */
+  .underline:hover{
+    text-decoration: underline;
+    cursor: pointer;
+   color: #798BBC;
+  }
   .pdf_icon{
     width:40px;
     height:40px;
@@ -222,22 +230,25 @@ g .tick line {
 .formulaLine{
     stroke: #E072B6;
 }
+.formulaCircle{
+    fill: #E072B6;
+}
 .formulaTwoLine{
-    stroke: #75c0f3;
+    stroke: #a1d99b;
 
 }
 .formulaThreeLine{
-    stroke: #69addaee;
+    stroke: #798BBC;
 
 }
 .Formula{
     fill: #E072B6;
 }
 .formulaTwoCircle{
-    fill: #E072B6;
+    fill: #a1d99b;
 }
 .formulaThreeCircle{
-    fill: #5894bb;
+    fill: #798BBC;
 }
 .Ever{
     fill: #798BBC;

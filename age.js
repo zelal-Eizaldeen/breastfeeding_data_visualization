@@ -217,7 +217,8 @@ mainCanvas.append("text")
             .transition()
             .ease(d3.easeLinear)
             .attr("stroke-dashoffset", 0)
-            .duration(3000)   
+            .duration(1000)   
+            
             // .on("end", () => setTimeout(repeat(path), 1000)); // this will repeat the animation after waiting 1 second
   
   }
@@ -238,12 +239,12 @@ ever_g.selectAll("circle")
         .on("mousemove", mousemove)
         .on("mouseout", mouseout)
         .transition()
-        .duration(3000)  
-        .delay(300) 
+        .duration(1000)  
+        // .delay(300) 
         .attr("cx", (d,i)=> x(parseAge(ages[i])))
         .attr("cy", (d)=>y(d))
             
-            var exclusive_g = mainCanvas.append("g");
+ var exclusive_g = mainCanvas.append("g");
             //Add Circles on the exclusive dots 
             exclusive_g.selectAll("circle")
             .data(exclusive)
@@ -256,35 +257,49 @@ ever_g.selectAll("circle")
                     .on("mouseover", mouseover)
                     .on("mousemove", mousemove)
                     .on("mouseout", mouseout)
-                    .on("click", function() { window.open("exclusive.html"); }) // when clicked, opens window with google.com.
 
                     .transition()
-                    .duration(3000)  
-                    .delay(100) 
+                    .duration(1000)  
+                    // .delay(100) 
                     .attr("cx", (d,i)=> x(parseAge(ages[i])))
                     .attr("cy", (d)=>y(d))
+
+
             const legendGroup = mainCanvas.append("g");
-            legendGroup.append("circle")
+       legendGroup.append("circle")
                        .attr("cx",graphHeight+margin.left+100)
                        .attr("cy",130).attr("r", 6)
                        .style("fill", "#798BBC")
+                       .style("cursor", "pointer")
             legendGroup.append("circle")
                     .attr("cx",graphHeight+margin.left+100)
                     .attr("cy",160).attr("r", 6)
                     .style("fill", "#57B795")
-             legendGroup.append("text")
+                    .style("cursor", "pointer")
+
+            legendGroup.append("text")
                     .attr("x", graphHeight+margin.left+120)
                     .attr("y", 130)
                     .text("Ever Breastfeeding")
                     .style("font-size", "18px")
                     .attr("alignment-baseline","middle")
-            legendGroup.append("text").attr("x", graphHeight+margin.left+120).attr("y", 160).text("Exclusive Breastfeeding").style("font-size", "18px").attr("alignment-baseline","middle")     
+                    .attr("class", "underline")
+                    .on("click", function() { window.open("ever.html"); }); // when clicked, opens window with google.com.
+                    
+            legendGroup.append("text")
+            .attr("x", graphHeight+margin.left+120).attr("y", 160)
+            .text("Exclusive Breastfeeding").style("font-size", "18px")
+            .attr("alignment-baseline","middle")     
+            .attr("class", "underline")
+            .on("click", function() { window.open("exclusive.html"); }); // when clicked, opens window with google.com.
+
+
       
-            //Annotations
+      //Annotations
             mainCanvas.append("g")
                        .attr("class", "annotation-group")
                        .call(makeAnnotations)
-                       .transition().duration(6000).delay(1000)
+                       .transition().duration(2000).delay(500)
                        .style("opacity", 1);
 }
 
@@ -409,23 +424,23 @@ mainCanvas.append("text")
 
 
 //Add Circles on the 12 months circles 
-var twelve_g = mainCanvas.append("g");
-twelve_g.selectAll("circle")
-.data(twelve_months_arr)
-.enter()
-.append("circle")
-.attr("class", "Twelve_Months")
-.attr("cx", 0)
-.attr("cy", (d)=>y(d))
-.on("mouseover", mouseover)
-.on("mousemove", mousemove)
-.on("mouseout", mouseout)
-            .transition()
-            .duration(3000)  
-            .delay(300) 
-.attr("cx", (d,i)=>x(parseYears(years[i])))
-.attr("cy", (d)=>y(d))
-.attr("r", 5)
+// var twelve_g = mainCanvas.append("g");
+// twelve_g.selectAll("circle")
+// .data(twelve_months_arr)
+// .enter()
+// .append("circle")
+// .attr("class", "Twelve_Months")
+// .attr("cx", 0)
+// .attr("cy", (d)=>y(d))
+// .on("mouseover", mouseover)
+// .on("mousemove", mousemove)
+// .on("mouseout", mouseout)
+//             .transition()
+//             .duration(3000)  
+//             .delay(300) 
+// .attr("cx", (d,i)=>x(parseYears(years[i])))
+// .attr("cy", (d)=>y(d))
+// .attr("r", 5)
 
 
 //Add Circles on the exclusive dots 
@@ -441,8 +456,8 @@ exc_g.selectAll("circle")
 .on("mousemove", mousemove)
 .on("mouseout", mouseout)
             .transition()
-            .duration(3000)  
-            .delay(300) 
+            .duration(1000)  
+            // .delay(300) 
 
 .attr("cx", (d,i)=>x(parseYears(years[i])))
 .attr("cy", (d)=>y(d))
@@ -480,7 +495,7 @@ var path_exclusive=mainCanvas.append("path")
       .data([ever_arr])
       .attr("class", "line everLine")
       .attr("d", everLine) 
-      .on("click", function() { window.open("https://publications.aap.org/view-large/10993082?autologincheck=redirected"); }); // when clicked, opens window with google.com.
+      .on("click", function() { window.open("ever.html"); }); // when clicked, opens window with google.com.
 
 //Add the Six Months Line path
 var sixLine = d3.line()
@@ -490,18 +505,18 @@ var path_six=mainCanvas.append("path")
 .data([six_months_arr])
 .attr("class", "line sixLine")
 .attr("d", sixLine)  
-.on("click", function() { window.open("https://publications.aap.org/view-large/10993082?autologincheck=redirected"); }) // when clicked, opens window with google.com.
+.on("click", function() { window.open("ever.html"); }); // when clicked, opens window with google.com.
 
 
 //Add the Twelve Months Line path
-var twelveLine = d3.line()
-.x(function(d,i){return x(parseYears(years[i]))})
-.y(function(d,i){ return y(d)})
-var path_twelve=mainCanvas.append("path")
-.data([twelve_months_arr])
-.attr("class", "line twelveLine")
-.attr("d", twelveLine) 
-.on("click", function() { window.open("https://publications.aap.org/view-large/10993082?autologincheck=redirected"); }); // when clicked, opens window with google.com.
+// var twelveLine = d3.line()
+// .x(function(d,i){return x(parseYears(years[i]))})
+// .y(function(d,i){ return y(d)})
+// var path_twelve=mainCanvas.append("path")
+// .data([twelve_months_arr])
+// .attr("class", "line twelveLine")
+// .attr("d", twelveLine) 
+// .on("click", function() { window.open("https://publications.aap.org/view-large/10993082?autologincheck=redirected"); }); // when clicked, opens window with google.com.
 
 //Add Title of the Ever Graph
 mainCanvas.append("text")
@@ -531,7 +546,7 @@ repeat(path_exclusive);
 repeat(path_formula);
 repeat(path_ever);   
 repeat(path_six);
-repeat(path_twelve); 
+//repeat(path_twelve); 
 
 //Types 
 types_arr = []
@@ -561,23 +576,35 @@ legendGroup.append("circle")
         .attr("cx",graphHeight+margin.left+100)
         .attr("cy",130).attr("r", 6)
         .style("fill", "#798BBC")
+        .style("cursor", "pointer")
+        .on("click", function() { window.open("ever.html"); }) // when clicked, opens window with google.com.
+
 legendGroup.append("circle")
      .attr("cx",graphHeight+margin.left+100)
      .attr("cy",160).attr("r", 6)
      .style("fill", "#a1d99b")
-legendGroup.append("circle")
-.attr("cx",graphHeight+margin.left+100)
-.attr("cy",190).attr("r", 6).style("fill", "#F97850")
+     .style("cursor", "pointer")
+     .on("click", function() { window.open("ever.html"); }); // when clicked, opens window.
+
+
+// legendGroup.append("circle")
+// .attr("cx",graphHeight+margin.left+100)
+// .attr("cy",190).attr("r", 6).style("fill", "#F97850")
 legendGroup.
 append("circle")
 .attr("cx",graphHeight+margin.left+100)
-.attr("cy",220).attr("r", 6).style("fill", "#57B795").style("cursor","pointer")
+.attr("cy",220).attr("r", 6)
+.style("fill", "#57B795").style("cursor","pointer")
 .on("click", function() { window.open("exclusive.html"); }); // when clicked, opens window.
 
 legendGroup.append("circle")
-.attr("cx",graphHeight+margin.left+100)
+.attr("cx",graphHeight+margin.left+100).style("cursor","pointer")
 .attr("cy",250).attr("r", 6).style("fill", "#E072B6")
-.on("click", function() { window.open("formula.html"); }); // when clicked, opens window.
+
+
+.on("click", function() { window.open("formula.html"); }) // when clicked, opens window.
+  //n.attr("text-decoration","underline"))
+// d.style("text-decoration","underline")
 
 
 
@@ -588,25 +615,38 @@ legendGroup.append("text")
          .text("Ever Breastfeeding")
          .style("font-size", "18px")
          .attr("alignment-baseline","middle")
+         .attr("class", "underline")
+         .on("click", function() { window.open("ever.html"); }) 
+
          
 legendGroup.append("text")
 .attr("x", graphHeight+margin.left+120)
 .attr("y", 160).text("For 6 months")
 .style("font-size", "18px")
 .attr("alignment-baseline","middle")
+.attr("class", "underline")
+.on("click", function() { window.open("ever.html"); }) 
+
+
+// legendGroup.append("text")
+// .attr("x", graphHeight+margin.left+120)
+// .attr("y", 190).text("For 12 months")
+// .style("font-size", "18px").attr("alignment-baseline","middle")
 
 legendGroup.append("text")
 .attr("x", graphHeight+margin.left+120)
-.attr("y", 190).text("For 12 months")
-.style("font-size", "18px").attr("alignment-baseline","middle")
-
-legendGroup.append("text").attr("x", graphHeight+margin.left+120)
 .attr("y", 220).text("Exclusive Breastfeeding")
 .style("font-size", "18px")
-.attr("alignment-baseline","middle")     
+.attr("alignment-baseline","middle")
+.attr("class", "underline")   
+.on("click", function() { window.open("exclusive.html"); }) // when clicked, opens window.
+
 legendGroup.append("text")
 .attr("x", graphHeight+margin.left+120).attr("y", 250)
-.text("Formula").style("font-size", "18px").attr("alignment-baseline","middle")     
+.text("Formula").style("font-size", "18px")
+.attr("alignment-baseline","middle")     
+.attr("class", "underline")
+.on("click", function() { window.open("formula.html"); }) 
 
 
   
@@ -624,8 +664,8 @@ legendGroup.append("text")
 .on("mousemove", mousemove)
 .on("mouseout", mouseout)
             .transition()
-            .duration(3000)  
-            .delay(300) 
+            .duration(1000)  
+            // .delay(300) 
  .attr("cx", (d,i)=>x(parseYears(years[i])))
  .attr("cy", (d)=>y(d))
  .attr("r", 5)
@@ -645,8 +685,8 @@ legendGroup.append("text")
 .on("mousemove", mousemove)
 .on("mouseout", mouseout)
             .transition()
-            .duration(3000)  
-            .delay(300) 
+            .duration(1000)  
+            // .delay(300) 
  .attr("cx", (d,i)=>x(parseYears(years[i])))
  .attr("cy", (d)=>y(d))
  .attr("r", 5)
@@ -666,8 +706,8 @@ legendGroup.append("text")
          .on("mousemove", mousemove)
          .on("mouseout", mouseout)
                      .transition()
-                     .duration(3000)  
-                     .delay(300) 
+                     .duration(1000)  
+                    //  .delay(300) 
           .attr("cx", (d,i)=>x(parseYears(years[i])))
           .attr("cy", (d)=>y(d))
           .attr("r", 5)
@@ -677,7 +717,7 @@ legendGroup.append("text")
  mainCanvas.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(6000).delay(1000)
+ .transition().duration(2000).delay(500)
                        .style("opacity", 1);
 }
 
