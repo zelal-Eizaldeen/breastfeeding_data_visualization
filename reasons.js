@@ -187,7 +187,7 @@ mainCanvas.append("text")
                 .nodes(nodes)
                    
        
- 
+                console.log(nodes[0].base_type)
         var node = mainCanvas.selectAll("circle")
                                 .data(nodes)
                                 .enter()
@@ -195,13 +195,15 @@ mainCanvas.append("text")
                                 .style("fill", function(d){
                                       return mColors(d.cluster / distinctTypesScale)
                                 })
+                                .attr("class", function(d) 
+                                { return "bubbles " + d["base_type"] })
+
                                 .on("mouseover", mouseover)
                                 
                                 .on("mouseout", mouseout)
-                                .on("scroll", scroll)
+                                
                                
-                                    .attr("class", function(d) 
-                                    { return "bubbles " + d.base_type })
+                                    
      
 
      
@@ -211,17 +213,19 @@ mainCanvas.append("text")
   // ---------------------------//
 
   // What to do when one group is hovered
-//   var highlight = function(d){
-//     // reduce opacity of all groups
-//     d3.selectAll(".bubbles").style("opacity", .05)
-//     // expect the one that is hovered
-//     d3.selectAll("."+d).style("opacity", 1)
-//   }
+  var highlight = function(d,i,n){
+   
+console.log(d)
+    // reduce opacity of all groups
+    d3.selectAll(".bubbles").style("opacity", .05)
+    // expect the one that is hovered
+    d3.selectAll("."+d).style("opacity", 1)
+  }
 
-//   // And when it is not hovered anymore
-//   var noHighlight = function(d){
-//     d3.selectAll(".bubbles").style("opacity", 1)
-//   }     
+  // And when it is not hovered anymore
+  var noHighlight = function(d){
+    d3.selectAll(".bubbles").style("opacity", 1)
+  }     
         //Function tick
 function layoutTick(e) {
     node
@@ -251,60 +255,112 @@ function layoutTick(e) {
 //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")
+var allgroups = ["Lifestyle", "Psychosocial", "Nutritional", "Lactational", "Medical"]
 
-legendGroup.append("circle")
-.attr("cx",graphHeight+margin.left+100)
-.attr("cy",130).attr("r", 6).style("fill", "#F97850")
+// legendGroup.append("circle").data(allgroups)
+// .attr("cx",graphHeight+margin.left+100)
+// .attr("cy",130).attr("r", 6)
+// .style("fill", "#F97850")
+// .on("mouseover", highlight)
+// .on("mouseleave", noHighlight)
+
+// Add one dot in the legend for each name.
+var size = 20
+var allgroups = ["Lifestyle", "Psychosocial", "Nutritional", "Lactational", "Medical"]
+legendGroup.selectAll("myrect")
+  .data(allgroups)
+  .enter()
+  .append("circle")
+    .attr("cx", graphHeight+margin.left+100)
+    .attr("cy", function(d,i){ return 150 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("r", 7)
+    .style("fill", function(d){  return mColors(d)})
+    .on("mouseover", highlight)
+    .on("mouseleave", noHighlight)
+
+// Add labels beside legend dots
+legendGroup.selectAll("mylabels")
+.data(allgroups)
+.enter()
+.append("text")
+  .attr("x", graphHeight+margin.left+120)
+  .attr("y", function(d,i){ return 150 + i*(size+5)}) // 100 is where the first dot appears. 25 is the distance between dots
+  .style("fill", function(d){ return mColors(d)})
+  .text(function(d){ return d})
+  .attr("text-anchor", "left")
+  .style("alignment-baseline", "middle")
+  .on("mouseover", highlight)
+  .on("mouseleave", noHighlight)
 
 
 
-legendGroup.append("text")
-.attr("x", graphHeight+margin.left+120)
-.attr("y", 130).text("Lifestyle Factors").style("font-size", "18px").attr("alignment-baseline","middle")
+// legendGroup.append("text").data(allgroups)
+// .attr("x", graphHeight+margin.left+120)
+// .attr("y", 130).text("Lifestyle Factors")
+// .style("font-size", "18px")
+// .attr("alignment-baseline","middle")
+// .on("mouseover", highlight)
+// .on("mouseleave", noHighlight)
 
+// legendGroup.append("text").data(allgroups)
+// .attr("x", graphHeight+margin.left+120)
+// .attr("y", 160).text("Psychosocial Factors")
+// .style("font-size", "18px")
+// .attr("alignment-baseline","middle")
+// .on("mouseover", highlight)
+// .on("mouseleave", noHighlight)
 
-legendGroup.append("text")
-.attr("x", graphHeight+margin.left+120)
-.attr("y", 160).text("Psychosocial Factors")
-.style("font-size", "18px")
-.attr("alignment-baseline","middle")
+// legendGroup.append("circle").data(allgroups)
+ 
+//         .attr("cx",graphHeight+margin.left+100)
+//         .attr("cy",160).attr("r", 6)
+//         .style("fill", "#798BBC")
+//         .on("mouseover", highlight)
+//         .on("mouseleave", noHighlight)
 
-
-legendGroup.append("circle")
-        .attr("cx",graphHeight+margin.left+100)
-        .attr("cy",160).attr("r", 6)
-        .style("fill", "#798BBC")
-
-        legendGroup.append("circle")
-        .attr("cx",graphHeight+margin.left+100)
-        .attr("cy",190).attr("r", 6).style("fill", "#E072B6")
+//         legendGroup.append("circle").data(allgroups)
+//         .attr("cx",graphHeight+margin.left+100)
+//         .attr("cy",190).attr("r", 6).style("fill", "#E072B6")
         
-legendGroup.append("text")
-.attr("x", graphHeight+margin.left+120)
-.attr("y", 190).text("Nutritional Factors").style("font-size", "18px").attr("alignment-baseline","middle")     
-legendGroup.
-append("circle")
-.attr("cx",graphHeight+margin.left+100)
-.attr("cy",220).attr("r", 6)
-.style("fill", "#57B795")
+// legendGroup.append("text").data(allgroups)
+// .attr("x", graphHeight+margin.left+120)
+// .attr("y", 190).text("Nutritional Factors")
+// .style("font-size", "18px").attr("alignment-baseline","middle")   
+// .on("mouseover", highlight)
+// .on("mouseleave", noHighlight)    
+// legendGroup.
+// append("circle").data(allgroups)
+// .attr("cx",graphHeight+margin.left+100)
+// .attr("cy",220).attr("r", 6)
+// .style("fill", "#57B795")
+// .on("mouseover", highlight)
+// .on("mouseleave", noHighlight)   
 
 
-legendGroup.append("circle")
-.attr("cx",graphHeight+margin.left+100)
-.attr("cy",250).attr("r", 6).style("fill", "#97D443")
+// legendGroup.append("circle")
+// .data(allgroups)
+
+// .attr("cx",graphHeight+margin.left+100)
+// .attr("cy",250).attr("r", 6).style("fill", "#97D443")
+// .on("mouseover", highlight)
+// .on("mouseleave", noHighlight) 
 
 
             
-legendGroup.append("text")
-.attr("x", graphHeight+margin.left+120)
-.attr("y", 220).text("Lactational Factors")
-.style("font-size", "18px").attr("alignment-baseline","middle")     
+// legendGroup.append("text").data(allgroups)
+// .attr("x", graphHeight+margin.left+120)
+// .attr("y", 220).text("Lactational Factors")
+// .style("font-size", "18px").attr("alignment-baseline","middle") 
+// .on("mouseover", highlight)
+// .on("mouseleave", noHighlight)    
 
    
-legendGroup.append("text")
-.attr("x", graphHeight+margin.left+120)
-.attr("y", 250).text("Medical Factors")
-.style("font-size", "18px").attr("alignment-baseline","middle")     
+// legendGroup.append("text").data(allgroups)
+// .attr("x", graphHeight+margin.left+120)
+// .attr("y", 250).text("Medical Factors")
+// .style("font-size", "18px").attr("alignment-baseline","middle") 
+// .on("mouseover", highlight)
+//         .on("mouseleave", noHighlight)      
 
 const legendSize = svg.append("g")
 
