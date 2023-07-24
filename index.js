@@ -5,13 +5,14 @@ const graphWidth = 500;
 const graphHeight = 500;
 const type = d3.annotationLabel;
 const pdf = document.querySelector("#download_pdf");
-pdf.style.visibility = 'hidden'; 
+// pdf.style.visibility = 'hidden'; 
 //Array of colors
 var legendColorsArray = ["#8da0cb", "#66c2a5"]
 //Color
 const mColors = d3.scaleOrdinal(d3['schemeSet2']);
 const babyCheckbox = document.querySelector("#baby");
 const motherCheckbox = document.querySelector("#mother");
+
 d3.selectAll(".region_cb").on("change", function ()
  {
   var type = this.value;
@@ -147,7 +148,9 @@ var div = d3.select("body").append("div")
     d3.select(n[i])
     .transition()
     .duration(100)
-    .style("opacity", 0.7);
+    .style("opacity", 0.5)
+    .style("stroke-width", "1px")
+  .style("stroke","black") ;
   div.transition()
         .duration(200)
         .style("opacity", 0.9)
@@ -156,12 +159,17 @@ var div = d3.select("body").append("div")
             <p> 
             <b>Disease: </b>
             ${d.Outcomes_Mum}
-            </br>
+            <br>
             <b>Lower of: </b>
             ${d.Lower_Risk_Mum}%
-            </br>
-            <b>Breastfeeding Duration: </b>
-            ${d.Breastfeeding_Period_Mum}</p>`)
+            <br>
+            <b>Breastfeeding Type: </b>
+            ${d.Breastfeeding_Period_Mum}
+            </p>
+            <span style="color:#31a354; font-size:20px;"><b><u>Click For Details</b></u></span>
+            `
+ 
+            )
                 .style("left", (d3.event.pageX+40) + "px")
                 .style("top", (d3.event.pageY-140) + "px")
  }
@@ -171,12 +179,17 @@ var div = d3.select("body").append("div")
   `<p> 
   <b>Disease: </b>
   ${d.Outcomes}
-  </br>
+  <br>
   <b>Lower of: </b>
   ${d.Lower_Risk}%
-  </br>
-  <b>Breastfeeding Duration: </b>
-  ${d.Breastfeeding_Period}</p>`)
+  <br>
+  <b>Breastfeeding Type: </b>
+  ${d.Breastfeeding_Period}
+
+  </p>
+  <span style="color:#31a354; font-size:20px;"><b><u>Click For Details</b></u></span>
+
+  `)
 
 .style("left", (d3.event.pageX+40) + "px")
   .style("top", (d3.event.pageY-140) + "px")
@@ -187,10 +200,13 @@ var div = d3.select("body").append("div")
       d3.select(n[i])
       .transition()
       .duration(100)
-      .style("opacity", 1);
+      .style("opacity", 1)
+      .style("stroke", "none"); 
    div.transition()
    .duration(500)
    .style("opacity", 0)
+  
+   
       }
 
 async function init_mum() {
@@ -279,7 +295,7 @@ svg.append("text")
       // Add Y axis label:
    svg.append("text")
    .attr("text-anchor", "end")
-   .attr("x", 0)
+   .attr("x", margin)
    .attr("y", 140 )
    .text("Percentages% of Lower Risk")
    .attr("text-anchor", "start")                 
@@ -312,37 +328,6 @@ svg.append("text")
         .attr("y", (d,i)=> y_Mum(d.Lower_Risk_Mum))
         .delay((d,i) => i * 100 )
         .ease(d3.easeBounceIn) 
-        // function(d,i,n){
-        //     d3.select(n[i])
-        //       .transition()
-        //       .duration(100)
-        //       .style("opacity", 0.7);
-        //     div.transition()
-        //          .duration(100)
-        //          .style("opacity", 0.9);
-            //Tooltip
-            //"d.lower.split(",")[1]
-        //     div.html(`
-        //     <p> 
-        //     <b>Disease: </b>
-        //     ${d.Outcomes_Mum}
-        //     </br>
-        //     <b>Lower of: </b>
-        //     ${d.Lower_Risk_Mum}%
-        //     </br>
-        //     <b>Breastfeeding Duration: </b>
-        //     ${d.Breastfeeding_Period_Mum}</p>`)
-        //         .style("left", (d3.event.pageX+40) + "px")
-        //         .style("top", (d3.event.pageY) + "px")
-        // })
-        // .on("mouseout", (d,i,n)=>
-        //      d3.select(n[i])
-        //        .transition()
-        //        .duration(100)
-        //        .style("opacity", 1))
-
-         
-
         .attr("x", (d,i)=> x_Mum(d.Outcomes_Mum))
         .attr("y", (d,i)=>y_Mum(d.Lower_Risk_Mum))
         .attr("width", x_Mum.bandwidth)
@@ -365,44 +350,79 @@ svg.append("text")
     // //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")
-//.attr("transform", `translate(${graphWidth + 100}, 30)`);
-
+legendGroup.append("text").attr("x", graphHeight+margin+100)
+.attr("y", 260).text("Click For Details")
+.style("font-size", "20px")
+.style("fill", "#31a354")
+.attr("alignment-baseline","middle")
 
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin+100)
-.attr("cy",130).attr("r", 6)
+.attr("cy",300).attr("r", 6)
 .style("fill", "#798BBC").style("cursor","pointer")
-.on("click", function() { window.open("ever.html"); })
+.on("click", function() { window.open("ever.html"); }) // when clicked, opens window with google.com.
 
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin+100)
-.attr("cy",160).attr("r", 6).style("cursor","pointer")
-.style("fill", "#66c2a5")
-.on("click", function() { window.open("exclusive.html"); })
+.attr("cy",330).attr("r", 6)
+.style("fill", "#66c2a5").style("cursor","pointer")
+.on("click", function() { window.open("exclusive.html"); }) // when clicked, opens window with google.com.
+
 
 legendGroup.append("text")
             .attr("x", graphHeight+margin+120)
-            .attr("y", 130)
+            .attr("y", 300)
             .text("Ever Breastfeeding")
             .style("font-size", "18px")
             .attr("alignment-baseline","middle")
             .attr("class", "underline")
             .on("click", function() { window.open("ever.html"); }) 
+            .on("mouseover", function() { 
+              div.transition()
+                    .duration(200)
+                    .style("opacity", 0.9)
+              div.html(
+                        `<p> 
+                        <b><u>Ever Breastfeeding Means: </b></u>
+                        <br>
+                        Mothers who were feeding their babies Breast Milk and Formula
+                       </p>
+                       <span style="color:#31a354; font-size:20px;"><b><u>Click For Details</b></u></span>
             
-// legendGroup.append("text")
-// .attr("x", graphHeight+margin+120).attr("y", 160)
-// .text("For 6 months").style("font-size", "18px")
-// .attr("alignment-baseline","middle")
+                       `)
+            
+                    .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY) + "px")
+            
+            }) 
+            .on("mouseout", mouseout)
   
 legendGroup.append("text").attr("x", graphHeight+margin+120)
-.attr("y", 160).text("Exclusive Breastfeeding")
+.attr("y", 330).text("Exclusive Breastfeeding")
 .style("font-size", "18px")
 .attr("alignment-baseline","middle")
 .attr("class", "underline")
-            .on("click", function() { window.open("ever.html"); }) 
-        }
-    
+.on("click", function() { window.open("exclusive.html")}) 
+.on("mouseover", function() { 
+  div.transition()
+        .duration(200)
+        .style("opacity", 0.9)
+  div.html(
+            `<p> 
+            <b><u>Exclusive Breastfeeding Means: </b></u>
+            <br>
+            Mothers were ONLY feeding their babies Breast Milk
+           </p>
+           <span style="color:#31a354; font-size:20px;"><b><u>Click For Details</b></u></span>
 
+           `)
+
+        .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY) + "px")
+
+}) 
+.on("mouseout", mouseout)
+}
 ///// Initiate Baby Chart //////////
 async function init() {
 
@@ -486,15 +506,16 @@ async function init() {
      // Add X axis label:
 svg.append("text")
 .attr("text-anchor", "end")
-.attr("x", graphWidth+250)
+.attr("x", graphWidth+290)
 .attr("y", graphHeight+200 )
 .text("Disease Name");
-   svg.append("g").attr("transform", "translate("+margin+","+margin+")").call(d3.axisLeft(y));
+   svg.append("g").attr("transform", "translate("+margin+","+margin+")")
+   .call(d3.axisLeft(y));
       
     // Add Y axis label:
     svg.append("text")
     .attr("text-anchor", "end")
-    .attr("x", 0)
+    .attr("x", margin)
     .attr("y", 140 )
     .text("Percentages% of Lower Risk")
     .attr("text-anchor", "start") 
@@ -502,7 +523,7 @@ svg.append("text")
     svg.append("text")
         .text("Ten common diseases in babies with their reduced risks")
         .attr("x", margin)
-        .attr("y", margin -80 )
+        .attr("y", 50 )
         .attr("font-size", 20)
     svg.selectAll('rect')
         .data(nodes)
@@ -563,27 +584,53 @@ svg.append("g")
  //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")
+
+legendGroup.append("text").attr("x", graphHeight+margin+100)
+.attr("y", 260).text("Breastfeeding Types are..")
+.style("font-size", "20px")
+.style("fill", "#31a354")
+.attr("alignment-baseline","middle")
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin+100)
-.attr("cy",130).attr("r", 6)
+.attr("cy",300).attr("r", 6)
 .style("fill", "#798BBC").style("cursor","pointer")
 .on("click", function() { window.open("ever.html"); }) // when clicked, opens window with google.com.
 
 legendGroup.append("circle")
 .attr("cx",graphHeight+margin+100)
-.attr("cy",160).attr("r", 6)
+.attr("cy",330).attr("r", 6)
 .style("fill", "#66c2a5").style("cursor","pointer")
 .on("click", function() { window.open("exclusive.html"); }) // when clicked, opens window with google.com.
 
 
 legendGroup.append("text")
             .attr("x", graphHeight+margin+120)
-            .attr("y", 130)
+            .attr("y", 300)
             .text("Ever Breastfeeding")
             .style("font-size", "18px")
             .attr("alignment-baseline","middle")
             .attr("class", "underline")
             .on("click", function() { window.open("ever.html"); }) 
+            .on("mouseover", function() { 
+              div.transition()
+                    .duration(200)
+                    .style("opacity", 0.9)
+              div.html(
+                        `<p> 
+                        <b><u>Ever Breastfeeding Means: </b></u>
+                        <br>
+                        Mothers who were feeding their babies Breast Milk and Formula
+                       </p>
+                       <span style="color:#31a354; font-size:20px;"><b><u>Click For Details</b></u></span>
+            
+                       `)
+            
+                    .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY) + "px")
+            
+            }) 
+            .on("mouseout", mouseout)
+            
             
 // legendGroup.append("text")
 // .attr("x", graphHeight+margin+120).attr("y", 160)
@@ -591,11 +638,35 @@ legendGroup.append("text")
 // .attr("alignment-baseline","middle")
   
 legendGroup.append("text").attr("x", graphHeight+margin+120)
-.attr("y", 160).text("Exclusive Breastfeeding")
+.attr("y", 330).text("Exclusive Breastfeeding")
 .style("font-size", "18px")
 .attr("alignment-baseline","middle")
 .attr("class", "underline")
-.on("click", function() { window.open("ever.html"); }) 
+.on("click", function() { window.open("exclusive.html")}) 
+.on("mouseover", function() { 
+  div.transition()
+        .duration(200)
+        .style("opacity", 0.9)
+  div.html(
+            `<p> 
+            <b><u>Exclusive Breastfeeding Means: </b></u>
+            <br>
+            Mothers were ONLY feeding their babies Breast Milk
+           </p>
+           <span style="color:#31a354; font-size:20px;"><b><u>Click For Details</b></u></span>
+
+           `)
+
+        .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY) + "px")
+
+}) 
+.on("mouseout", mouseout)
+
+
+
 
 
           } 
+
+          init()

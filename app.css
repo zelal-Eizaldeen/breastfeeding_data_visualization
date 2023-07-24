@@ -39,7 +39,8 @@ body {
 
 div {
     display:block;
-    padding: 5px;
+    padding: 10px;
+   
 
 }
 p{
@@ -50,7 +51,9 @@ img {
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 5px;
-    width: 400px;
+    width: 500px;
+  
+    
     display: inline;
   }
   .download_pdf{
@@ -174,7 +177,7 @@ fieldset{
 div.tooltip {
     position: absolute;
     text-align: left;
-    width: 300px;
+    width: 350px;
     /* height: 150px; */
     /* padding: 2px; */
     font: 12px Helvetica, sans-serif;
@@ -285,4 +288,3 @@ g .tick line {
     stroke: black;
   }
   
- 

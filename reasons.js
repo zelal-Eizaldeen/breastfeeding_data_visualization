@@ -23,7 +23,7 @@ var mouseover = function(d,i,n){
     d3.select(n[i])
       .transition()
       .duration(100)
-      .style("opacity", 0.7);
+      .style("opacity", 0.5);
     tooltip.transition()
          .duration(200)
          .style("opacity", 0.9)
@@ -33,11 +33,9 @@ var mouseover = function(d,i,n){
         <b>Factor: </b>
         ${d.base_type}
         </br>
-        <b>Reason</b>
+        <b>Reason:</b>
         ${d.problem}
-        </br>
-        <b>Percentages: </b>
-        ${d.percentages}%
+       
         </p>
         
         `)
@@ -121,12 +119,12 @@ async function init() {
 var title_g = mainCanvas.append("g");
 title_g.append("text")
         .attr("x", 0 )
-        .attr("y", -margin.bottom -20)
-        .text("Percentage of Mothers Citing Reasons for Stopping Breastfeeding")
+        .attr("y", -margin.bottom -40)
+        .text("Percentage of mothers citing reasons for stopping Breastfeeding versus number of factors.") 
         .style("font-size", "20px").attr("alignment-baseline","right")
      // Add x axis
      var x = d3.scaleLinear()
-    .domain([0, 100])
+    .domain([10, 100])
     .range([ 0, graphWidth ]);
     mainCanvas.append("g")
     .attr("transform", "translate(0," + graphHeight + ")")
@@ -140,7 +138,7 @@ mainCanvas.append("text")
 .text("% of Mothers stopped");
     // Add Y axis
   var y = d3.scaleLinear()
-          .domain([0, 100])
+          .domain([20, 50])
           .range([ graphHeight, 0]);
 
  // Add Y axis label:
@@ -148,7 +146,7 @@ mainCanvas.append("text")
  .attr("text-anchor", "end")
  .attr("x", 0)
  .attr("y", -20 )
- .text("Factors")
+ .text("Number Of Reasons")
  .attr("text-anchor", "start")
    mainCanvas.append("g")
               .call(d3.axisLeft(y));
@@ -308,6 +306,53 @@ legendGroup.append("text")
 .attr("y", 250).text("Medical Factors")
 .style("font-size", "18px").attr("alignment-baseline","middle")     
 
+const legendSize = svg.append("g")
+
+// The scale you use for bubble size
+var size = d3.scaleSqrt()
+  .domain([1, 100])  // What's in the data, let's say it is percentage
+  .range([1, 100])  // Size in pixel
+
+// Add legend: circles
+var valuesToShow = [10, 50, 100]
+var xCircle = graphHeight+margin.left+100;
+var xLabel = graphHeight+margin.left+300
+var yCircle = graphHeight -200
+mainCanvas
+  .selectAll("legend")
+  .data(valuesToShow)
+  .enter()
+  .append("circle")
+    .attr("cx", xCircle)
+    .attr("cy", function(d){ return yCircle - size(d) } )
+    .attr("r", function(d){ return size(d) })
+    .style("fill", "none")
+    .attr("stroke", "black")
+
+// Add legend: segments
+mainCanvas
+  .selectAll("legend")
+  .data(valuesToShow)
+  .enter()
+  .append("line")
+    .attr('x1', function(d){ return xCircle + size(d) } )
+    .attr('x2', xLabel)
+    .attr('y1', function(d){ return yCircle - size(d) } )
+    .attr('y2', function(d){ return yCircle - size(d) } )
+    .attr('stroke', 'black')
+    .style('stroke-dasharray', ('2,2'))
+
+// Add legend: labels
+mainCanvas
+  .selectAll("legend")
+  .data(valuesToShow)
+  .enter()
+  .append("text")
+    .attr('x', xLabel)
+    .attr('y', function(d){ return yCircle - size(d) } )
+    .text( function(d){ return d } )
+    .style("font-size", 10)
+    .attr('alignment-baseline', 'middle')
 
 
   // Move d to be adjacent to the cluster node.

@@ -11,23 +11,15 @@ const margin = {top:20, right:20, bottom:70, left:70};
 const graphWidth = 600 - margin.left - margin.right;
 const graphHeight = 600 - margin.top - margin.bottom;
 
-////Click Functions /////
-var click_exclusive = function(d,i,n){
-  console.log(d)
-//   d3.select(n[i])
-//   .transition()
-//   .duration(100)
-//   .style("opacity", 0.7);
-// tooltip.transition()
-//       .duration(200)
-//       .style("opacity", 0.9)
-}
+
 
 var mouseover = function(d,i,n){
   d3.select(n[i])
   .transition()
   .duration(100)
-  .style("opacity", 0.7);
+  .style("opacity", 0.5)
+  .style("stroke-width", "1px")
+  .style("stroke","black") ;
 tooltip.transition()
       .duration(200)
       .style("opacity", 0.9)
@@ -40,12 +32,13 @@ var mousemove = function(d,i,n){
     `<p> 
     <b>Type: </b>
     ${type_fed}
-    </br>
-    </br>
+    <br>
+ 
     <b>Percentages: </b>
     ${d}%
     </p>
-    
+    <span style="color:#31a354; font-size:20px;"><b><u>Click For Details</b></u></span>
+
     `)
     .style("left", (d3.event.pageX) + "px")
     .style("top", (d3.event.pageY)  +"px")
@@ -55,7 +48,8 @@ var mouseout = function(d,i,n) {
     d3.select(n[i])
     .transition()
     .duration(200)
-    .style("opacity", 1);
+    .style("opacity", 1)
+    .style("stroke","none") ;
     tooltip.transition()
     .duration(500)
     .style("opacity", 0)
@@ -208,6 +202,10 @@ mainCanvas.append("text")
   .data([exclusive])
   .attr("class", "line exclusiveLine")
   .attr("d", exclusiveLine)
+  .on("click", function() { window.open("exclusive.html"); }) 
+  
+
+  
   var length = path_exclusive_breast.node().getTotalLength();
             //This function will animate the path over and over again
   function repeat(path) {
@@ -238,6 +236,8 @@ ever_g.selectAll("circle")
         .on("mouseover", mouseover)
         .on("mousemove", mousemove)
         .on("mouseout", mouseout)
+        .on("click", function() { window.open("ever.html"); }) 
+
         .transition()
         .duration(1000)  
         // .delay(300) 
@@ -257,6 +257,8 @@ ever_g.selectAll("circle")
                     .on("mouseover", mouseover)
                     .on("mousemove", mousemove)
                     .on("mouseout", mouseout)
+                    .on("click", function() { window.open("exclusive.html"); }) 
+
 
                     .transition()
                     .duration(1000)  
@@ -266,20 +268,26 @@ ever_g.selectAll("circle")
 
 
             const legendGroup = mainCanvas.append("g");
-       legendGroup.append("circle")
-                       .attr("cx",graphHeight+margin.left+100)
-                       .attr("cy",130).attr("r", 6)
-                       .style("fill", "#798BBC")
-                       .style("cursor", "pointer")
+ legendGroup.append("text").attr("x", graphHeight+margin.left+100)
+            .attr("y", 260).text("Click For Details")
+            .style("font-size", "20px")
+            .style("fill", "#31a354")
+            .attr("alignment-baseline","middle")
+                       legendGroup.append("circle")
+.attr("cx",graphHeight+margin.left+100)
+.attr("cy",300).attr("r", 6)
+.style("fill", "#798BBC").style("cursor","pointer")
+.on("click", function() { window.open("ever.html"); }) 
+
             legendGroup.append("circle")
                     .attr("cx",graphHeight+margin.left+100)
-                    .attr("cy",160).attr("r", 6)
+                    .attr("cy",330).attr("r", 6)
                     .style("fill", "#57B795")
                     .style("cursor", "pointer")
 
             legendGroup.append("text")
                     .attr("x", graphHeight+margin.left+120)
-                    .attr("y", 130)
+                    .attr("y", 300)
                     .text("Ever Breastfeeding")
                     .style("font-size", "18px")
                     .attr("alignment-baseline","middle")
@@ -287,7 +295,7 @@ ever_g.selectAll("circle")
                     .on("click", function() { window.open("ever.html"); }); // when clicked, opens window with google.com.
                     
             legendGroup.append("text")
-            .attr("x", graphHeight+margin.left+120).attr("y", 160)
+            .attr("x", graphHeight+margin.left+120).attr("y", 330)
             .text("Exclusive Breastfeeding").style("font-size", "18px")
             .attr("alignment-baseline","middle")     
             .attr("class", "underline")
@@ -410,7 +418,7 @@ mainCanvas.append("text")
 .attr("text-anchor", "end")
 .attr("x", 0)
 .attr("y", -20 )
-.text("Percentages% of babies")
+.text("Percentages% of Babies")
 .attr("text-anchor", "start")
 
 
@@ -572,6 +580,12 @@ console.log(types_arr,"huuuuu")
   }
      //Add Color Legends
 const legendGroup = mainCanvas.append("g");
+legendGroup.append("text").attr("x", graphHeight+margin.left+100)
+.attr("y", 100).text("Click For Details")
+.style("font-size", "20px")
+.style("fill", "#31a354")
+.attr("alignment-baseline","middle")
+
 legendGroup.append("circle")
         .attr("cx",graphHeight+margin.left+100)
         .attr("cy",130).attr("r", 6)
@@ -705,6 +719,8 @@ legendGroup.append("text")
          .on("mouseover", mouseover)
          .on("mousemove", mousemove)
          .on("mouseout", mouseout)
+         .on("click", function() { window.open("ever.html"); }) // when clicked, opens window with google.com.
+
                      .transition()
                      .duration(1000)  
                     //  .delay(300) 
@@ -722,6 +738,7 @@ legendGroup.append("text")
 }
 
 
+init_age()
       
 
       

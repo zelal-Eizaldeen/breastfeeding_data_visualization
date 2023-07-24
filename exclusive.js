@@ -96,7 +96,7 @@ mainCanvas.append("text")
 .attr("text-anchor", "end")
 .attr("x", 0)
 .attr("y", -20 )
-.text("Percentage%")
+.text("Percentage of Babies%")
 .attr("text-anchor", "start")
 // Add Y axis label:
 mainCanvas.append("text")
