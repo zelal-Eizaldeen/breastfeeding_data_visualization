@@ -1,11 +1,11 @@
-Outcomes,Lower_Risk,Breastfeeding_Period,Outcomes_Mum,Lower_Risk_Mum,Breastfeeding_Period_Mum,Ingredients,Percentage,Abbreviations,category_code_baby,category_code_Mum
-Ulcerative colitis,79,Ever,Gestational diabetes,78,Ever,Linoleic acid,6.62,,1,1
-SIDS,64,Ever,Type 2 diabetes,32,Ever,Diglycerides,1.95,,1,1
-Type 1 diabetes,57,Ever,Ovarian Cancer,30,Ever,Monoglycerides,0.63,,1,1
-Neonatal mortality ,51,Exclusive,Breast cancer,22,Exclusive,DHA,0.32,Docosahexaenoic acid,2,2
-Otitis media,43,Exclusive,Premenopausal Breast Cancer,14,Exclusive,Omega 3,2.48,,2,2
-Type 2 diabetes1,33,Exclusive,Hypertension,13,Exclusive,MUFA & PUFA	,80.96,Monounsaturated fatty acid and polyunsaturated fatty acid,2,2
-Crohn’s disease,29,Exclusive,Endometrial Cancer,11,Exclusive,Water,87,,2,2
-Eczema ,26,Exclusive,Thyroid Cancer,9,Exclusive,Protein,1,,2,2
-Asthma ,22,Ever,,,,Lipid,4,,1,
-Leukemia,19,Ever,,,,Carbohydrate,7,,1,
+Outcomes,Lower_Risk,Breastfeeding_Period,Outcomes_Mum,Lower_Risk_Mum,Breastfeeding_Period_Mum,Ingredients,Percentage,Abbreviations,category_code_baby,category_code_Mum,components,amount
+Ulcerative colitis,79,Ever,Gestational diabetes,78,Ever,Linoleic acid,6.62,,1,1,Lactose,37
+SIDS,64,Ever,Type 2 diabetes,32,Ever,Diglycerides,1.95,,1,1,Fat,31
+Type 1 diabetes,57,Ever,Ovarian Cancer,30,Ever,Monoglycerides,0.63,,1,1,Protein,26
+Neonatal mortality ,51,Exclusive,Breast cancer,22,Exclusive,DHA,0.32,Docosahexaenoic acid,2,2,Minerals,6
+Otitis media,43,Exclusive,Premenopausal Breast Cancer,14,Exclusive,Omega 3,2.48,,2,2,,
+Type 2 diabetes1,33,Exclusive,Hypertension,13,Exclusive,MUFA & PUFA	,80.96,Monounsaturated fatty acid and polyunsaturated fatty acid,2,2,,
+Crohn’s disease,29,Exclusive,Endometrial Cancer,11,Exclusive,Water,87,,2,2,,
+Eczema ,26,Exclusive,Thyroid Cancer,9,Exclusive,Protein,1,,2,2,,
+Asthma ,22,Ever,,,,Lipid,4,,1,,,
+Leukemia,19,Ever,,,,Carbohydrate,7,,1,,,
