@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Narrative Visualization </title>
+    <script src='https://d3js.org/d3.v5.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
+
+    <link rel="stylesheet" href="app.css">
+
+
+
+
+</head>
+<body>
+
+   
+    <img src="breastfed_happy.png">
+    <h1>Breast Milk Is Best</h1>
+
+    <p>Breastfeeding and human milk are the normative standards for infant feeding and nutrition. The short- and long-term medical and neurodevelopmental advantages of breastfeeding make breastfeeding, or the provision of human milk, a public health imperative. The American Academy of Pediatrics (AAP) recommends exclusive 
+        breastfeeding for approximately 6 months after birth.</p>
+    <P> The Centers for Disease Control and Prevention (CDC) and The Joint Commission monitor breastfeeding practices in US hospitals. Pediatricians play a critical role in hospitals, their practices, and communities as advocates of breastfeeding and, thus, need to be trained about the benefits of breastfeeding for mothers and children and in managing breastfeeding.</P>
+
+      <!-- <div class="canva" > -->
+        <h2>Breastfeeding is the best 
+            source of nutrition for 
+            most infants. </br>
+            It can also reduce the risk for certain health conditions for both infants and mothers.</h2>
+        
+        <p>Infants who are breastfed have reduced risks of a number of serious diseases for example Asthma, Obisity, Sudden infant death syndrome (SIDS).
+        
+        </br>Moreover, breastfeeding can reduce the risk of different kind of diseases for example Breast cancer, Type 2 diabetes, and Hypertension.
+        </p>
+        <div class="topnav">
+          <a  href="index.html">WHY It Matters</a>
+          <a class="active" href="age.html">What CDC Is Doing</a>
+          <a href="reasons.html">WHY Mothers Stop</a>
+        </div>
+        <div>
+        <fieldset>
+            <legend>State Indicator is?</legend>
+        
+            <div>
+              <input  class="region_cb"  type="radio" id="Exclusive" name="Exclusive" value="Exclusive" checked>
+              <label for="Exclusive">Exclusive Breastfeeding</label>
+            </div>
+        
+            <div>
+              <input  class="region_cb"  type="radio" id="Ever" name="Ever" value="Ever">
+              <label for="Ever">Ever Breastfeeding</label>
+            </div>
+        
+        </fieldset>
+      </div>
+      <div> <button  id="ascBtn" type="button" class="front"  value="asc" >
+        Ascending</button>
+        </div>
+        <div>
+        <button  id="desBtn" type="button" class="front"  value="des"  >
+            Descending</button>
+      
+    </div>
+     
+       
+        
+      </button>
+        <div class="canva" id="canva">
+        </div>
+    
+       
+     
+    
+    <!-- Create a div where the bubble graph will take place -->
+ <!-- <div id="bubble_dataviz"></div> -->
+
+
+</body>
+<script type="text/javascript" src="area_chart.js"></script>
+
+</html>
