@@ -631,12 +631,7 @@ legendGroup.append("text")
             }) 
             .on("mouseout", mouseout)
             
-            
-// legendGroup.append("text")
-// .attr("x", graphHeight+margin+120).attr("y", 160)
-// .text("For 6 months").style("font-size", "18px")
-// .attr("alignment-baseline","middle")
-  
+          
 legendGroup.append("text").attr("x", graphHeight+margin+120)
 .attr("y", 330).text("Exclusive Breastfeeding")
 .style("font-size", "18px")

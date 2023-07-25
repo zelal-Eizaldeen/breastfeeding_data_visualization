@@ -83,7 +83,33 @@ var mouseout = function(d,i,n) {
  
     }
 
-
+    const annotations = [
+        {
+          note: {
+            label: "provides around 40% of your baby's energy needs and helps them absorb calcium and iron",
+            title: "37% Lactose",
+            align: "left",
+            wrap: 100,
+            
+          },
+          connector: {
+            end: "dot",        // Can be none, or arrow or dot
+            type: "line",      // ?? don't know what it does
+            lineType : "vertical",    // ?? don't know what it does
+            endScale: 10     // dot size
+          },
+          color: ["#000000"],
+          
+          x: graphWidth/3,
+          y: graphHeight/6,
+          dy: 60,
+          dx: 100
+        }
+      ]
+         // Add annotation to the baby chart
+         const makeAnnotations = d3.annotation()
+         .annotations(annotations);
+      
 //outer-radius
 const arcPath = d3.arc()
 .outerRadius(190)
@@ -212,6 +238,15 @@ legendGroup.selectAll("mylabels")
   .style("alignment-baseline", "middle")
   .on("mouseover", highlight)
   .on("mouseleave", noHighlight)
+
+
+
+  //Annotations
+mainCanvas.append("g")
+.attr("class", "annotation-group")
+.call(makeAnnotations)
+.transition().duration(2000).delay(500)
+                      .style("opacity", 1);
 
 
 

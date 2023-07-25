@@ -59,7 +59,8 @@ img {
   .download_pdf{
     background-color: #333;
     overflow:hidden;
-    margin:50px;
+    margin:3px;
+   
     
   }
   /* .underline{
@@ -72,8 +73,8 @@ img {
    color: #798BBC;
   }
   .pdf_icon{
-    width:40px;
-    height:40px;
+    width:30px;
+    height:30px;
     text-align: center;
   }
   .download_pdf a {
@@ -88,7 +89,7 @@ img {
   }
   .download_pdf a:hover {
     text-decoration: underline;
-    color: #31a354;
+    color: #ddd;
   }
   input {
     margin: 0.4rem;
@@ -158,7 +159,8 @@ fieldset{
     padding: 0;
     cursor: pointer;
     outline-offset: 4px;
-    margin-left: 50px;
+    margin-left: 150px;
+    
   }
   .front {
     display: block;
