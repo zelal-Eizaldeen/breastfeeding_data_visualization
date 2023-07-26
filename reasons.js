@@ -37,7 +37,7 @@ var mouseover = function(d,i,n){
         ${d.problem}
         <br>
         <b>Percentages Of Mums:</b>
-        ${d.percentages}
+        ${d.percentages}%
         </p>
         
         `)
