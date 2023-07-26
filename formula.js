@@ -105,7 +105,7 @@ mainCanvas.append("text")
 .attr("text-anchor", "end")
 .attr("x", 0)
 .attr("y", -20 )
-.text("Percentage% of Babies")
+.text("Percentage% Of Babies")
 .attr("text-anchor", "start")
 //Add Percentages into Arrays
 var formula_six_arr= nodes[5].percentages;
@@ -169,6 +169,10 @@ mainCanvas.append("text")
  .attr("y", -margin.bottom -20)
 .text("Babies Supported With Formula From 2012 to 2019")
 .style("font-size", "20px").attr("alignment-baseline","middle")
+.style("opacity", 0.0)
+                .transition()
+                               .duration(2000)
+                               .style("opacity", (d, i) => i+0.7)
 
 //Add Color Legends
 mainCanvas.append("circle")
@@ -233,8 +237,10 @@ mainCanvas.selectAll("circles")
 mainCanvas.append("g")
 .attr("class", "annotation-group")
 .call(makeAnnotations)
-.transition().duration(2000).delay(500)
-                      .style("opacity", 1);
+.transition().duration(2000)
+                      .style("opacity", 1)
+                      .transition().duration(5000).
+                      style("opacity", 0);
 }
 init()
 

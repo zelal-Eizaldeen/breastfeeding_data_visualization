@@ -1,10 +1,5 @@
 
 var type="Exclusive";
-
-//Array of colors
-var legendColorsArray = ["#8da0cb", "#66c2a5"]
-//Color
-const mColors = d3.scaleOrdinal(d3['schemeSet2']);
 const stateEverCheckbox = document.querySelector("#Ever");
 const stateExCheckbox = document.querySelector("#Exclusive");
 var ascBtn = document.querySelector("#ascBtn");
@@ -12,7 +7,7 @@ var desBtn = document.querySelector("#desBtn");
 desBtn.disabled=true;
 
 // set the dimensions and margins of the graph
-var margin = {top: 20, right: 30, bottom: 40, left: 90},
+var margin = {top: 80, right: 30, bottom: 40, left: 150},
     width = 600 - margin.left - margin.right,
     height = 700 - margin.top - margin.bottom;
     // var margin = {top:20, right:20, bottom:70, left:70};
@@ -25,8 +20,7 @@ d3.selectAll(".front").on("click", function () {
    if (this.value=="asc"){
     desBtn.disabled=false;
     ascBtn.disabled=true;
-   
-  
+ 
    }
    if(this.value=="des"){
     ascBtn.disabled=false;
@@ -144,7 +138,7 @@ var fill_bars = function(d,i,n){
   
       }
 
-          
+       //////Exclusive Init /////   
 
 async function init_ex(type) {
    const data = await d3.csv(
@@ -152,9 +146,8 @@ async function init_ex(type) {
     // append the svg object to the body of the page
  const svg = d3.select("#canva")
  .append("svg")
-      
-   .attr("width", width + margin.left + margin.right)
-   .attr("height", height + margin.top + margin.bottom)
+   .attr("width", 1000)
+   .attr("height", 1000)
  .append("g")
    .attr("transform",
          "translate(" + margin.left + "," + margin.top + ")");
@@ -185,12 +178,26 @@ svg.append("g")
   .range([ 0, height ])
   .domain(data.map(d =>d.Country))
 
-  .padding(.1);
+
+  .padding(.3);
 svg.append("g")
 .transition().duration(1000)
   .call(d3.axisLeft(y)) 
   
+// Add X axis label:
+svg.append("text")
+.attr("text-anchor", "end")
+.attr("x", width+150)
+.attr("y", height-10 )
+.text("Percentage% of Infants");
 
+ // Add Y axis label:
+ svg.append("text")
+ .attr("text-anchor", "end")
+ .attr("x", -40)
+ .attr("y", -20)
+ .text("State")
+ .attr("text-anchor", "start")   
 //Annotation
 const annotations = [
     {
@@ -209,7 +216,7 @@ const annotations = [
     },
     color: ["#000000"],
     
-    x: width/2.2,
+    x: width/1.5,
     y: height/70,
     dy: 60,
     dx: 140
@@ -229,20 +236,34 @@ exclusive_rects
 .enter()
 .append("rect")
 .merge(exclusive_rects)
+.on("mouseover", mouseover)
+.on("mouseout", mouseout)
 .transition()
 .duration(1000)
 .attr("x", x(0) )
 .attr("y", function(d) { return y(d.Country); })
-.attr("width", function(d) { return x(d[type]);; })  //Desc
+.attr("width", function(d) { return x(d[type]); })  //Desc
  .attr("height", y.bandwidth() )
 .attr("fill",function(d,i,n) { return fill_bars(d,i,n); })
+
+
 //Annotations
 svg.append("g")
 .attr("class", "annotation-group")
 .call(makeAnnotations)
 .transition().duration(2000).delay(500)
                       .style("opacity", 1)
-                    
+  
+    ///Title to the exclusive init chart
+   svg.append("text")
+   .text("Exclusive Breastfeeding Rates Among Infants Born in 2019 According To The State")
+   .attr("x", margin.right - 30)
+   .attr("y",  margin.top - 140)
+   .attr("font-size", 20)
+   .style("opacity", 0.0)
+                .transition()
+                               .duration(2000)
+                               .style("opacity", (d, i) => i+0.7)
 
 }
 
@@ -255,7 +276,8 @@ async function init_ever(type) {
 const svg = d3.select("#canva")
 .append("svg")
   .attr("width", 1000)
-  .attr("height", height + margin.top + margin.bottom)
+  .attr("height",1000)
+  //height + margin.top + margin.bottom
 .append("g")
   .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
@@ -282,18 +304,31 @@ svg.append("g")
     .attr("transform", "translate(-10,0)rotate(-45)")
     .style("text-anchor", "end");
 
-  
+// Add X axis label:
+svg.append("text")
+.attr("text-anchor", "end")
+.attr("x", width+150)
+.attr("y", height-10 )
+.text("Percentage% of Infants");
+
+ // Add Y axis label:
+ svg.append("text")
+ .attr("text-anchor", "end")
+ .attr("x", -40)
+ .attr("y", -20)
+ .text("State")
+ .attr("text-anchor", "start")   
      // Y axis
   var y = d3.scaleBand()
   .range([ 0, height ])
   .domain(data.map(d =>d.Country))
 
-  .padding(.1);
+  .padding(.3);
 svg.append("g")
 .transition().duration(1000)
   .call(d3.axisLeft(y)) 
   
-
+      
 //Annotation
  const annotations = [
   {
@@ -318,10 +353,20 @@ svg.append("g")
     dx: 140
   }
 ]
-   // Add annotation to the baby chart
+   // Add annotation 
    const makeAnnotations = d3.annotation()
    .annotations(annotations);
-
+   var title_ever =svg.append("g")
+///Title to the ever init chart
+   title_ever.append("text")
+   .text("Ever Breastfeeding Rates Among Infants Born in 2019 According To The State")
+   .attr("x", margin.right - 30)
+   .attr("y",  margin.top - 140)
+   .attr("font-size", 20)
+   .style("opacity", 0.0)
+                .transition()
+                               .duration(2000)
+                               .style("opacity", (d, i) => i+0.7)
 
      // variable u: map data to existing bars
    var ever_rects = svg.selectAll("rect")
@@ -332,6 +377,8 @@ svg.append("g")
    .enter()
    .append("rect")
    .merge(ever_rects)
+   .on("mouseover", mouseover)
+.on("mouseout", mouseout)
    .transition()
    .duration(1000)
    .attr("x", x(0) )
@@ -357,7 +404,9 @@ async function sort_exclusive(order) {
      // append the svg object to the body of the page
   const svg = d3.select("#canva")
   .append("svg")
-    .attr("width", width + margin.left + margin.right)
+    // .attr("width", width + margin.left + margin.right)
+    .attr("width", 1000)
+
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform",
@@ -396,12 +445,25 @@ if(order==="asc"){
    .range([ 0, height ])
    .domain(sortedData_asc.map(d =>d.Country))
  
-   .padding(.1);
+   .padding(.3);
  svg.append("g")
  .transition().duration(1000)
    .call(d3.axisLeft(y)) 
    
- 
+ // Add X axis label:
+svg.append("text")
+.attr("text-anchor", "end")
+.attr("x", width+150)
+.attr("y", height-10 )
+.text("Percentage% of Infants");
+
+ // Add Y axis label:
+ svg.append("text")
+ .attr("text-anchor", "end")
+ .attr("x", -40)
+ .attr("y", -20)
+ .text("State")
+ .attr("text-anchor", "start")   
  //Annotation
   const annotations = [
    {
@@ -439,6 +501,8 @@ if(order==="asc"){
  .enter()
  .append("rect")
  .merge(exclusive_rects)
+ .on("mouseover", mouseover)
+.on("mouseout", mouseout)
  .transition()
  .duration(1000)
  .attr("x", x(0) )
@@ -453,7 +517,16 @@ if(order==="asc"){
  .transition().duration(2000).delay(500)
                        .style("opacity", 1);
  
-   
+   ///Title to the exclusive init chart
+   svg.append("text")
+   .text("Exclusive Breastfeeding Rates Among Infants Born in 2019 According From The Lowest")
+   .attr("x", margin.right - 30)
+   .attr("y",  margin.top - 140)
+   .attr("font-size", 20)  
+   .style("opacity", 0.0)
+                .transition()
+                               .duration(2000)
+                               .style("opacity", (d, i) => i+0.7)
 }
  
      
@@ -490,11 +563,25 @@ var y = d3.scaleBand()
 .range([ 0, height ])
 .domain(sortedData_des.map(d =>d.Country))
 
-.padding(.1);
+.padding(.3);
 svg.append("g")
 .transition().duration(1000)
 .call(d3.axisLeft(y)) 
 
+// Add X axis label:
+svg.append("text")
+.attr("text-anchor", "end")
+.attr("x", width+150)
+.attr("y", height-10 )
+.text("Percentage% of Infants");
+
+ // Add Y axis label:
+ svg.append("text")
+ .attr("text-anchor", "end")
+ .attr("x", -40)
+ .attr("y", -20)
+ .text("State")
+ .attr("text-anchor", "start")   
 
 //Annotation
 const annotations = [
@@ -514,7 +601,7 @@ endScale: 10     // dot size
 },
 color: ["#000000"],
 
-x: width/2.2,
+x: width/1.2,
 y: height/70,
 dy: 60,
 dx: 140
@@ -533,6 +620,8 @@ exclusive_rects
 .enter()
 .append("rect")
 .merge(exclusive_rects)
+.on("mouseover", mouseover)
+.on("mouseout", mouseout)
 .transition()
 .duration(1000)
 .attr("x", x(0) )
@@ -546,6 +635,17 @@ svg.append("g")
 .call(makeAnnotations)
 .transition().duration(2000).delay(500)
                .style("opacity", 1);
+
+                 ///Title to the exclusive init chart
+   svg.append("text")
+   .text("Exclusive Breastfeeding Rates Among Infants Born in 2019 From The Highest")
+   .attr("x", margin.right - 30)
+   .attr("y",  margin.top - 140)
+   .attr("font-size", 20)
+   .style("opacity", 0.0)
+                .transition()
+                               .duration(2000)
+                               .style("opacity", (d, i) => i+0.7)
 
 }
 }
@@ -597,12 +697,25 @@ if(order==="asc"){
    .range([ 0, height ])
    .domain(sortedData_asc.map(d =>d.Country))
  
-   .padding(.1);
+   .padding(.3);
  svg.append("g")
  .transition().duration(1000)
    .call(d3.axisLeft(y)) 
    
- 
+ // Add X axis label:
+svg.append("text")
+.attr("text-anchor", "end")
+.attr("x", width+200)
+.attr("y", height-10 )
+.text("Percentage% of Infants");
+
+ // Add Y axis label:
+ svg.append("text")
+ .attr("text-anchor", "end")
+ .attr("x", -40)
+ .attr("y", -20)
+ .text("State")
+ .attr("text-anchor", "start")   
  //Annotation
   const annotations = [
    {
@@ -640,6 +753,8 @@ if(order==="asc"){
  .enter()
  .append("rect")
  .merge(ever_rects)
+ .on("mouseover", mouseover)
+.on("mouseout", mouseout)
  .transition()
  .duration(1000)
  .attr("x", x(0) )
@@ -654,7 +769,18 @@ if(order==="asc"){
  .transition().duration(2000).delay(500)
                        .style("opacity", 1);
  
-   
+ 
+                         ///Title to the ever sort chart
+   svg.append("text")
+   .text("Ever Breastfeeding Rates Among Infants Born in 2019 From The Lowest")
+   .attr("x", margin.right - 30)
+   .attr("y",  margin.top - 140)
+   .attr("font-size", 20)
+   .style("opacity", 0.0)
+                .transition()
+                               .duration(2000)
+                               .style("opacity", (d, i) => i+0.7)
+
 }
  
      
@@ -691,12 +817,25 @@ var y = d3.scaleBand()
 .range([ 0, height ])
 .domain(sortedData_des.map(d =>d.Country))
 
-.padding(.1);
+.padding(.3);
 svg.append("g")
 .transition().duration(1000)
 .call(d3.axisLeft(y)) 
 
+// Add X axis label:
+svg.append("text")
+.attr("text-anchor", "end")
+.attr("x", width+150)
+.attr("y", height-10 )
+.text("Percentage% of Infants");
 
+ // Add Y axis label:
+ svg.append("text")
+ .attr("text-anchor", "end")
+ .attr("x", -40)
+ .attr("y", -20)
+ .text("State")
+ .attr("text-anchor", "start")   
 //Annotation
 const annotations = [
     {
@@ -734,6 +873,8 @@ ever_rects
 .enter()
 .append("rect")
 .merge(ever_rects)
+.on("mouseover", mouseover)
+.on("mouseout", mouseout)
 .transition()
 .duration(1000)
 .attr("x", x(0) )
@@ -748,7 +889,22 @@ svg.append("g")
 .transition().duration(2000).delay(500)
                .style("opacity", 1);
 
+
+                 ///Title to the Ever sort chart
+   svg.append("text")
+   .text("Ever Breastfeeding Rates Among Infants Born in 2019 From The Highest")
+   .attr("x", margin.right - 30)
+   .attr("y",  margin.top - 140)
+   .attr("font-size", 20)
+   .style("opacity", 0.0)
+                .transition()
+                               .duration(2000)
+                               .style("opacity", (d, i) => i+0.7)
+
 }
+
+
+
 }
 
 init_ex(type)

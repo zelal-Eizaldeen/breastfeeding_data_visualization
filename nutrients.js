@@ -5,7 +5,7 @@ const svg = canvas.append("svg")
             .attr("width", 1000 )
             .attr("height", 750);
 
-const margin = {top: 20, right: 20, bottom: 70, left: 70};
+const margin = {top: 60, right: 20, bottom: 70, left: 70};
 const graphWidth = 600 - margin.left - margin.right;
 const graphHeight = 600 - margin.top - margin.bottom;
 // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
@@ -149,24 +149,31 @@ const angles = pie(data);//creating the actual angles.  Must
 const paths = mainCanvas.selectAll('path')
                .data(pie(data));
 
-console.log(data[0])
-  
+               mainCanvas.append("text")
+               .text("Components Of Breast Milk")
+               .attr("x", -100)
+               .attr("y", -220 )
+               .attr("font-size", 20)  
+               .style("opacity", 0.0)
+                .transition()
+                               .duration(2000)
+                               .style("opacity", (d, i) => i+0.7)
 //Add DACA Title
-mainCanvas.append("text")
-            .attr("class", "pie-title")
-            // .attr("dy", "1%")
-            // .attr("dx", "10%")
-            .attr("x", 0 )
-            .attr("y", -margin.bottom -140)
-        .attr("font-size", 20)
-            .style("opacity", 0.0)
-            .transition()
-                .duration(1000)
-                .style("opacity", (d, i) => i+0.7)
-            .attr("text-anchor", "right")
-            .attr("fill", "#000000")
-            //DACA_Receipts_Since_Injunction_August_31_2018
-            .text("Components Of Breast Milk")
+// mainCanvas.append("text")
+//             .attr("class", "pie-title")
+//             // .attr("dy", "1%")
+//             // .attr("dx", "10%")
+//             .attr("x", 0 )
+//             .attr("y", -margin.bottom -140)
+//         .attr("font-size", 20)
+//             .style("opacity", 0.0)
+//             .transition()
+//                 .duration(1000)
+//                 .style("opacity", (d, i) => i+0.7)
+//             .attr("text-anchor", "right")
+//             .attr("fill", "#000000")
+//             //DACA_Receipts_Since_Injunction_August_31_2018
+//             .text("Components Of Breast Milk")
 //Add DACA text
 // mainCanvas.append("text")
 //             .attr("class", "daca-text")

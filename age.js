@@ -1,3 +1,4 @@
+var remove_annotation = false;
 const canvas = d3.select(".canva");
 //Color
 const mColors = d3.scaleOrdinal(d3['schemeSet2']);
@@ -57,6 +58,8 @@ var mouseout = function(d,i,n) {
 ///////Check Box////////
 const ageCheckbox = document.querySelector("#age");
 const typesCheckbox = document.querySelector("#types");
+const statesCheckbox = document.querySelector("#states");
+
 d3.selectAll(".region_cb").on("change", function ()
  {
   var type = this.value;
@@ -80,6 +83,16 @@ d3.selectAll(".region_cb").on("change", function ()
     ageCheckbox.checked=false;
     init_types()
    }
+
+   if (this.checked && type=="states") { // adding data points
+    statesCheckbox.checked=false;
+    window.open("area_chart.html");  
+   
+  }
+  if (!this.checked && type=="states"){
+    
+   
+  }
  });
 
 ////////Age Chart /////////////
@@ -147,7 +160,7 @@ mainCanvas.append("text")
    .attr("text-anchor", "end")
    .attr("x", 0)
    .attr("y", -20 )
-   .text("Percentages% of babies")
+   .text("Percentages% Of Babies")
    .attr("text-anchor", "start")
   //Load data  
     var parseAge=d3.scaleLinear()
@@ -181,8 +194,12 @@ mainCanvas.append("text")
   title_g.append("text")
           .attr("x", 0 )
           .attr("y", -margin.bottom -20)
-          .text("Rates of Ever and Exclusive Breastfeeding by Age Among Children Born in 2019")
+          .text("Rates of Ever and Exclusive Breastfeeding by Age Among Babies Born in 2019")
           .style("font-size", "20px").attr("alignment-baseline","right")
+          .style("opacity", 0.0)
+                .transition()
+                               .duration(2000)
+                               .style("opacity", (d, i) => i+0.7)
   
             //Add any breastfeeding Line path
             var breastfedLine = d3.line()
@@ -307,8 +324,11 @@ ever_g.selectAll("circle")
             mainCanvas.append("g")
                        .attr("class", "annotation-group")
                        .call(makeAnnotations)
-                       .transition().duration(2000).delay(500)
-                       .style("opacity", 1);
+                       .transition().duration(5000)
+                       .style("opacity", 1)
+                       .transition().
+                       style("opacity", 0)
+                       
 }
 
 //////////************ *////////////
@@ -418,7 +438,7 @@ mainCanvas.append("text")
 .attr("text-anchor", "end")
 .attr("x", 0)
 .attr("y", -20 )
-.text("Percentages% of Babies")
+.text("Percentages% Of Babies")
 .attr("text-anchor", "start")
 
 
@@ -431,26 +451,6 @@ mainCanvas.append("text")
 
 
 
-//Add Circles on the 12 months circles 
-// var twelve_g = mainCanvas.append("g");
-// twelve_g.selectAll("circle")
-// .data(twelve_months_arr)
-// .enter()
-// .append("circle")
-// .attr("class", "Twelve_Months")
-// .attr("cx", 0)
-// .attr("cy", (d)=>y(d))
-// .on("mouseover", mouseover)
-// .on("mousemove", mousemove)
-// .on("mouseout", mouseout)
-//             .transition()
-//             .duration(3000)  
-//             .delay(300) 
-// .attr("cx", (d,i)=>x(parseYears(years[i])))
-// .attr("cy", (d)=>y(d))
-// .attr("r", 5)
-
-
 //Add Circles on the exclusive dots 
 var exc_g = mainCanvas.append("g");
 exc_g.selectAll("circle")
@@ -460,6 +460,8 @@ exc_g.selectAll("circle")
 .attr("class", "Exclusive")
 .attr("cx", 0)
 .attr("cy", (d)=>y(d))
+.on("click", function() { window.open("exclusive.html"); }) 
+
 .on("mouseover", mouseover)
 .on("mousemove", mousemove)
 .on("mouseout", mouseout)
@@ -469,7 +471,7 @@ exc_g.selectAll("circle")
 
 .attr("cx", (d,i)=>x(parseYears(years[i])))
 .attr("cy", (d)=>y(d))
-.attr("r", 5)
+.attr("r", 8)
 
 //Add the Formula Line path
 var formulaLine = d3.line()
@@ -516,15 +518,7 @@ var path_six=mainCanvas.append("path")
 .on("click", function() { window.open("ever.html"); }); // when clicked, opens window with google.com.
 
 
-//Add the Twelve Months Line path
-// var twelveLine = d3.line()
-// .x(function(d,i){return x(parseYears(years[i]))})
-// .y(function(d,i){ return y(d)})
-// var path_twelve=mainCanvas.append("path")
-// .data([twelve_months_arr])
-// .attr("class", "line twelveLine")
-// .attr("d", twelveLine) 
-// .on("click", function() { window.open("https://publications.aap.org/view-large/10993082?autologincheck=redirected"); }); // when clicked, opens window with google.com.
+
 
 //Add Title of the Ever Graph
 mainCanvas.append("text")
@@ -559,25 +553,7 @@ repeat(path_six);
 //Types 
 types_arr = []
 data.map(item=>types_arr.push(item.type))
-console.log(types_arr,"huuuuu")
-// ---------------------------//
-  //       HIGHLIGHT GROUP      //
-  // ---------------------------//
 
-  // What to do when one group is hovered
-  var highlight = function(d){
-    // reduce opacity of all groups
-    d3.selectAll(".bubbles").style("opacity", .05)
-    // expect the one that is hovered
-    d3.selectAll("."+d).style("opacity", 1)
-  }
-
-  // And when it is not hovered anymore
-  var noHighlight = function(d){
-    d3.selectAll(".bubbles").style("opacity", 1)
-
-
-  }
      //Add Color Legends
 const legendGroup = mainCanvas.append("g");
 legendGroup.append("text").attr("x", graphHeight+margin.left+100)
@@ -601,9 +577,6 @@ legendGroup.append("circle")
      .on("click", function() { window.open("ever.html"); }); // when clicked, opens window.
 
 
-// legendGroup.append("circle")
-// .attr("cx",graphHeight+margin.left+100)
-// .attr("cy",190).attr("r", 6).style("fill", "#F97850")
 legendGroup.
 append("circle")
 .attr("cx",graphHeight+margin.left+100)
@@ -642,10 +615,6 @@ legendGroup.append("text")
 .on("click", function() { window.open("ever.html"); }) 
 
 
-// legendGroup.append("text")
-// .attr("x", graphHeight+margin.left+120)
-// .attr("y", 190).text("For 12 months")
-// .style("font-size", "18px").attr("alignment-baseline","middle")
 
 legendGroup.append("text")
 .attr("x", graphHeight+margin.left+120)
@@ -673,6 +642,7 @@ legendGroup.append("text")
  .attr("class", "Formula")
  .attr("cx", 0)
 .attr("cy", (d)=>y(d))
+.on("click", function() { window.open("formula.html"); }) 
 
 .on("mouseover", mouseover)
 .on("mousemove", mousemove)
@@ -682,7 +652,7 @@ legendGroup.append("text")
             // .delay(300) 
  .attr("cx", (d,i)=>x(parseYears(years[i])))
  .attr("cy", (d)=>y(d))
- .attr("r", 5)
+ .attr("r", 8)
 
  
  //Add Circles on the six months circles 
@@ -694,6 +664,7 @@ legendGroup.append("text")
  .attr("class", "Six_Months")
  .attr("cx", 0)
 .attr("cy", (d)=>y(d))
+.on("click", function() { window.open("ever.html"); }) 
 
 .on("mouseover", mouseover)
 .on("mousemove", mousemove)
@@ -703,7 +674,7 @@ legendGroup.append("text")
             // .delay(300) 
  .attr("cx", (d,i)=>x(parseYears(years[i])))
  .attr("cy", (d)=>y(d))
- .attr("r", 5)
+ .attr("r", 8)
 
  
  //Add Circles on the ever circles
@@ -715,7 +686,8 @@ legendGroup.append("text")
          .attr("class", "Ever")
          .attr("cx", 0)
          .attr("cy", (d)=>y(d))
-         
+         .on("click", function() { window.open("ever.html"); }) 
+
          .on("mouseover", mouseover)
          .on("mousemove", mousemove)
          .on("mouseout", mouseout)
@@ -726,15 +698,17 @@ legendGroup.append("text")
                     //  .delay(300) 
           .attr("cx", (d,i)=>x(parseYears(years[i])))
           .attr("cy", (d)=>y(d))
-          .attr("r", 5)
+          .attr("r", 8)
 
 
  //Annotations
  mainCanvas.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(2000).delay(500)
-                       .style("opacity", 1);
+ .transition().duration(5000)
+                       .style("opacity", 1)
+                       .transition().
+                       style("opacity", 0)
 }
 
 

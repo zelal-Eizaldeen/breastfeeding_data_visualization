@@ -132,6 +132,10 @@ mainCanvas.append("text")
  .attr("y", -margin.bottom -20)
 .text("Babies Exclusive Breastfed From 2012 to 2019")
 .style("font-size", "20px").attr("alignment-baseline","middle")
+.style("opacity", 0.0)
+                .transition()
+                               .duration(1000)
+                               .style("opacity", (d, i) => i+0.7)
 
 //Add Color Legends
 mainCanvas.append("circle")
@@ -175,8 +179,10 @@ mainCanvas.selectAll("circles")
  mainCanvas.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(1000).delay(1000)
- .style("opacity", 1);
+ .transition().duration(1000)
+ .style("opacity", 1)
+ .transition().duration(5000).
+ style("opacity", 0)
 }
  init();
         

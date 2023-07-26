@@ -42,8 +42,8 @@ async function init() {
           //Annotations
   const annotations = [
     {note: {
-        label: "who was Ever(Any) breastfeeding for 3 months.",
-        title: "Roughly 30%",
+        label: "of Infants who were receiving formula(or solids).",
+        title: "More than Half",
         align: "left",
         wrap: 100,
         
@@ -56,8 +56,8 @@ async function init() {
       },
       color: ["#000000"],
       
-      x: graphWidth/2,
-      y: graphHeight/2.1,
+      x: graphWidth/1.5,
+      y: graphHeight/5.5,
       dy: -30,
       dx: graphWidth/4
     }
@@ -95,7 +95,7 @@ mainCanvas.append("text")
 .attr("text-anchor", "end")
 .attr("x", 0)
 .attr("y", -20 )
-.text("Percentage% of Babies")
+.text("Percentage% Of Babies")
 .attr("text-anchor", "start")
 
 //Add Percentages into Arrays
@@ -130,6 +130,10 @@ mainCanvas.append("text")
  .attr("y", -margin.bottom -20)
 .text("Babies Ever Breastfed From 2012 to 2019")
 .style("font-size", "20px").attr("alignment-baseline","middle")
+.style("opacity", 0.0)
+                .transition()
+                               .duration(1000)
+                               .style("opacity", (d, i) => i+0.7)
 
 //Add Color Legends
 mainCanvas.append("circle")
@@ -175,8 +179,10 @@ six_circles.selectAll("circles")
  mainCanvas.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(1000).delay(1000)
- .style("opacity", 1);
+ .transition().duration(1000)
+ .style("opacity", 1)
+ .transition().duration(5000).
+ style("opacity", 0)
 }
  init();
         
