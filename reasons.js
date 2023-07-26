@@ -32,10 +32,12 @@ var mouseover = function(d,i,n){
         `<p> 
         <b>Factor: </b>
         ${d.base_type}
-        </br>
+        <br>
         <b>Reason:</b>
         ${d.problem}
-       
+        <br>
+        <b>Percentages Of Mums:</b>
+        ${d.percentages}
         </p>
         
         `)
@@ -82,8 +84,8 @@ const annotations = [
         
         x: graphWidth/2,
         y: graphHeight/2.5,
-        dy: graphHeight/3,
-        dx: graphWidth/5
+        dy: -graphHeight/3,
+        dx: graphWidth/16
 
         // x: graphWidth/2/2/2/2,
         // y: graphHeight/2.25,
@@ -94,6 +96,39 @@ const annotations = [
     // Add annotation to the baby chart
  const makeAnnotations = d3.annotation()
  .annotations(annotations);
+
+ //////////Annotation end //////////////
+ const annotations_end = [
+  {
+      note: {
+        label: "One Way: Develop programs to educate father and grandmothers about breastfeeding. Check Other Ways!",
+        title: "How Can You Support Breastfeeding",
+        align: "left",
+        wrap: 300,
+        
+      },
+      connector: {
+        end: "arrow",        // Can be none, or arrow or dot
+        type: "line",      // ?? don't know what it does
+        lineType : "vertical",    // ?? don't know what it does
+        endScale: 10     // dot size
+      },
+      color: ["red"],
+      
+      x: graphWidth/2,
+      y: 600,
+      dy: -graphHeight/3,
+      dx: graphWidth/2
+
+      // x: graphWidth/2/2/2/2,
+      // y: graphHeight/2.25,
+      // dy: -30,
+      // dx: graphWidth/4
+    }
+  ]
+  // Add annotation to the baby chart
+const makeAnnotations_end = d3.annotation()
+.annotations(annotations_end);
 //Load csv file
 async function init() {
     const data = await d3.csv('reasons.csv');
@@ -120,8 +155,12 @@ var title_g = mainCanvas.append("g");
 title_g.append("text")
         .attr("x", 0 )
         .attr("y", -margin.bottom -40)
-        .text("Percentage of mothers citing reasons for stopping Breastfeeding versus number of factors.") 
+        .text("Percentage Of Mothers Citing Reasons For Stopping Breastfeeding Versus Number Of Reasons.") 
         .style("font-size", "20px").attr("alignment-baseline","right")
+        .style("opacity", 0.0)
+        .transition()
+                       .duration(2000)
+                       .style("opacity", (d, i) => i+0.7)
      // Add x axis
      var x = d3.scaleLinear()
     .domain([10, 100])
@@ -186,9 +225,7 @@ mainCanvas.append("text")
                 .on("tick", layoutTick)
                 .nodes(nodes)
                    
-       
-                console.log(nodes[0].base_type)
-        var node = mainCanvas.selectAll("circle")
+               var node = mainCanvas.selectAll("circle")
                                 .data(nodes)
                                 .enter()
                                 .append("circle")
@@ -250,8 +287,17 @@ function layoutTick(e) {
  mainCanvas.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(2000).delay(500)
-                       .style("opacity", 1);
+ .transition().duration(3000)
+                       .style("opacity", 1).
+                       transition().style("opacity", 0)
+    //Annotations_end
+    mainCanvas.append("g")
+    .attr("class", "annotation-group")
+    .call(makeAnnotations_end)
+    .transition().duration(5000).delay(4000)
+                          .style("opacity", 1);
+                          // transition().style("opacity", 0)
+  
 //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")
