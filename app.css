@@ -67,8 +67,7 @@ img {
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 5px;
-    width: 70%;
-    height:auto;
+    width:400px;
   
     
     display: inline;
@@ -225,6 +224,7 @@ div.tooltip {
 
 g .tick text {
     font-size: 14px;
+    margin: 70px;
    
     /* fill: rgb(63, 83, 32); */
 }
