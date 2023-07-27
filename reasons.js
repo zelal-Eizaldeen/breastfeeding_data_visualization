@@ -273,7 +273,7 @@ function layoutTick(e) {
 
       //Little animation
       node.transition()
-      .duration(700)
+      .duration(3000)
       .delay(function(d, i) {
           return i * 5;
       })
@@ -287,14 +287,14 @@ function layoutTick(e) {
  mainCanvas.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(3000)
+ .transition().duration(4000)
                        .style("opacity", 1).
                        transition().style("opacity", 0)
     //Annotations_end
     mainCanvas.append("g")
     .attr("class", "annotation-group")
     .call(makeAnnotations_end)
-    .transition().duration(5000).delay(4000)
+    .transition().duration(5000).delay(4500)
                           .style("opacity", 1);
                           // transition().style("opacity", 0)
   
@@ -411,12 +411,13 @@ legendGroup.selectAll("mylabels")
 const legendSize = svg.append("g")
 
 // The scale you use for bubble size
-var size = d3.scaleSqrt()
+ var size = d3.scaleSqrt()
   .domain([1, 100])  // What's in the data, let's say it is percentage
   .range([1, 100])  // Size in pixel
 
+
 // Add legend: circles
-var valuesToShow = [10, 50, 100]
+var valuesToShow = [10, 20,30,50, 100]
 var xCircle = graphHeight+margin.left+100;
 var xLabel = graphHeight+margin.left+300
 var yCircle = graphHeight -200
@@ -456,7 +457,12 @@ mainCanvas
     .style("font-size", 10)
     .attr('alignment-baseline', 'middle')
 
-
+ // Legend title
+ svg.append("text")
+ .attr('x', xCircle + 40)
+ .attr("y", graphHeight - 100 +100)
+ .text("Factors % ")
+ .attr("text-anchor", "middle")
   // Move d to be adjacent to the cluster node.
   function cluster() {
                 

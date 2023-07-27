@@ -213,7 +213,7 @@ async function init_mum() {
 
  const svg = canvas.append("svg")
             .attr("width", 1000)
-            .attr("height", 750)
+            .attr("height", 850)
   // Features of the annotation for mumies
  const annotations = [
   {
@@ -343,9 +343,10 @@ svg.append("text")
  svg.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(2000).delay(500)
-                       .style("opacity", 1);
-
+ .transition().duration(5000)
+                      .style("opacity", 1)
+                      .transition()
+                       .style("opacity", 0);
 
     // //Add Color Legends
 //Legends
@@ -428,7 +429,7 @@ async function init() {
 
   const svg = canvas.append("svg")
   .attr("width", 1000)
-  .attr("height", 750)
+  .attr("height", 850)
 
   /////Annotations ////////////
  // Features of the annotation for babies
@@ -579,8 +580,10 @@ svg.append("text")
 svg.append("g")
 .attr("class", "annotation-group")
 .call(makeAnnotations)
-.transition().duration(2000).delay(500)
-                      .style("opacity", 1);
+.transition().duration(5000)
+                      .style("opacity", 1)
+                      .transition()
+                       .style("opacity", 0);
  //Add Color Legends
 //Legends
 const legendGroup = svg.append("g")

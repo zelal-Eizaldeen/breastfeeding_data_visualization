@@ -1,3 +1,18 @@
+
+/* If the screen size is 601px wide or more, set the font-size of <div> to 80px */
+@media screen and (min-width: 601px) {
+  div.overview {
+    font-size: 80px;
+  }
+}
+
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 600px) {
+  div.overview {
+    font-size: 30px;
+  }
+}
+
 html{
     margin: auto;
     display: block;
@@ -12,6 +27,7 @@ h1 {
     margin-left: 0;
     margin-right: 0;
     font-weight: bold;
+    color: #31a354;
   }
 h2 {
     display: block;
@@ -51,7 +67,8 @@ img {
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 5px;
-    width: 500px;
+    width: 70%;
+    height:auto;
   
     
     display: inline;
@@ -66,7 +83,7 @@ img {
   .download_pdf{
     background-color: #333;
     overflow:hidden;
-    margin:3px;
+    margin:5px;
    
     
   }
@@ -163,7 +180,7 @@ fieldset{
     background: #31a354;
     border-radius: 12px;
     border: none;
-    padding: 0;
+    padding: 0px;
     cursor: pointer;
     outline-offset: 4px;
     margin-left: 150px;

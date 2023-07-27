@@ -9,7 +9,7 @@ desBtn.disabled=true;
 // set the dimensions and margins of the graph
 var margin = {top: 80, right: 30, bottom: 40, left: 150},
     width = 600 - margin.left - margin.right,
-    height = 700 - margin.top - margin.bottom;
+    height = 600 - margin.top - margin.bottom;
     // var margin = {top:20, right:20, bottom:70, left:70};
     // var width = 600 - margin.left - margin.right;
     // var height = 600 - margin.top - margin.bottom;
@@ -86,11 +86,14 @@ var fill_bars = function(d,i,n){
     d3.select(n[i])
     .transition()
     .duration(100)
+    
+    
     .style("opacity", 0.5)
     .style("stroke-width", "1px")
   .style("stroke","black") ;
   div.transition()
-        .duration(200)
+        .duration(100)
+       
         .style("opacity", 0.9)
  if(stateEverCheckbox.checked && stateEverCheckbox.value=="Ever") {
       div.html(`
@@ -130,6 +133,7 @@ var fill_bars = function(d,i,n){
       d3.select(n[i])
       .transition()
       .duration(100)
+     
       .style("opacity", 1)
       .style("stroke", "none"); 
    div.transition()
@@ -177,8 +181,6 @@ svg.append("g")
   var y = d3.scaleBand()
   .range([ 0, height ])
   .domain(data.map(d =>d.Country))
-
-
   .padding(.3);
 svg.append("g")
 .transition().duration(1000)
@@ -198,6 +200,7 @@ svg.append("text")
  .attr("y", -20)
  .text("State")
  .attr("text-anchor", "start")   
+ 
 //Annotation
 const annotations = [
     {
@@ -212,7 +215,7 @@ const annotations = [
     end: "dot",        // Can be none, or arrow or dot
     type: "line",      // ?? don't know what it does
     lineType : "vertical",    // ?? don't know what it does
-    endScale: 10     // dot size
+    endScale: 3    // dot size
     },
     color: ["#000000"],
     
@@ -240,11 +243,13 @@ exclusive_rects
 .on("mouseout", mouseout)
 .transition()
 .duration(1000)
+
 .attr("x", x(0) )
 .attr("y", function(d) { return y(d.Country); })
 .attr("width", function(d) { return x(d[type]); })  //Desc
  .attr("height", y.bandwidth() )
 .attr("fill",function(d,i,n) { return fill_bars(d,i,n); })
+
 
 
 //Annotations
@@ -343,7 +348,7 @@ svg.append("g")
       end: "dot",        // Can be none, or arrow or dot
       type: "line",      // ?? don't know what it does
       lineType : "vertical",    // ?? don't know what it does
-      endScale: 10     // dot size
+      endScale: 3     // dot size
     },
     color: ["#000000"],
     
@@ -453,7 +458,7 @@ if(order==="asc"){
  // Add X axis label:
 svg.append("text")
 .attr("text-anchor", "end")
-.attr("x", width+150)
+.attr("x", width+200)
 .attr("y", height-10 )
 .text("Percentage% of Infants");
 
@@ -478,12 +483,12 @@ svg.append("text")
        end: "dot",        // Can be none, or arrow or dot
        type: "line",      // ?? don't know what it does
        lineType : "vertical",    // ?? don't know what it does
-       endScale: 10     // dot size
+       endScale: 3     // dot size
      },
      color: ["#000000"],
      
      x: width/2.5,
-     y: height/50,
+     y: height/70,
      dy: 60,
      dx: 140
    }
@@ -597,7 +602,7 @@ connector: {
 end: "dot",        // Can be none, or arrow or dot
 type: "line",      // ?? don't know what it does
 lineType : "vertical",    // ?? don't know what it does
-endScale: 10     // dot size
+endScale: 3     // dot size
 },
 color: ["#000000"],
 
@@ -730,12 +735,12 @@ svg.append("text")
        end: "dot",        // Can be none, or arrow or dot
        type: "line",      // ?? don't know what it does
        lineType : "vertical",    // ?? don't know what it does
-       endScale: 10     // dot size
+       endScale: 3     // dot size
      },
      color: ["#000000"],
      
      x: width/1.5,
-     y: height/50,
+     y: height/70,
      dy: 60,
      dx: 140
    }
@@ -850,7 +855,7 @@ const annotations = [
         end: "dot",        // Can be none, or arrow or dot
         type: "line",      // ?? don't know what it does
         lineType : "vertical",    // ?? don't know what it does
-        endScale: 10     // dot size
+        endScale: 3     // dot size
       },
       color: ["#000000"],
       
