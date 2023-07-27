@@ -429,7 +429,7 @@ async function init() {
 
   const svg = canvas.append("svg")
   .attr("width", 1000)
-  .attr("height", 850)
+  .attr("height", 800)
 
   /////Annotations ////////////
  // Features of the annotation for babies

@@ -148,7 +148,7 @@ mainCanvas.append("text")
 .attr("text-anchor", "end")
 .attr("x", graphWidth)
 .attr("y", graphHeight+50 )
-.text("Age Of Child (months)");
+.text("Age Of Baby (months)");
   // Add Y axis
   var y = d3.scaleLinear()
         .domain([0, 100])
