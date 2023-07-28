@@ -185,7 +185,9 @@ svg.append("g")
 svg.append("g")
 .transition().duration(1000)
   .call(d3.axisLeft(y)) 
-  
+ 
+        
+        // moves the text to the left by 20
 // Add X axis label:
 svg.append("text")
 .attr("text-anchor", "end")
@@ -198,6 +200,7 @@ svg.append("text")
  .attr("text-anchor", "end")
  .attr("x", -40)
  .attr("y", -20)
+ 
  .text("State")
  .attr("text-anchor", "start")   
  
@@ -248,7 +251,7 @@ exclusive_rects
 .attr("x", x(0) )
 .attr("y", function(d) { return y(d.Country); })
 .attr("width", function(d) { return x(d[type]); })  //Desc
- .attr("height", y.bandwidth() )
+ .attr("height", y.bandwidth)
 .attr("fill",function(d,i,n) { return fill_bars(d,i,n); })
 
 
