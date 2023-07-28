@@ -156,7 +156,7 @@ const paths = mainCanvas.selectAll('path')
                .attr("font-size", 20)  
                .style("opacity", 0.0)
                 .transition()
-                               .duration(2000)
+                               .duration(1000)
                                .style("opacity", (d, i) => i+0.7)
 //Add DACA Title
 // mainCanvas.append("text")

@@ -416,8 +416,8 @@ const legendSize = svg.append("g")
 
 
 // Add legend: circles
-var valuesToShow = [10, 20,30,50, 100]
-var xCircle = graphHeight+margin.left+100;
+var valuesToShow = [10,50, 100]
+var xCircle = graphHeight+margin.left+70;
 var xLabel = graphHeight+margin.left+300
 var yCircle = graphHeight -200
 mainCanvas
@@ -427,7 +427,7 @@ mainCanvas
   .append("circle")
     .attr("cx", xCircle)
     .attr("cy", function(d){ return yCircle - size(d) } )
-    .attr("r", function(d){ return size(d) })
+    .attr("r", function(d){ return size(d)-20 })
     .style("fill", "none")
     .attr("stroke", "black")
 
@@ -437,7 +437,7 @@ mainCanvas
   .data(valuesToShow)
   .enter()
   .append("line")
-    .attr('x1', function(d){ return xCircle + size(d) } )
+    .attr('x1', function(d){ return xCircle + size(d) -20} )
     .attr('x2', xLabel)
     .attr('y1', function(d){ return yCircle - size(d) } )
     .attr('y2', function(d){ return yCircle - size(d) } )
