@@ -252,7 +252,6 @@ mainCanvas.append("text")
   // What to do when one group is hovered
   var highlight = function(d,i,n){
    
-console.log(d)
     // reduce opacity of all groups
     d3.selectAll(".bubbles").style("opacity", .05)
     // expect the one that is hovered
