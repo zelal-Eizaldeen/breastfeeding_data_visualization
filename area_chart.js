@@ -151,7 +151,7 @@ async function init_ex(type) {
  const svg = d3.select("#canva")
  .append("svg")
    .attr("width", 1000)
-   .attr("height", 1000)
+   .attr("height", 2000)
  .append("g")
    .attr("transform",
          "translate(" + margin.left + "," + margin.top + ")");
@@ -171,7 +171,7 @@ var x = d3.scaleLinear()
 .domain([0,d3.max(data, d=>+d[type])])
   .range([ 0, width]);
 svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
+  .attr("transform", "translate(0," + height*2 + ")")
   .transition().duration(1000)
   .call(d3.axisBottom(x))
   .selectAll("text")
@@ -179,7 +179,7 @@ svg.append("g")
     .style("text-anchor", "end");
      // Y axis
   var y = d3.scaleBand()
-  .range([ 0, height ])
+  .range([ 0, height*2 ])
   .domain(data.map(d =>d.Country))
   .padding(.3);
 svg.append("g")
@@ -191,8 +191,8 @@ svg.append("g")
 // Add X axis label:
 svg.append("text")
 .attr("text-anchor", "end")
-.attr("x", width+150)
-.attr("y", height-10 )
+.attr("x", width+200)
+.attr("y", height*2 )
 .text("Percentage% of Infants");
 
  // Add Y axis label:
@@ -223,7 +223,7 @@ const annotations = [
     color: ["#000000"],
     
     x: width/1.5,
-    y: height/70,
+    y: height/60,
     dy: 60,
     dx: 140
     }
@@ -260,8 +260,11 @@ exclusive_rects
 svg.append("g")
 .attr("class", "annotation-group")
 .call(makeAnnotations)
-.transition().duration(2000).delay(500)
+.transition().duration(5000)
                       .style("opacity", 1)
+                      .transition()
+                      .style("opacity", 0)
+  
   
     ///Title to the exclusive init chart
    svg.append("text")
@@ -285,7 +288,7 @@ async function init_ever(type) {
 const svg = d3.select("#canva")
 .append("svg")
   .attr("width", 1000)
-  .attr("height",1000)
+  .attr("height",2000)
   //height + margin.top + margin.bottom
 .append("g")
   .attr("transform",
@@ -306,7 +309,7 @@ var x = d3.scaleLinear()
 .domain([0,d3.max(data, d=>+d[type])])
   .range([ 0, width]);
 svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
+  .attr("transform", "translate(0," + height*2 + ")")
   .transition().duration(1000)
   .call(d3.axisBottom(x))
   .selectAll("text")
@@ -316,8 +319,8 @@ svg.append("g")
 // Add X axis label:
 svg.append("text")
 .attr("text-anchor", "end")
-.attr("x", width+150)
-.attr("y", height-10 )
+.attr("x", width+200)
+.attr("y", height*2 )
 .text("Percentage% of Infants");
 
  // Add Y axis label:
@@ -329,7 +332,7 @@ svg.append("text")
  .attr("text-anchor", "start")   
      // Y axis
   var y = d3.scaleBand()
-  .range([ 0, height ])
+  .range([ 0, height*2 ])
   .domain(data.map(d =>d.Country))
 
   .padding(.3);
@@ -401,9 +404,10 @@ svg.append("g")
  svg.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(2000).delay(500)
-                       .style("opacity", 1);
-
+ .transition().duration(5000)
+                      .style("opacity", 1)
+                      .transition()
+                      .style("opacity", 0);
 }
             
 async function sort_exclusive(order) {
@@ -415,8 +419,8 @@ async function sort_exclusive(order) {
   .append("svg")
     // .attr("width", width + margin.left + margin.right)
     .attr("width", 1000)
-
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("height", 2000)
+    // .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
@@ -441,7 +445,7 @@ if(order==="asc"){
  .domain([0,d3.max(sortedData_asc, d=>+d[type])])
    .range([ 0, width]);
  svg.append("g")
-   .attr("transform", "translate(0," + height + ")")
+   .attr("transform", "translate(0," + height*2 + ")")
    .transition().duration(1000)
    .call(d3.axisBottom(x))
    .selectAll("text")
@@ -451,7 +455,7 @@ if(order==="asc"){
    
       // Y axis
    var y = d3.scaleBand()
-   .range([ 0, height ])
+   .range([ 0, height*2 ])
    .domain(sortedData_asc.map(d =>d.Country))
  
    .padding(.3);
@@ -463,7 +467,7 @@ if(order==="asc"){
 svg.append("text")
 .attr("text-anchor", "end")
 .attr("x", width+200)
-.attr("y", height-10 )
+.attr("y", height*2 )
 .text("Percentage% of Infants");
 
  // Add Y axis label:
@@ -523,8 +527,10 @@ svg.append("text")
  svg.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(2000).delay(500)
-                       .style("opacity", 1);
+ .transition().duration(5000)
+                      .style("opacity", 1)
+                      .transition()
+                      .style("opacity", 0);
  
    ///Title to the exclusive init chart
    svg.append("text")
@@ -559,7 +565,7 @@ var x = d3.scaleLinear()
 .domain([0,d3.max(sortedData_des, d=>+d[type])])
 .range([ 0, width]);
 svg.append("g")
-.attr("transform", "translate(0," + height + ")")
+.attr("transform", "translate(0," + height*2 + ")")
 .transition().duration(1000)
 .call(d3.axisBottom(x))
 .selectAll("text")
@@ -569,7 +575,7 @@ svg.append("g")
 
 // Y axis
 var y = d3.scaleBand()
-.range([ 0, height ])
+.range([ 0, height*2 ])
 .domain(sortedData_des.map(d =>d.Country))
 
 .padding(.3);
@@ -580,8 +586,8 @@ svg.append("g")
 // Add X axis label:
 svg.append("text")
 .attr("text-anchor", "end")
-.attr("x", width+150)
-.attr("y", height-10 )
+.attr("x", width+200)
+.attr("y", height*2 )
 .text("Percentage% of Infants");
 
  // Add Y axis label:
@@ -642,8 +648,10 @@ exclusive_rects
 svg.append("g")
 .attr("class", "annotation-group")
 .call(makeAnnotations)
-.transition().duration(2000).delay(500)
-               .style("opacity", 1);
+.transition().duration(5000)
+                      .style("opacity", 1)
+                      .transition()
+                      .style("opacity", 0);
 
                  ///Title to the exclusive init chart
    svg.append("text")
@@ -667,9 +675,10 @@ async function sort_ever(order) {
   const svg = d3.select("#canva")
   .append("svg")
   .attr("width", 1000)
+  .attr("height", 2000)
 
     // .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    // .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
@@ -693,7 +702,7 @@ if(order==="asc"){
  .domain([0,d3.max(sortedData_asc, d=>+d[type])])
    .range([ 0, width]);
  svg.append("g")
-   .attr("transform", "translate(0," + height + ")")
+   .attr("transform", "translate(0," + height*2 + ")")
    .transition().duration(1000)
    .call(d3.axisBottom(x))
    .selectAll("text")
@@ -703,7 +712,7 @@ if(order==="asc"){
    
       // Y axis
    var y = d3.scaleBand()
-   .range([ 0, height ])
+   .range([ 0, height*2 ])
    .domain(sortedData_asc.map(d =>d.Country))
  
    .padding(.3);
@@ -715,7 +724,7 @@ if(order==="asc"){
 svg.append("text")
 .attr("text-anchor", "end")
 .attr("x", width+200)
-.attr("y", height-10 )
+.attr("y", height*2 )
 .text("Percentage% of Infants");
 
  // Add Y axis label:
@@ -775,8 +784,10 @@ svg.append("text")
  svg.append("g")
  .attr("class", "annotation-group")
  .call(makeAnnotations)
- .transition().duration(2000).delay(500)
-                       .style("opacity", 1);
+ .transition().duration(5000)
+                      .style("opacity", 1)
+                      .transition()
+                      .style("opacity", 0)
  
  
                          ///Title to the ever sort chart
@@ -813,7 +824,7 @@ var x = d3.scaleLinear()
 .domain([0,d3.max(sortedData_des, d=>+d[type])])
 .range([ 0, width]);
 svg.append("g")
-.attr("transform", "translate(0," + height + ")")
+.attr("transform", "translate(0," + height*2 + ")")
 .transition().duration(500)
 .call(d3.axisBottom(x))
 .selectAll("text")
@@ -823,7 +834,7 @@ svg.append("g")
 
 // Y axis
 var y = d3.scaleBand()
-.range([ 0, height ])
+.range([ 0, height*2 ])
 .domain(sortedData_des.map(d =>d.Country))
 
 .padding(.3);
@@ -835,7 +846,7 @@ svg.append("g")
 svg.append("text")
 .attr("text-anchor", "end")
 .attr("x", width+150)
-.attr("y", height-10 )
+.attr("y", height*2 )
 .text("Percentage% of Infants");
 
  // Add Y axis label:
