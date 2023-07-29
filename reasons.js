@@ -216,28 +216,34 @@ mainCanvas.append("text")
 
                 //Cluster by section
                 .force("cluster", cluster()
-                                  .strength(0.7)) 
+                                  .strength(0.8)) 
 
                 //apply collision with padding
                 .force("collide", d3.forceCollide(d => d.radius + padding )
                     .strength(0.9))
                     .velocityDecay(0.4)
+                
                 .on("tick", layoutTick)
                 .nodes(nodes)
-                   
-               var node = mainCanvas.selectAll("circle")
-                                .data(nodes)
-                                .enter()
-                                .append("circle")
-                                .style("fill", function(d){
-                                      return mColors(d.cluster / distinctTypesScale)
-                                })
-                                .attr("class", function(d) 
-                                { return "bubbles " + d["base_type"] })
 
-                                .on("mouseover", mouseover)
-                                
-                                .on("mouseout", mouseout)
+                   
+        var node = mainCanvas.selectAll("circle")
+                        .data(nodes)
+                        .enter()
+                        .append("circle")
+                        .style("fill", function(d){
+                              return mColors(d.cluster / distinctTypesScale)
+                        })
+                        .attr("class", function(d) 
+                        { return "bubbles " + d["base_type"] })
+
+                        .on("mouseover", mouseover)
+                        
+                        .on("mouseout", mouseout)
+                        .call(d3.drag()
+        .on("start", drag_started)
+        .on("drag", dragged)
+        .on("end", drag_ended))
                                 
                                
                                     
@@ -268,8 +274,24 @@ function layoutTick(e) {
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; })
         .attr("r", function(d) { return d.radius})
+        
   }
+////////Drag Event /////
+function drag_started(d) {
+  if (!d3.event.active) force.alphaTarget(0.3).restart();
+  d.fx = d.x; ///current x coordinate
+  d.fy = d.y; //current y coordinate
+}
+function dragged(d){ //as we drag
+  d.fx = d3.event.x;  /// x coordinate of the mouse 
+  d.fy = d3.event.y;
+}
+function drag_ended(d) {
+  if(!d3.event.active) force.alphaTarget(0);
+  d.fx =null; // set the fixed x and y coordinate to null which allows the simulation to reposition it.
+  d.fy = null;
 
+}
       //Little animation
       node.transition()
       .duration(3000)
@@ -461,6 +483,14 @@ mainCanvas
  .attr('x', xCircle + 40)
  .attr("y", graphHeight - 100 +100)
  .text("Factors % ")
+ .attr("text-anchor", "middle")
+
+ /////Hint to drag Circles
+ // Legend title
+ svg.append("text")
+ .attr('x', xCircle + 170)
+ .attr("y", graphHeight -220)
+ .text("Drag each circles to see relative reasons")
  .attr("text-anchor", "middle")
   // Move d to be adjacent to the cluster node.
   function cluster() {

@@ -248,6 +248,7 @@ exclusive_rects
 .duration(500)
 
 
+
 .attr("x", x(0) )
 .attr("y", function(d) { return y(d.Country); })
 .attr("width", function(d) { return x(d[type]); })  //Desc
